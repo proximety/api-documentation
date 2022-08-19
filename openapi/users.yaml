@@ -19,7 +19,8 @@ paths:
     post: 
       tags:
         - Auth
-      summary: Generates a new OTP for the specified mobile number which can then be used to login to the platform.
+      summary: Generate OTP
+      description: Generates a new OTP for the specified mobile number which can then be used to login to the platform.
       operationId: generateOTP
       requestBody:
         description: The details of the device to which OTP needs to be sent. 
@@ -52,7 +53,8 @@ paths:
     post: 
       tags:
         - Auth
-      summary: Enables logging into the system by providing a recieved valid OTP.
+      summary: OTP Login
+      description: Enables logging into the system by providing a recieved valid OTP.
       operationId: loginWithOTP
       requestBody:
         description: The details of the OTP recieved by the user. 
@@ -85,7 +87,8 @@ paths:
     post: 
       tags:
       - Auth
-      summary: Generates a new authentication token based on the provided refresh token.
+      summary: Refresh Auth Token
+      description: Generates a new authentication token based on the provided refresh token.
       operationId: refreshToken
       requestBody:
         description: The details of the refresh token to be used to generate a new authentication token. 
@@ -132,7 +135,8 @@ paths:
     post: 
       tags:
         - Auth
-      summary: Enables logging into the system by providing the id token recieved from google sign in.
+      summary: Google Login
+      description: Enables logging into the system by providing the id token recieved from google sign in.
       operationId: signInWithGoogle
       requestBody:
         description: The request object indicating the details recieved from google sign in.
@@ -178,7 +182,8 @@ paths:
     post: 
       tags:
         - Auth
-      summary: Enables logging into the system by providing the user access token recieved from facebook sign in.
+      summary: Facebook Login
+      description: Enables logging into the system by providing the user access token recieved from facebook sign in.
       operationId: signInWithFacebook
       requestBody:
         description: The request object indicating the details recieved from facebook sign in.
@@ -248,7 +253,8 @@ paths:
     get:
       tags:
         - User
-      summary: Retreive the details about an existing user.
+      summary: Get user details
+      description: Retreive the details about an existing user.
       operationId: getUser     
       parameters:
         - name: Authorization
@@ -280,7 +286,8 @@ paths:
     put:
       tags:
         - User
-      summary: Update the profile details for the specified user.
+      summary: Update user details
+      description: Update the profile details for the specified user.
       operationId: updateUser
       parameters:
         - name: Authorization
@@ -333,7 +340,8 @@ paths:
     put:
       tags:
         - User
-      summary: Update the profile picture for the specified user.
+      summary: Update profile picture.
+      description: Update the profile picture for the specified user.
       operationId: updateProfilePicture
       parameters:
         - name: Authorization
@@ -380,7 +388,8 @@ paths:
     put:
       tags:
         - User
-      summary: Update the profile details for the specified user.
+      summary: Update phone number
+      description: Update the profile details for the specified user.
       operationId: updatePhoneNumber
       parameters:
         - name: Authorization
