@@ -271,18 +271,40 @@ paths:
           schema:
             type: string
       responses:
-        200:
+        "200":
           description: Successful operation
           content:
             application/json:
               schema:
                   $ref: '#/components/schemas/User'
-        400:
-          description: Bad request
-        404: 
-          description: User not found
-        401:
-          description: Unauthorized access
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GlobalException"
+              example: 
+                {
+                  "status": 403,
+                  "type": "NOT_FOUND",
+                  "title": "User not found",
+                  "detail": "No user found for the specified user id.",
+                  "tags":[]
+                }
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GlobalException"
+              example: 
+                {
+                  "status": 403,
+                  "type": "FORBIDDEN",
+                  "title": "Token expired.",
+                  "detail": "The specified access token has expired. Please try again with an active access token.",
+                  "tags":[]
+                }
     put:
       tags:
         - User
@@ -310,14 +332,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/User'
-      responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/User'
-              example:  {
+            example:  {
                         "name": {
                           "fullName": "Jake M Sully",
                           "firstName": "Jake",
@@ -330,12 +345,56 @@ paths:
                         "dateOfBirth": "1995-05-17",
                         "gender": "MALE",
 
-                      }
-                
+                      }  
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
         "400":
           description: Bad request
-        "401":
-          description: Unauthorized access
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GlobalException"
+              example: 
+                {
+                  "status": 403,
+                  "type": "BAD_REQUEST",
+                  "title": "Invalid email id.",
+                  "detail": "The specified email id is invalid. Please try again with a valid email id.",
+                  "tags":[]
+                }
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GlobalException"
+              example: 
+                {
+                  "status": 403,
+                  "type": "NOT_FOUND",
+                  "title": "User not found",
+                  "detail": "No user found for the specified user id.",
+                  "tags":[]
+                }
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GlobalException"
+              example: 
+                {
+                  "status": 403,
+                  "type": "FORBIDDEN",
+                  "title": "Token expired.",
+                  "detail": "The specified access token has expired. Please try again with an active access token.",
+                  "tags":[]
+                }
   /users/{userHandle}/profile-picture:
     put:
       tags:
@@ -382,8 +441,46 @@ paths:
                     example: https://picsum.photos/id/237/200/300.jpg
         "400":
           description: Bad request
-        "401":
-          description: Unauthorized access
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GlobalException"
+              example: 
+                {
+                  "status": 403,
+                  "type": "BAD_REQUEST",
+                  "title": "Unsupported image format.",
+                  "detail": "The specified image format is not supported. Please specify a .png or .jpg file and try again.",
+                  "tags":[]
+                }
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GlobalException"
+              example: 
+                {
+                  "status": 403,
+                  "type": "NOT_FOUND",
+                  "title": "User not found",
+                  "detail": "No user found for the specified user id.",
+                  "tags":[]
+                }
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GlobalException"
+              example: 
+                {
+                  "status": 403,
+                  "type": "FORBIDDEN",
+                  "title": "Token expired.",
+                  "detail": "The specified access token has expired. Please try again with an active access token.",
+                  "tags":[]
+                }
   /users/{userHandle}/phone-number:
     put:
       tags:
@@ -421,8 +518,46 @@ paths:
                 $ref: '#/components/schemas/PhoneNumberUpdateResponse'
         "400":
           description: Bad request
-        "401":
-          description: Unauthorized access
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GlobalException"
+              example: 
+                {
+                  "status": 403,
+                  "type": "BAD_REQUEST",
+                  "title": "OTP invalid.",
+                  "detail": "The specified OTP is invalid. Please specify a valid OTP and try again.",
+                  "tags":[]
+                }
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GlobalException"
+              example: 
+                {
+                  "status": 403,
+                  "type": "NOT_FOUND",
+                  "title": "User not found",
+                  "detail": "No user found for the specified user id.",
+                  "tags":[]
+                }
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GlobalException"
+              example: 
+                {
+                  "status": 403,
+                  "type": "FORBIDDEN",
+                  "title": "Token expired.",
+                  "detail": "The specified access token has expired. Please try again with an active access token.",
+                  "tags":[]
+                }
   # /users/{userId}/issue-tickets:
   #   get:
   #     tags:
