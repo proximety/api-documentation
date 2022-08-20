@@ -1,0 +1,266 @@
+openapi: '3.0.2'
+info:
+  title: Movie Booking Service
+  version: '1.0'
+  description: Provides a set of API operations that can be used for viewing movie details and for booking movie tickets.
+  license:
+    name: Proximety
+    url: www.proximety.io
+servers:
+  - url: https://dev.proximety.io/api
+  - url: https://staging.proximety.io/api
+  - url: https://www.proximety.io/api
+tags:
+- name: Movie
+paths:
+  /movies:
+    get: 
+      tags:
+        - Movie
+      summary: API to get the list of all movies.
+      operationId: getMovies
+      parameters:
+        - name: mallHandle
+          in: query
+          description: The internal system identifier for the mall.
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/movieSummary'
+        "400":
+          description: Bad request
+        "403":
+          description: Unauthorized access
+  /movies/{movieId}:
+    get: 
+      tags:
+        - Movie
+      summary: Retrieves the details of a movie.
+      operationId: getMovies
+      parameters:
+        - name: movieId
+          in: path
+          description: The internal system identifier for the movie.
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/movieDetails'
+        "400":
+          description: Bad request
+        "403":
+          description: Unauthorized access
+  /movies/{movieId}/schedule:
+    get:
+      tags:
+        - Movie
+      summary: Retrieves the schedule of a movie.
+      operationId: getSchedule
+      parameters:
+        - name: movieId
+          in: path
+          description: The internal system identifier for the movie.
+          required: true
+          schema:
+            type: string
+        - name: mallHandle
+          in: query
+          description: The internal system identifier for the mall.
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/schedule'
+        "400":
+          description: Bad request
+        "403":
+          description: Unauthorized access
+
+      
+components:
+  schemas:
+    movieSummary:
+      type: object
+      required:
+        - movieName
+        - language
+        - releaseDate
+      properties:
+        movieId:
+          type: integer
+          description: The internal system identifier for a movie.
+          example: 123
+        movieName:
+          type: string
+          description: Name of the movie.
+          example: Kaduva
+        language:
+          type: string
+          description: Language of the movie.
+          example: malayalam
+        genre:
+          type: array
+          items:
+            $ref: '#/components/schemas/Genre'
+          description: Genre of the movie.  
+        releaseDate:
+          type: string
+          pattern: /([0-9]{4})-(?:[0-9]{2})-([0-9]{2})/
+          example: "2022-05-17"
+        bookingOpen:
+          type: boolean
+          description: To indicate if booking is open for the movie.
+        3D:
+          type: boolean
+          description: To indicate if it is a 3d movie.
+        posterUrl:
+          type: string
+          format: uri
+          description: url of the poster
+          example: https://dev.proximety.io/api/movies/eahdjk14129102==
+        trailerUrl:
+          type: array
+          $ref: '#/components/schemas/Trailer'
+    movieDetails:
+      type: object
+      required:
+        - movieName
+      properties:
+        movieId:
+          type: integer
+          description: The internal system identifier for a movie.
+          example: 123
+        movieName:
+          type: string
+          description: Name of the movie.
+          example: Kaduva
+        language:
+          type: string
+          description: Language of the movie.
+          example: malayalam
+        genre:
+          type: array
+          description: Genre of the movie.
+          items:
+            $ref: '#/components/schemas/Genre'
+        releaseDate:
+          type: string
+          pattern: /([0-9]{4})-(?:[0-9]{2})-([0-9]{2})/
+          example: "2022-05-17"
+        bookingOpen:
+          type: boolean
+          description: To indicate if booking is open for the movie.
+        3D:
+          type: boolean
+          description: To indicate if it is a 3d movie.
+        posterUrl:
+          type: string
+          format: uri
+          description: url of the poster
+          example: https://dev.proximety.io/api/movies/eahdjk14129102==
+        trailers:
+          type: array
+          items:
+            $ref: '#/components/schemas/Trailer'
+        duration:
+          type: integer
+          description: Duration of the movie in minutes.
+          example: 150
+        overview:
+          type: string
+          description: Overview of the movie
+        certificate:
+          type: string
+          description: Certificate of the movie
+          enum:
+            - U
+            - A
+            - U/A
+        director:
+          type: string
+          description: Name of the director
+        writer:
+          type: string
+          description: Name of the writer
+        cast:
+          type: array
+          $ref: '#/components/schemas/Cast'
+    schedule:
+      type: object
+      required:
+        - scheduleId
+        - movieId
+      properties:
+        scheduleId:
+          type: integer
+          description: The internal system identifier for the schedule.
+          example: 422
+        movieId:
+          type: integer
+          description: The internal system identifier for the movie.
+          example: 123
+        showDate:
+          type: string
+          pattern: /([0-9]{4})-(?:[0-9]{2})-([0-9]{2})/
+          example: "2022-05-17"
+        startTime:
+          type: string
+          description: Start time of the show
+          example: 5.30 pm
+        saleStatus:
+          type: string
+          enum: 
+            - SOLDOUT
+            - AVAILABLE
+    Cast: 
+      type: object
+      properties:
+        originalName: 
+          type: string
+          description: Name of the actor/actress
+        character:
+          type: string
+          description: Name of the character in the movie
+        profilePath:
+          type: string
+          format: uri
+          description: url of the path in which cast image is stored
+    Trailer:
+      type: object
+      properties:
+        key:
+          type: string
+          description: Unique identifier for the trailer video
+          example: 6JnN1DmbqoU
+        site:
+          type: string
+          description: Name of the website in which the video is available
+          example: YouTube
+    Genre:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Action
