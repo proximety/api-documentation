@@ -17,10 +17,18 @@ paths:
     get: 
       tags:
         - Movie
-      summary: API to get the list of all movies.
+      summary: List movies
+      description: API to get the list of all movies.
       operationId: getMovies
       parameters:
-        - name: mallHandle
+        - name: Authorization
+          in: header
+          description: The authentication bearer token.
+          required: true
+          example: Bearer asd.js2jd9a.gC6paXtNOg0OZL4-adsd-asd
+          schema:
+            type: string
+        - name: mallId
           in: query
           description: The internal system identifier for the mall.
           required: true
@@ -34,18 +42,64 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/movieSummary'
+                  $ref: '#/components/schemas/MovieSummary'
         "400":
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GlobalException"
+              example: 
+                {
+                  "status": 403,
+                  "type": "BAD_REQUEST",
+                  "title": "Mall ID not specified",
+                  "detail": "The mall id of th mall for which the movie listing needs to be retrieved has not been specified. Please specify a valid mall id and try again.",
+                  "tags":[]
+                }
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GlobalException"
+              example: 
+                {
+                  "status": 403,
+                  "type": "NOT_FOUND",
+                  "title": "Mall not found",
+                  "detail": "No shopping mall found for the specified mall id.",
+                  "tags":[]
+                }
         "403":
-          description: Unauthorized access
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GlobalException"
+              example: 
+                {
+                  "status": 403,
+                  "type": "FORBIDDEN",
+                  "title": "Token expired.",
+                  "detail": "The specified access token has expired. Please try again with an active access token.",
+                  "tags":[]
+                }
   /movies/{movieId}:
     get: 
       tags:
         - Movie
-      summary: Retrieves the details of a movie.
+      summary: Movie details
+      description: Retrieves the details of a movie.
       operationId: getMovies
       parameters:
+        - name: Authorization
+          in: header
+          description: The authentication bearer token.
+          required: true
+          example: Bearer asd.js2jd9a.gC6paXtNOg0OZL4-adsd-asd
+          schema:
+            type: string
         - name: movieId
           in: path
           description: The internal system identifier for the movie.
@@ -60,18 +114,50 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/movieDetails'
-        "400":
-          description: Bad request
+                  $ref: '#/components/schemas/MovieDetails'
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GlobalException"
+              example: 
+                {
+                  "status": 403,
+                  "type": "NOT_FOUND",
+                  "title": "Movie not found",
+                  "detail": "The requested movie could not be found. Please try again with an available movie id.",
+                  "tags":[]
+                }
         "403":
-          description: Unauthorized access
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GlobalException"
+              example: 
+                {
+                  "status": 403,
+                  "type": "FORBIDDEN",
+                  "title": "Token expired.",
+                  "detail": "The specified access token has expired. Please try again with an active access token.",
+                  "tags":[]
+                }
   /movies/{movieId}/schedule:
     get:
       tags:
         - Movie
-      summary: Retrieves the schedule of a movie.
+      summary: Movie schedule
+      description: Retrieves the schedule of a movie.
       operationId: getSchedule
       parameters:
+        - name: Authorization
+          in: header
+          description: The authentication bearer token.
+          required: true
+          example: Bearer asd.js2jd9a.gC6paXtNOg0OZL4-adsd-asd
+          schema:
+            type: string
         - name: movieId
           in: path
           description: The internal system identifier for the movie.
@@ -92,16 +178,64 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/schedule'
-        "400":
-          description: Bad request
+                  $ref: '#/components/schemas/Schedule'
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GlobalException"
+              example: 
+                {
+                  "status": 403,
+                  "type": "NOT_FOUND",
+                  "title": "Movie not found",
+                  "detail": "The requested movie could not be found. Please try again with an available movie id.",
+                  "tags":[]
+                }
         "403":
-          description: Unauthorized access
-
-      
+          description: Forbidden   
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GlobalException"
+              example: 
+                {
+                  "status": 403,
+                  "type": "FORBIDDEN",
+                  "title": "Token expired.",
+                  "detail": "The specified access token has expired. Please try again with an active access token.",
+                  "tags":[]
+                }
 components:
   schemas:
-    movieSummary:
+    GlobalException:
+      type: object
+      description: An exception thrown by the system.
+      properties:
+        status:
+          type: integer
+          description: The status code for the error.
+          example: 401
+        type:
+          type: string
+          description: The type name for the error being thrown.
+          example: UNAUTHORIZED
+        title:
+          type: string
+          description: The error title.
+          example: Token expired.
+        detail:
+          type: string
+          description: The details of the error being thrown.
+          example: The access token has expired for the user. Please generate a new token and try again.
+        tags:
+          type: array
+          description: The varios tags associated with the error that provides additional information about the error.
+          items: 
+            type: string
+            example: ACCESS_TOKEN_INVALID 
+    MovieSummary:
       type: object
       required:
         - movieName
@@ -143,7 +277,7 @@ components:
         trailerUrl:
           type: array
           $ref: '#/components/schemas/Trailer'
-    movieDetails:
+    MovieDetails:
       type: object
       required:
         - movieName
@@ -207,7 +341,7 @@ components:
         cast:
           type: array
           $ref: '#/components/schemas/Cast'
-    schedule:
+    Schedule:
       type: object
       required:
         - scheduleId
@@ -264,3 +398,5 @@ components:
         name:
           type: string
           example: Action
+
+          
