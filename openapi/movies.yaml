@@ -18,13 +18,13 @@ paths:
       summary: List movies
       description: API to get the list of all movies.
       operationId: getMovies
-      parameters:
-        - name: mallId
-          in: query
-          description: Internal system identifier for the mall.
-          required: true
-          schema:
-            type: string
+      # parameters:
+      #   - name: mallId
+      #     in: query
+      #     description: Internal system identifier for the mall.
+      #     required: true
+      #     schema:
+      #       type: string
       responses:
         "200":
           description: Successful operation
@@ -71,13 +71,13 @@ paths:
       summary: Movie schedule
       description: Retrieves the schedule of a given movie option.
       operationId: getSchedule
-      parameters:
-        - name: mallId
-          in: query
-          description: The internal system identifier for the mall.
-          required: true
-          schema:
-            type: string
+      # parameters:
+      #   - name: mallId
+      #     in: query
+      #     description: The internal system identifier for the mall.
+      #     required: true
+      #     schema:
+      #       type: string
       responses:
         "200":
           description: Successful operation
@@ -494,4 +494,3 @@ components:
           type: string
           example: A1
           description: Name of the seat.
-    
