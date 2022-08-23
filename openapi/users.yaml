@@ -249,7 +249,7 @@ paths:
     #       description: Bad request
     #     "401":
     #       description: Unauthorized access
-  /users/{userHandle}:
+  /users/{userId}:
     get:
       tags:
         - User
@@ -319,7 +319,7 @@ paths:
           example: Bearer asd.js2jd9a.gC6paXtNOg0OZL4-adsd-asd
           schema:
             type: string
-        - name: userHandle
+        - name: userId
           in: path
           description: The internal system handle for the user.
           required: true
@@ -395,7 +395,7 @@ paths:
                   "detail": "The specified access token has expired. Please try again with an active access token.",
                   "tags":[]
                 }
-  /users/{userHandle}/profile-picture:
+  /users/{userId}/profile-picture:
     put:
       tags:
         - User
@@ -410,7 +410,7 @@ paths:
           example: Bearer asd.js2jd9a.gC6paXtNOg0OZL4-adsd-asd
           schema:
             type: string
-        - name: userHandle
+        - name: userId
           in: path
           description: The internal system handle of the user whose profile picture needs to be updated.
           required: true
@@ -481,7 +481,7 @@ paths:
                   "detail": "The specified access token has expired. Please try again with an active access token.",
                   "tags":[]
                 }
-  /users/{userHandle}/phone-number:
+  /users/{userId}/phone-number:
     put:
       tags:
         - User
@@ -496,7 +496,7 @@ paths:
           example: Bearer asd.js2jd9a.gC6paXtNOg0OZL4-adsd-asd
           schema:
             type: string
-        - name: userHandle
+        - name: userId
           in: path
           description: The internal system handle of the user whose phone number needs to be updated.
           required: true
@@ -857,7 +857,7 @@ components:
     AuthTokenResponse:
       type: object
       properties:
-        userHandle:
+        userId:
           type: string
           description: The internal system identifier for the user logged into the system.
           example: ee12jdskdfjhalss==
