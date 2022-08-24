@@ -120,8 +120,8 @@ paths:
           schema:
             type: string       
       responses:
-        "201":
-          description: Created
+        "200":
+          description: Successful operation
           content:
             application/json:
               schema:
@@ -270,7 +270,7 @@ paths:
         - name: storeId
           in: path
           required: true
-          description: The internal system identifier for the store whose details are to be fetched.
+          description: The internal system identifier for the offer that needs to be deleted.
           schema:
             type: string       
       responses:
@@ -506,8 +506,105 @@ paths:
                   "detail": "The specified access token has expired. Please try again with an active access token.",
                   "tags":[]
                 }
+  /stores/{storeId}/offers:
+    get: 
+      tags:
+        - "Offers"
+      summary: Get store offers
+      description: Retreives the list of offers currently run by the store.
+      operationId: getOffersByStore
+      parameters:
+        - name: Authorization
+          in: header
+          description: The authentication bearer token.
+          required: true
+          example: Bearer asd.js2jd9a.gC6paXtNOg0OZL4-adsd-asd
+          schema:
+            type: string
+        - name: storeId
+          in: path
+          required: true
+          description: The internal system identifier for the store whose details are to be fetched.
+          schema:
+            type: string       
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StoreOffers'
+        "404":
+          description: Not found         
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GlobalException"
+              example: 
+                {
+                  "status": 404,
+                  "type": "NOT_FOUND",
+                  "title": "Store not found",
+                  "detail": "No store found for the specified store id. Please specify a valid store id and try again.",
+                }
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GlobalException"
+              example: 
+                {
+                  "status": 403,
+                  "type": "FORBIDDEN",
+                  "title": "Token expired.",
+                  "detail": "The specified access token has expired. Please try again with an active access token.",
+                  "tags":[]
+                }
 components:
   schemas:
+    StoreOffers:
+      type: object
+      description: The details of various offers provided by a store.
+      properties:
+        storeId: 
+          type: string
+          description: The internal system identifier for the store.
+          example: eahdjk14129102==
+        genericOffers:
+          type: array
+          description: The list of offers run by a store that are available to all customers.
+          items:
+            $ref: '#/components/schemas/StoreOffer'
+        personalizedOffers:
+          type: array
+          description: The list of offers run by a store that are exclusive to the customer.
+          items:
+            $ref: '#/components/schemas/StoreOffer'
+    StoreOffer:
+      type: object
+      description: The details of an offer run by a store.
+      properties:
+        offerId: 
+          type: string
+          description: The internal system identifier for the offer.
+          example: h929d1
+        offerTitle:
+          type: string
+          description: The title for the offer being run by the store. 
+          example: Indigo Nation - Buy 2 Get 2 filtered.
+        startDate:
+          type: string
+          description: The offer start database.
+          example: "2022-05-17"
+        endDate:
+          type: string
+          description: The offer end database.
+          example: "2022-05-17"
+        offerBannerUrl: 
+          type: string
+          description: The URL to access the offer banner image.
+          example:  https://dev.proximety.io/images/21423.jpg
     StoreSearchResponse:
       type: object
       description: The store search response that contains the list of stores matching the search criteria.
