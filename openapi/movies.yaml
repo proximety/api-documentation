@@ -260,11 +260,7 @@ components:
           description: To indicate if booking is open for the movie.
         hasPremiumExperience:
           type: boolean
-          description: Is premium experience available for the movie.
-        options:
-          type: array
-          items:
-            $ref: '#/components/schemas/Options'
+          description: Is premium experience available for the movie.       
     MovieDetails:
       type: object
       required:
@@ -304,6 +300,13 @@ components:
         overview:
           type: string
           description: Overview of the movie
+        hasPremiumExperience:
+          type: boolean
+          description: Is premium experience available for the movie.
+        options:
+          type: array
+          items:
+            $ref: '#/components/schemas/Options'
         certificate:
           type: string
           description: Certificate of the movie
