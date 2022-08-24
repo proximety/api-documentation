@@ -1,6 +1,6 @@
 openapi: '3.0.2'
 info:
-  title: Stores Service
+  title: Offers Service
   version: '1.0'
   description: Provides a set of API operations that can be performed on shopping stores.
   license:
