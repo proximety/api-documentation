@@ -1,0 +1,795 @@
+openapi: '3.0.2'
+info:
+  title: Food Service
+  version: '1.0'
+  description: Provides a set of API operations to order food from restaurants.
+  license:
+    name: Proximety
+    url: www.proximety.io
+servers:
+  - url: https://dev.proximety.io/api
+  - url: https://staging.proximety.io/api
+  - url: https://www.proximety.io/api
+paths:
+  /food/dishtypes:
+    get: 
+      tags:
+        - Food
+      summary: Returns list of major dish types
+      description: Returns list of major dish types like Biriyani, Coffee, etc.
+      operationId: getDishTypes
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DishTypes'
+        "500":
+          description: Error  
+  /food/restaurants:
+    get: 
+      tags:
+        - Food
+      summary: Returns list of restaurants
+      description: Returns list of restaurants.
+      operationId: getRestaurants
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Restaurants'
+        "500":
+          description: Error   
+  /food/restaurant/{restaurantId}/dishes:
+    get: 
+      tags:
+        - Food
+      summary: Returns dishes
+      description: Returns dishes in a restaurant.
+      operationId: getDishes
+      parameters:
+        - name: restaurantId
+          required: true
+          in: path
+          description: Restaurant Id.
+          example: 1
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Dishes'
+        "500":
+          description: Error 
+  /food/offers:
+    get: 
+      tags:
+        - Food
+      summary: Returns list of offers
+      description: Returns list of offers.
+      operationId: getOffers
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Offers'
+        "500":
+          description: Error      
+  /food/combos:
+    get: 
+      tags:
+        - Food
+      summary: Returns list of combos.
+      description: Returns list of combos for the user.
+      operationId: getCombos
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Combos'
+        "500":
+          description: Error 
+  /food/coupons/_query:
+    post: 
+      tags:
+        - Food
+      summary: Returns list of coupons
+      description: Returns list of coupons
+      operationId: getCoupons
+      requestBody:
+        description: Cart information. 
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Cart'
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Coupons'
+        "500":
+          description: Error  
+  /food/orders:
+    post: 
+      tags:
+        - Food
+      summary: Create order
+      description: Create one or more orders.
+      operationId: createOrder
+      requestBody:
+        description: Cart information.  
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Cart'
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Orders'
+        "500":
+          description: Error
+  /food/orders/status:
+    get: 
+      tags:
+        - Food
+      summary: Returns order status
+      description: Returns status for one or more orders.
+      operationId: getOrderStatus
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderStatuses'
+        "500":
+          description: Error 
+  /food/dish/{dishId}/review:
+    get: 
+      tags:
+        - Food
+      summary: Returns dish reviews
+      description: Returns dish reviews.
+      operationId: getDishReviews
+      parameters:
+        - name: dishId
+          in: path
+          required: true
+          description: Dish Id.
+          example: 1
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Reviews'
+        "500":
+          description: Error
+    post: 
+      tags:
+        - Food
+      summary: Create dish review
+      description: Create dish review.
+      operationId: createDishReview
+      parameters:
+        - name: dishId
+          in: path
+          required: true
+          description: Dish Id.
+          example: 1
+          schema:
+            type: string
+      requestBody:
+        description: cart. 
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Review'
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Review'
+        "500":
+          description: Error
+  /food/restaurant/{restaurantId}/review:
+    get: 
+      tags:
+        - Food
+      summary: Returns restaurant reviews
+      description: Returns restaurant reviews.
+      operationId: getRestaurantReviews
+      parameters:
+        - name: restaurantId
+          in: path
+          required: true
+          description: Restaurant Id.
+          example: 1
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Reviews'
+        "500":
+          description: Error
+    post: 
+      tags:
+        - Food
+      summary: Create restaurant review
+      description: Create restaurant review.
+      operationId: createRestaurantReview
+      parameters:
+        - name: restaurantId
+          in: path
+          required: true
+          description: Restaurant Id.
+          example: 1
+          schema:
+            type: string
+      requestBody:
+        description: cart. 
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Review'
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Review'
+        "500":
+          description: Error
+  /food/order/history:
+    get: 
+      tags:
+        - Food
+      summary: Returns order history
+      description: Returns order history for a user.
+      operationId: getOrderHistory
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderHistory'
+        "500":
+          description: Error
+components:
+  schemas:
+    Restaurants:
+      type: object
+      properties:
+        restaurants:
+          description: List od restaurants.
+          type: array
+          items:
+            $ref: '#/components/schemas/Restaurant'
+    Restaurant:
+      type: object
+      properties:
+        restaurantId:
+          type: string
+          example: 1
+          description: Restaurant Id.
+        restaurantName:
+          type: string
+          example: Paragon
+          description: Restaurant name.
+        rating:
+          type: number
+          example: 4.2
+          description: User rating.
+        numberOfRatings:
+          type: integer
+          example: 97
+        restaurantImageUrl:
+          type: string
+          example: https://aws.proximety.io/s3/image1.jpg
+          description: Image URL.
+        restaurantLocation: 
+          type: string
+          example: 1st Floor
+          description: Restaurant location.
+        cuisineStyles:
+          type: array
+          items:
+            type: string
+            enum:
+              - ARABIC
+              - SOUTH INDIAN
+          description: Cuisine style.
+        cuisineType:
+          type: string
+          enum: 
+            - VEG
+            - NON VEG
+            - ALL
+          description: Cuisine type.
+        averageCost:
+          type: number
+          example: 300
+          description: Average purchasing for the restaurant. 
+        averageDeliveryTime:
+          type: number
+          example: 30
+          description: Average delivery time.
+        availableOffersIds:
+          type: array
+          items:
+            type: string
+            example: 1, 2
+          description: Available offer Ids.
+        availableDishTypeIds:
+          type: array
+          items:
+            type: string
+            example: 1, 2
+          description: Available dish types.
+        restaurantFlags:
+          type: array
+          items:
+            type: string
+            enum:
+              - POPULAR
+          description: Restaurant flags. Popular restaurants can be filtered out from this info.
+        restaurantOpen:
+          type: boolean
+    DishTypes:
+      type: object
+      properties:
+        dishTypes:
+          type: array
+          items:
+            $ref: '#/components/schemas/DishType'
+          description: List of dish types.  
+    DishType:
+      type: object
+      properties:
+        dishTypeId:
+          type: string
+          example: 1
+          description: Dish type Id.
+        dishTypeName:
+          type: string
+          example: Biriyani
+          description: Dish type name.
+        dishTypeImageUrl:
+          type: string
+          example: https://aws.proximety.io/s3/image1.jpg
+          description: Image URL.
+    Offers:
+      type: object
+      properties:
+        ads:
+          type: array
+          items:
+            $ref: '#/components/schemas/Offer'
+          description: List of offers.
+    Offer:
+      type: object
+      properties:
+        offerId:
+          type: string
+          example: 1
+          description: Offer Id.
+        offerType:
+          type: string
+          enum: 
+            - RESTAURANT
+            - DISHTYPE
+            - DISH
+          description: Offer type. Indicates offer is for a dish, dish type or for the entire restaurant.
+        restaurantId:
+          type: string
+          example: 1
+          description: Restaurant Id.
+        dishTypeId:
+          type: string
+          example: 1
+          description: Dish type Id.
+        dishId:
+          type: string
+          example: 1
+          description: Dish Id.
+        description:  #may not be required
+          type: string
+          example: Flat 50 % off!
+          description: Offer description.
+        offerImageUrl:
+          type: string
+          example: https://aws.proximety.io/s3/image1.jpg
+          description: Image URL.
+    Combos:
+      type: object
+      properties:
+        combos:
+          type: array
+          items:
+            $ref: '#/components/schemas/Combo'
+          description: Image URL.
+    Combo:
+      type: object
+      properties:
+        comboId:
+          type: string
+          example: 1
+          description: Combo Id.
+        comboImageUrl:
+          type: string
+          example: https://aws.proximety.io/s3/image1.jpg
+          description: Image URL.
+        dishIds:
+          type: array
+          items:
+            $ref: '#/components/schemas/Dish'
+          description: Dish Ids included in the combo. 
+    Dishes:
+      type: object
+      properties:
+        dishes:
+          type: array
+          items:
+            $ref: '#/components/schemas/Dish'
+          description: List of dishes.
+    Dish:
+      type: object
+      properties:
+        dishId:
+          type: string
+          example: 1
+          description: Dish Id.
+        dishName:
+          type: string
+          example: Chicken Biriyani
+          description: Dish name.
+        dishTypeId:
+          type: string
+          example: 1
+          description: Dish type Id.
+        restaurantId:
+          type: string
+          example: 1
+          description: Restaurnt Id.
+        cuisineType:
+          type: string
+          enum: 
+            - VEG
+            - NON-VEG
+            - ALL
+          description: Cuisine type.
+        cuisineStyle:
+          type: string
+          enum:
+            - ARABIC
+            - SOUTH INDIAN
+          description: Cuisine style.
+        price:
+          type: number
+          example: 125.5
+          description: Dish price.
+        rating:
+          type: number
+          example: 3.5
+          description: Dish rating.
+        numberOfRatings:
+          type: integer
+          example: 17
+          description: Number of ratings.
+        description:
+          type: string
+          example: British style nadan biriyani
+          description: Dish description.
+        dishFlags:
+          type: array
+          items:
+            type: string
+            example: RECOMMENDED, BEST SELLERR
+            enum: 
+              - BEST SELLER
+              - RECOMMENDED
+              - BEVEREGES
+              - EGG
+            description: Dish flags. Best seller dishes can be identified from this info.
+        customizations:
+          type: array
+          items:
+            $ref: '#/components/schemas/Customizations'
+          description: List of dish customizations.
+    Customizations:
+      type: object
+      properties:
+        groupName:
+          type: string
+          example: toppings
+          description: Customization group name.
+        required:
+          type: boolean
+          description: Indicates whether it is a mandatory customization.
+        selection:
+          type: string
+          enum:
+            - SINGLE SELECT
+            - MULTI SELECT
+          description: Indicates Single or Multiple customization items can be selected. This info can be used to introduce Radio button or Select box in th UI.
+        customizationItems:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomizationItem'  
+          description: List of customization items.
+    CustomizationItem:
+      type: object
+      properties:
+        itemId:
+          type: string
+          example: 1
+          description: Item Id.
+        itemName:
+          type: string
+          example: Almond Milk
+          description: Item name.
+        price:
+          type: number
+          example: 30
+          description: Price for the customization.
+        cuisineType:
+          type: string
+          enum: 
+            - VEG
+            - NON-VEG
+            - ALL
+          description: Cuisine type.
+    Cart:
+      type: object
+      properties:
+        selectedRestaurants:
+          type: array
+          items:
+            $ref: '#/components/schemas/SelectedRestaurant'
+          description: List of restaurants from which user has selected dishes.
+    SelectedRestaurant:
+      type: object
+      properties:
+        restaurantId:
+          type: string
+          example: 1
+          description: Restaurant Id.
+        appliedCouponId:
+          type: string
+          example: 1
+          description: Applied coupon Id.
+        selectedDishes:
+          type: array
+          items:
+            $ref: '#/components/schemas/SelectedDish' 
+          description: List of dishes selected by the user from the restaurant.
+    SelectedDish:
+      type: object
+      properties: 
+        dishId:
+          type: string
+          example: 1
+          description: Dish Id.
+        addedCustomizationIds:
+          type: array
+          items: 
+            type: string
+            example: 1, 5
+          description: List of added customization Ids.
+    Reviews:      
+      type: object
+      properties:
+        averageRating:
+          type: number
+          example: 3.5
+          description: Average rating.
+        numberOfRatings:
+          type: integer
+          example: 20
+          description: Number of ratings.
+        userReviews:
+          type: array
+          items:
+            $ref: '#/components/schemas/Review'
+          description: List of reviews.
+    Review: 
+      type: object
+      properties:
+        reviewId:
+          type: string
+          example: 1
+          description: Review Id.
+        username:
+          type: string
+          example: Sunder
+        userImageUrl:
+          type: string
+          example: https://aws.proximety.io/s3/image1.jpg
+          description: Image URL.
+        rating:
+          type: number
+          example: 3.5
+          description: Rating.
+        message:
+          type: string
+          example: awesome food 
+          description: Message.
+    Coupons:
+      type: object
+      properties:
+        coupons:
+          type: array
+          items:
+            $ref: '#/components/schemas/Coupon' 
+          description: List of coupons.
+    Coupon:
+      type: object
+      properties:
+        couponId:
+          type: string
+          example: 1
+          description: Coupon Id.
+        restaurantId:
+          type: string
+          example: 1
+          description: Restaurant Id.
+        couponTitle:
+          type: string
+          example: HILITE20
+          description: Coupon title.
+        couponSummary:
+          type: string
+          example: 30% OFF
+          description: Coupon summary.
+        discountAmount:
+          type: number
+          example: 39
+          description: Discount amount.
+        couponDescription:
+          type: string
+          example: 'Get 30% off upto 50 RS.'
+          description: Coupon description.
+        couponImageUrl:
+          type: string
+          example: https://aws.proximety.io/s3/image1.jpg
+          description: Image URL.
+    OrderStatuses:
+      type: object
+      properties:
+        orders:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderStatus'
+          description: List of orders and statuses.
+    OrderStatus:
+      type: object
+      properties:
+        orderId:
+          type: string 
+          example: 1
+          description: Order Id.
+        currentStatus:
+          type: string  
+          enum:
+            - ORDER-RECEIVED
+            - ORDER-RECEIVED
+            - ORDER-CONFIRMED
+            - PREPARING-ORDER
+            - ORDER-READY
+            - ORDER-REJECTED
+            - REFUND-INITIATED
+            - REVIEW-MEAL
+          description: Current status.
+        orderSteps:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderStep'
+          description: Sequence of steps through which order has gone.
+    OrderStep:
+      type: object
+      properties:
+        sequenceId:
+          type: integer  
+          example: 1
+          description: Sequence Id.
+        step:
+          type: string  
+          enum:
+            - ORDER RECEIVED
+            - ORDER CONFIRMED
+            - PREPARING ORDER
+            - ORDER READY
+            - ORDER REJECTED
+            - REFUND INITIATED
+            - REVIEW MEAL
+          description: Order step.
+        status:
+          type: string
+          enum:
+            - PENDING
+            - IN PROGRESS
+            - DONE
+          description: Order status.
+        message:
+          type: string
+          example: Your order is ready
+          description: Message.
+        otp: 
+          type: integer
+          example: 5678
+          description: OTP. Present only for ORDER READY step.
+        preparationTime: 
+          type: string
+          example: 30 min
+          description: Preparation time. Present only for PREPARING ORDER step.
+        stepStartTime:
+          type: string
+          example: 3.10 PM
+          description: Step start time.
+        stepEndTime:
+          type: string
+          example: 3.15 PM
+          description: Step end time. Present only if the step is completed.
+    OrderHistory:
+      type: object
+      properties:
+        orders:
+          type: array
+          items:
+            $ref: '#/components/schemas/Order'
+          description: List of completed orders.
+    Orders:
+      type: object
+      properties:
+        orders:
+          type: array
+          items:
+            $ref: '#/components/schemas/Order'
+          description: List of orders.
+    Order:
+      type: object
+      properties:
+        orderId:
+          type: string  
+          example: 1  
+          description: Order Id.
+        orderDate:
+          type: string  
+          example: '10/10/2021'
+          description: Order date.
+        restaurantId:
+          type: string
+          example: 1
+          description: Restaurant Id.
+        selectedDishes:
+          type: array
+          items:
+            $ref: '#/components/schemas/SelectedDish' 
+          description: List of dishes selected by the user from the restaurant.
+      
