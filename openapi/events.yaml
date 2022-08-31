@@ -1,0 +1,256 @@
+openapi: '3.0.2'
+info:
+  title: Event Service
+  version: '1.0'
+  description: Provides a set of API operations that can be performed on a user like updating and retrieving Event Details.
+  license:
+    name: Proximety
+    url: www.proximety.io
+servers:
+  - url: https://dev.proximety.io/api
+  - url: https://staging.proximety.io/api
+  - url: https://www.proximety.io/api
+tags:
+- name: EventsResource
+paths:
+  /events/_search:
+    post: 
+      tags:
+        - Events Search
+      summary: Returns Details of all Events of the Mall.
+      operationId: getAdminAddedEvents
+      requestBody:
+       description: The Event Details to be Updated. 
+       content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EventSearchRequest'
+       required: true
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventsListResponse'
+        "400":
+          description: Bad request
+        "403":
+          description: Unauthorized access
+  /events:         
+    post: 
+      tags:
+        - Events
+      summary: Create event
+      description: Creates a new event schedule for the shopping mall.
+      operationId: createEvent
+      requestBody:
+        description: The details of the event to be created.
+        content:
+         application/json:
+            schema:
+              $ref: '#/components/schemas/EventRequest'
+      responses:
+        "201":
+          description: Event Created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Event'
+        "400":
+          description: Bad request
+        "403":
+          description: Unauthorized access
+  /events/{eventId}:
+    get: 
+      tags:
+        - Events
+      summary: Get Event Details that's created.
+      operationId: getEventDetails
+      parameters:
+        - name: eventId
+          in: path
+          description: The internal system identifier for the event whose details are to be fetched.
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Event Details Successfully Retrieved.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Event'
+        "400":
+          description: Bad request
+        "403":
+          description: Forbidden
+    put: 
+      tags:
+        - Events
+      summary: Update Created Event Details.
+      operationId: updateEvent
+      
+      parameters: 
+        - name: eventId
+          in: path
+          description: The internal system identifier for the event whose details are to be updated.
+          required: true
+          schema:
+            type: string    
+      requestBody:
+       description: The Event Details to be Updated. 
+       content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EventRequest'
+       required: true
+      responses:
+        "204":
+          description: Event Details Successfully Updated.
+        "400":
+          description: Bad request
+        "403":
+          description: Forbidden
+  
+    delete: 
+      tags:
+        - Events
+      summary: Delete a particluar Event.
+      operationId: deleteEvent
+      parameters:
+        - name: eventId
+          in: path
+          description: Used as an identifier for the mall whose events are fetched.
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Delete Event.
+        "400":
+          description: Bad request
+        "403":
+          description: Forbidden
+components:
+  schemas:
+
+    EventsListResponse:
+      type: object
+      description: The event search response that contains the list of events matching the search criteria.
+      properties:
+        count: 
+          type: integer
+          description: The count of events returned in the search response.
+          example: 10
+        total: 
+          type: integer
+          description: The total number of events that match the specified search criteria.
+          example: 100
+        _embedded:
+          type: object
+          description: The embedded search results
+          properties:
+            stores:
+              type: array
+              description: The list of events matching the specified search criteria.
+              items:
+                $ref: '#/components/schemas/Event'
+    Event:
+      type: object
+      properties:
+       id:
+          type: string
+          description: The internal system identifier for the Event.
+          example: ee12jdskdfjhalss==
+       name:
+          type: string
+          description: Name of the Event.
+          example: Womens' day celebration
+       schedule:
+          type: array
+          items:
+           $ref: '#/components/schemas/EventSchedule'
+       status:
+          type: string
+          description: Represents the status of the Event whether its running,gone past or its upcoming.
+          example: UPCOMING
+          enum:
+            - UPCOMING
+            - NOW_RUNNING
+            - PAST
+       posterUrl:
+          type: string
+          format: uri
+          example: https://dev.proximety.io/images/21423.jpg
+       bannerUrl:
+          type: string
+          format: uri
+          example: https://dev.proximety.io/images/21423.jpg
+       description:
+          type: string
+          description: Gives general Info about the Event.
+          example: Womens' day is celebrated 8th March every year.
+    EventSchedule:
+       type: object
+       required:
+         - startDate
+       properties:
+        startDate:
+         type: string
+         description: The date for Event happening on a particular day incase of multi day Events.
+         example: 05/15/2022
+        endDate:
+         type: string
+         description: The date for Event happening on a particular day incase of multi day Events.
+         example: 05/15/2022
+        startTime:
+         type: string
+         description: The time at which Event is scheuled to start for a particular day.
+         example: 2:00pm
+        endTime:
+         type: string
+         description: The time at which Event is scheuled to end for a particular dayt.
+         example: 2:00pm
+    EventRequest:
+      type: object
+      properties:
+       name:
+          type: string
+          description: Name of the Event.
+          example: Womens' day celebration
+       schedule:
+          type: array
+          items:
+           $ref: '#/components/schemas/EventSchedule'
+       description:
+          type: string
+          description: Gives general Info about the Event.
+          example: Womens' day is celebrated 8th March every year.     
+    EventSearchRequest:  
+      type: object
+      properties:    
+        query: 
+          type: string
+          description: The search string based on which results need to be fetched.
+          example: adi
+        status:
+          type: array
+          description: A list of event status. Only events having a status specified in the list will be retrieved.
+          items:
+            type: string
+            example: NOW_RUNNING
+            enum:
+              - PAST
+              - NOW_RUNNING
+              - UPCOMING
+        offset:
+          type: integer
+          description: The search offset for doing paginated search.
+          example: 20
+          default: 0
+        limit: 
+          type: integer
+          description: The page size for doing paginated search
+          example: 10
+          default: 10
