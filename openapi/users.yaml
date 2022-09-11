@@ -7,9 +7,10 @@ info:
     name: Proximety
     url: www.proximety.io
 servers:
-  - url: https://dev.proximety.io/api
-  - url: https://staging.proximety.io/api
-  - url: https://www.proximety.io/api
+  - url: https://app-dev.proximety.io/api
+  - url: https://app-staging.proximety.io/api
+  - url: https://app-patch.proximety.io/api
+  - url: https://app.proximety.io/api
 tags:
 - name: Auth
 # - name: User
@@ -418,16 +419,15 @@ paths:
             type: string
       requestBody:
         description: The request body for updating the profile picture for a specific user.
-        required: true
+        required: true     
         content:
-          image/png:
-            schema:
-              type: string
-              format: binary
-          image/jpg:
-            schema:
-              type: string
-              format: binary
+          multipart/form-data:
+              schema:
+                type: object
+                properties:
+                  file:
+                    type: string
+                    format: binary
       responses:
         '200':
           description: Successful operation
@@ -436,7 +436,7 @@ paths:
               schema:
                 type: object
                 properties:
-                  imageUrl:
+                  profileImageUrl:
                     type: string
                     example: https://picsum.photos/id/237/200/300.jpg
         "400":
@@ -586,7 +586,7 @@ paths:
         200:
           description: Successful operation
           content:
-            application/json:
+            pplication/json:
               schema:
                 type: array
                 items:
@@ -658,6 +658,7 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Alert'       
+  # /users/{userId}/issue-tickets:
   #   post:
   #     tags:
   #       - Issue Ticket
@@ -679,25 +680,25 @@ paths:
   #             $ref: '#/components/schemas/IssueTicket'
   #           example: {
   #                       "type": "PAYMENT",
-  #                       "description": "Order confirmation failed for order# 121 but th payment was processed. Please review and resolve.",
+  #                       "description": "Order confirmation failed for order# 121 but the payment was processed. Please review and resolve.",
   #                     }
-  #     responses:
-  #       203:
-  #         description: Created
-  #         content:
-  #           application/json:
-  #             schema:
-  #                 $ref: '#/components/schemas/IssueTicket'
-  #       400:
-  #         description: Bad request
-  #         content:
-  #           application/json:
-  #             schema:
-  #                 $ref: '#/components/schemas/GlobalException'
-  #       401: 
-  #         description: User not found
-  #       403:
-  #         description: Unauthorized access   
+      # responses:
+      #   203:
+      #     description: Created
+      #     content:
+      #       application/json:
+      #         schema:
+      #             $ref: '#/components/schemas/IssueTicket'
+      #   400:
+      #     description: Bad request
+      #     content:
+      #       application/json:
+      #         schema:
+      #             $ref: '#/components/schemas/GlobalException'
+      #   404: 
+      #     description: User not found
+      #   403:
+      #     description: Unauthorized access   
 components:
   schemas:
     TicketDetails:
@@ -777,7 +778,7 @@ components:
       type: object
       description: The request for updating a user's phone number.
       properties:
-        phoneNumber: 
+        phone: 
           type: object
           description: The user's phone number.
           $ref: '#/components/schemas/PhoneNumber'
@@ -789,7 +790,7 @@ components:
       type: object
       description: The response for the phone number update request call.
       properties:
-        phoneNumber: 
+        phone: 
           type: object
           description: The user's updated phone number.
           $ref: '#/components/schemas/PhoneNumber'
@@ -869,10 +870,6 @@ components:
           type: string
           description: The type of access token used.
           example: Bearer
-        accessTokenExpiry:
-          type: string
-          description: The expiry time in milliseconds for the access token. Once the token has expired, a new access token needs to be requested using the provided refresh token.
-          example: 3600
         refreshToken:
           type: string
           description: The refresh token that can be used to regenerate the access token once it has expired.
