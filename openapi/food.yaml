@@ -11,278 +11,588 @@ servers:
   - url: https://staging.proximety.io/api
   - url: https://www.proximety.io/api
 paths:
-  /food/dishtypes:
-    get: 
-      tags:
-        - Food
-      summary: Returns list of major dish types
-      description: Returns list of major dish types like Biriyani, Coffee, etc.
-      operationId: getDishTypes
-      responses:
-        "200":
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DishTypes'
-        "500":
-          description: Error  
-  /food/restaurants:
-    get: 
-      tags:
-        - Food
-      summary: Returns list of restaurants
-      description: Returns list of restaurants.
-      operationId: getRestaurants
-      responses:
-        "200":
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Restaurants'
-        "500":
-          description: Error   
-  /food/restaurant/{restaurantId}/dishes:
-    get: 
-      tags:
-        - Food
-      summary: Returns dishes
-      description: Returns dishes in a restaurant.
-      operationId: getDishes
-      parameters:
-        - name: restaurantId
-          required: true
-          in: path
-          description: Restaurant Id.
-          example: 1
-          schema:
-            type: string
-      responses:
-        "200":
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Dishes'
-        "500":
-          description: Error 
-  /food/offers:
-    get: 
-      tags:
-        - Food
-      summary: Returns list of offers
-      description: Returns list of offers.
-      operationId: getOffers
-      responses:
-        "200":
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Offers'
-        "500":
-          description: Error      
-  /food/combos:
-    get: 
-      tags:
-        - Food
-      summary: Returns list of combos.
-      description: Returns list of combos for the user.
-      operationId: getCombos
-      responses:
-        "200":
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Combos'
-        "500":
-          description: Error 
-  /food/coupons/_query:
+  /food-courts/auth/login:
     post: 
       tags:
-        - Food
-      summary: Returns list of coupons
-      description: Returns list of coupons
-      operationId: getCoupons
+        - Authentication
+      summary: Login 
+      description: Logs in the specified food court and returns the authentication token which can then be used for all subsequent API requests.
+      operationId: loginFoodCourt
       requestBody:
-        description: Cart information. 
+        description: The login details for food court. 
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Cart'
+              $ref: '#/components/schemas/LoginRequest'
+        required: true
       responses:
         "200":
           description: Successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Coupons'
-        "500":
-          description: Error  
-  /food/orders:
+                $ref: '#/components/schemas/LoginResponse'
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GlobalException"
+              example: 
+                {
+                  "status": 400,
+                  "type": "BAD_REQUEST",
+                  "title": "Invalid username/password",
+                  "detail": "The username or password you specified is incorrect.",
+                }
+  /food-courts/auth/refresh:
     post: 
       tags:
-        - Food
-      summary: Create order
-      description: Create one or more orders.
-      operationId: createOrder
+      - Authentication
+      summary: Refresh Auth Token
+      description: Generates a new authentication token based on the provided refresh token.
+      operationId: refreshToken
       requestBody:
-        description: Cart information.  
+        description: The details of the refresh token to be used to generate a new authentication token. 
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Cart'
+              $ref: '#/components/schemas/RefreshTokenRequest'
+        required: true
       responses:
         "200":
-          description: Successful operation
+          description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Orders'
-        "500":
-          description: Error
-  /food/orders/status:
-    get: 
-      tags:
-        - Food
-      summary: Returns order status
-      description: Returns status for one or more orders.
-      operationId: getOrderStatus
-      responses:
-        "200":
-          description: Successful operation
+                $ref: '#/components/schemas/LoginResponse'
+        "400":
+          description: Bad request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OrderStatuses'
-        "500":
-          description: Error 
-  /food/dish/{dishId}/review:
-    get: 
-      tags:
-        - Food
-      summary: Returns dish reviews
-      description: Returns dish reviews.
-      operationId: getDishReviews
-      parameters:
-        - name: dishId
-          in: path
-          required: true
-          description: Dish Id.
-          example: 1
-          schema:
-            type: string
-      responses:
-        "200":
-          description: Successful operation
+                $ref: "#/components/schemas/GlobalException"
+              example: 
+                {
+                  "status": 400,
+                  "type": "BAD_REQUEST",
+                  "title": "Bad request",
+                  "detail": "Please specify a valid refresh token and try again.",
+                }
+        "403":
+          description: Forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Reviews'
-        "500":
-          description: Error
+                $ref: "#/components/schemas/GlobalException"
+              example: 
+                {
+                  "status": 403,
+                  "type": "FORBIDDEN",
+                  "title": "Refresh token expired",
+                  "detail": "The refresh token you have specified has expired. Please login and try again.",
+                  "tags":["REFRESH_TOKEN_EXPIRED"]
+                }
+  /food-courts/auth/reset-password:
     post: 
       tags:
-        - Food
-      summary: Create dish review
-      description: Create dish review.
-      operationId: createDishReview
-      parameters:
-        - name: dishId
-          in: path
-          required: true
-          description: Dish Id.
-          example: 1
-          schema:
-            type: string
+        - Authentication
+      summary: Reset password
+      description: Resets the password for the specified user and sends a mail with the new password to the user's registered email id.
+      operationId: resetPassword 
       requestBody:
-        description: cart. 
+        description: The password reset request.
         content:
           application/json:
-            schema:
-              $ref: '#/components/schemas/Review'
+            schema: 
+               $ref: '#/components/schemas/PasswordResetRequest'
+        required: true
       responses:
-        "200":
-          description: Successful operation
+        "202":
+          description: Accepted
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Review'
-        "500":
-          description: Error
-  /food/restaurant/{restaurantId}/review:
-    get: 
-      tags:
-        - Food
-      summary: Returns restaurant reviews
-      description: Returns restaurant reviews.
-      operationId: getRestaurantReviews
-      parameters:
-        - name: restaurantId
-          in: path
-          required: true
-          description: Restaurant Id.
-          example: 1
-          schema:
-            type: string
-      responses:
-        "200":
-          description: Successful operation
+                $ref: '#/components/schemas/PasswordResetResponse'
+        "400":
+          description: Bad request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Reviews'
-        "500":
-          description: Error
-    post: 
+                $ref: "#/components/schemas/GlobalException"
+              example: 
+                {
+                  "status": 400,
+                  "type": "BAD_REQUEST",
+                  "title": "Failed to send password reset email",
+                  "detail": "Failed to send password reset email. A password reset email was already sent for the specified user. Please refer to the email for password reset instructions.",
+                }
+  /food-courts/auth/password: 
+    put: 
       tags:
-        - Food
-      summary: Create restaurant review
-      description: Create restaurant review.
-      operationId: createRestaurantReview
-      parameters:
-        - name: restaurantId
-          in: path
-          required: true
-          description: Restaurant Id.
-          example: 1
-          schema:
-            type: string
+        - Authentication
+      summary: Update password
+      description: Updates the password for the specified user.
+      operationId: updatePassword
       requestBody:
-        description: cart. 
+        description: Request body for updating the password.
         content:
           application/json:
-            schema:
-              $ref: '#/components/schemas/Review'
+            schema: 
+              $ref: '#/components/schemas/PasswordUpdateRequest'
       responses:
         "200":
           description: Successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Review'
-        "500":
-          description: Error
-  /food/order/history:
-    get: 
-      tags:
-        - Food
-      summary: Returns order history
-      description: Returns order history for a user.
-      operationId: getOrderHistory
-      responses:
-        "200":
-          description: Successful operation
+                $ref: '#/components/schemas/PasswordUpdateResponse'
+        "400":
+          description: Bad request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OrderHistory'
-        "500":
-          description: Error
+                $ref: "#/components/schemas/GlobalException"
+              example: 
+                {
+                  "status": 403,
+                  "type": "BAD_REQUEST",
+                  "title": "Invalid username/password.",
+                  "detail": "The specified username/password is invalid. Please try again with a valid username/password.",
+                  "tags":[]
+                }
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GlobalException"
+              example: 
+                {
+                  "status": 403,
+                  "type": "FORBIDDEN",
+                  "title": "Token expired.",
+                  "detail": "The specified access token has expired. Please try again with an active access token.",
+                  "tags":[]
+                }
+          
+  # /food/dishtypes:
+  #   get: 
+  #     tags:
+  #       - Food
+  #     summary: Returns list of major dish types
+  #     description: Returns list of major dish types like Biriyani, Coffee, etc.
+  #     operationId: getDishTypes
+  #     responses:
+  #       "200":
+  #         description: Successful operation
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/DishTypes'
+  #       "500":
+  #         description: Error  
+  # /food/restaurants:
+  #   get: 
+  #     tags:
+  #       - Food
+  #     summary: Returns list of restaurants
+  #     description: Returns list of restaurants.
+  #     operationId: getRestaurants
+  #     responses:
+  #       "200":
+  #         description: Successful operation
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/Restaurants'
+  #       "500":
+  #         description: Error   
+  # /food/restaurant/{restaurantId}/dishes:
+  #   get: 
+  #     tags:
+  #       - Food
+  #     summary: Returns dishes
+  #     description: Returns dishes in a restaurant.
+  #     operationId: getDishes
+  #     parameters:
+  #       - name: restaurantId
+  #         required: true
+  #         in: path
+  #         description: Restaurant Id.
+  #         example: 1
+  #         schema:
+  #           type: string
+  #     responses:
+  #       "200":
+  #         description: Successful operation
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/Dishes'
+  #       "500":
+  #         description: Error 
+  # /food/offers:
+  #   get: 
+  #     tags:
+  #       - Food
+  #     summary: Returns list of offers
+  #     description: Returns list of offers.
+  #     operationId: getOffers
+  #     responses:
+  #       "200":
+  #         description: Successful operation
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/Offers'
+  #       "500":
+  #         description: Error      
+  # /food/combos:
+  #   get: 
+  #     tags:
+  #       - Food
+  #     summary: Returns list of combos.
+  #     description: Returns list of combos for the user.
+  #     operationId: getCombos
+  #     responses:
+  #       "200":
+  #         description: Successful operation
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/Combos'
+  #       "500":
+  #         description: Error 
+  # /food/coupons/_query:
+  #   post: 
+  #     tags:
+  #       - Food
+  #     summary: Returns list of coupons
+  #     description: Returns list of coupons
+  #     operationId: getCoupons
+  #     requestBody:
+  #       description: Cart information. 
+  #       content:
+  #         application/json:
+  #           schema:
+  #             $ref: '#/components/schemas/Cart'
+  #     responses:
+  #       "200":
+  #         description: Successful operation
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/Coupons'
+  #       "500":
+  #         description: Error  
+  # /food/orders:
+  #   post: 
+  #     tags:
+  #       - Food
+  #     summary: Create order
+  #     description: Create one or more orders.
+  #     operationId: createOrder
+  #     requestBody:
+  #       description: Cart information.  
+  #       content:
+  #         application/json:
+  #           schema:
+  #             $ref: '#/components/schemas/Cart'
+  #     responses:
+  #       "200":
+  #         description: Successful operation
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/Orders'
+  #       "500":
+  #         description: Error
+  # /food/orders/status:
+  #   get: 
+  #     tags:
+  #       - Food
+  #     summary: Returns order status
+  #     description: Returns status for one or more orders.
+  #     operationId: getOrderStatus
+  #     responses:
+  #       "200":
+  #         description: Successful operation
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/OrderStatuses'
+  #       "500":
+  #         description: Error 
+  # /food/dish/{dishId}/review:
+  #   get: 
+  #     tags:
+  #       - Food
+  #     summary: Returns dish reviews
+  #     description: Returns dish reviews.
+  #     operationId: getDishReviews
+  #     parameters:
+  #       - name: dishId
+  #         in: path
+  #         required: true
+  #         description: Dish Id.
+  #         example: 1
+  #         schema:
+  #           type: string
+  #     responses:
+  #       "200":
+  #         description: Successful operation
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/Reviews'
+  #       "500":
+  #         description: Error
+  #   post: 
+  #     tags:
+  #       - Food
+  #     summary: Create dish review
+  #     description: Create dish review.
+  #     operationId: createDishReview
+  #     parameters:
+  #       - name: dishId
+  #         in: path
+  #         required: true
+  #         description: Dish Id.
+  #         example: 1
+  #         schema:
+  #           type: string
+  #     requestBody:
+  #       description: cart. 
+  #       content:
+  #         application/json:
+  #           schema:
+  #             $ref: '#/components/schemas/Review'
+  #     responses:
+  #       "200":
+  #         description: Successful operation
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/Review'
+  #       "500":
+  #         description: Error
+  # /food/restaurant/{restaurantId}/review:
+  #   get: 
+  #     tags:
+  #       - Food
+  #     summary: Returns restaurant reviews
+  #     description: Returns restaurant reviews.
+  #     operationId: getRestaurantReviews
+  #     parameters:
+  #       - name: restaurantId
+  #         in: path
+  #         required: true
+  #         description: Restaurant Id.
+  #         example: 1
+  #         schema:
+  #           type: string
+  #     responses:
+  #       "200":
+  #         description: Successful operation
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/Reviews'
+  #       "500":
+  #         description: Error
+  #   post: 
+  #     tags:
+  #       - Food
+  #     summary: Create restaurant review
+  #     description: Create restaurant review.
+  #     operationId: createRestaurantReview
+  #     parameters:
+  #       - name: restaurantId
+  #         in: path
+  #         required: true
+  #         description: Restaurant Id.
+  #         example: 1
+  #         schema:
+  #           type: string
+  #     requestBody:
+  #       description: cart. 
+  #       content:
+  #         application/json:
+  #           schema:
+  #             $ref: '#/components/schemas/Review'
+  #     responses:
+  #       "200":
+  #         description: Successful operation
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/Review'
+  #       "500":
+  #         description: Error
+  # /food/order/history:
+    # get: 
+    #   tags:
+    #     - Food
+    #   summary: Returns order history
+    #   description: Returns order history for a user.
+    #   operationId: getOrderHistory
+    #   responses:
+    #     "200":
+    #       description: Successful operation
+    #       content:
+    #         application/json:
+    #           schema:
+    #             $ref: '#/components/schemas/OrderHistory'
+    #     "500":
+    #       description: Error
 components:
   schemas:
+    RefreshTokenRequest:
+      type: object
+      required:
+        - refreshToken
+      properties:
+        refreshToken: 
+          type: string
+          description: The refresh token based on which the new authentication token needs to be generated.
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJ1bV9hY2N
+    PasswordUpdateRequest:
+      type: object
+      description: The password update request.
+      required:
+        - username
+        - currentPassword
+        - newPassword
+      properties:
+        username: 
+          type: string
+          description: The username for the user whose password needs to be updated.
+          example: proximety-user101
+        currentPassword:
+          type: string
+          description: The current password for the user whose passoword needs to be updated.
+          example: uuiwquqxx
+          format: password
+        newPassword:
+          type: string
+          description: The new password for the user whose passoword needs to be updated.
+          example: 1235c12
+          format: password
+    PasswordUpdateResponse:
+      type: object
+      description: The password update response.
+      properties:
+        username:
+          type: string
+          description: The user name for the user logged into the system.
+          example: proximety-user101
+        foodCourtId:
+          type: string
+          description: The internal system identifier for the food court.
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+        accessToken:
+          type: string
+          description: The token generated after authentication which needs to be passed in all subsequent calls to the system.
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJ1bV9hY2Nlc3MiLCJleHAiOjE2NjAyODE5
+        accessTokenType: 
+          type: string
+          description: The type of access token used.
+          example: Bearer
+        refreshToken:
+          type: string
+          description: The refresh token that can be used to regenerate the access token once it has expired.
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJ1bV9hY2N
+    PasswordResetRequest:
+      type: object
+      description: The password reset request.
+      required:
+        - username
+      properties:
+        username:
+          type: string
+          description: The username for the user whose password needs to be reset. 
+          example: proximety-user101
+    PasswordResetResponse:
+      type: object
+      description: The password reset response.
+      properties:
+        username: 
+          type: string
+          description: The username for the user whose password is being reset.
+          example: proximety-user101
+        message:
+          type: string
+          description: The response message for the attempted password reset.
+          example: An email has been sent to x***z@gmail.com with password reset instructions.
+    LoginRequest:
+      type: object
+      required:
+        - username
+        - password
+      properties:
+        username:
+          type: string
+          description: The username for the food court that needs to log info.
+          example: xyz@gmail.com
+        password:
+          type: string
+          description: The password of the food court trying to log into the system.
+          format: password
+          example: password
+    GlobalException:
+      type: object
+      description: An exception thrown by the system.
+      properties:
+        status:
+          type: integer
+          description: The status code for the error.
+          example: 401
+        type:
+          type: string
+          description: The type name for the error being thrown.
+          example: UNAUTHORIZED
+        title:
+          type: string
+          description: The error title.
+          example: Token expired.
+        detail:
+          type: string
+          description: The details of the error being thrown.
+          example: The access token has expired for the user. Please generate a new token and try again.
+        tags:
+          type: array
+          description: The varios tags associated with the error that provides additional information about the error.
+          items: 
+            type: string
+            example: ACCESS_TOKEN_INVALID 
+    LoginResponse:
+      type: object
+      properties:
+        username:
+          type: string
+          description: The user name for the user logged into the system.
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+        foodCourtId:
+          type: string
+          description: The internal system identifier for the food court.
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+        accessToken:
+          type: string
+          description: The token generated after authentication which needs to be passed in all subsequent calls to the system.
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJ1bV9hY2Nlc3MiLCJleHAiOjE2NjAyODE5
+        accessTokenType: 
+          type: string
+          description: The type of access token used.
+          example: Bearer
+        refreshToken:
+          type: string
+          description: The refresh token that can be used to regenerate the access token once it has expired.
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJ1bV9hY2N
+        needsPasswordReset:
+          type: string
+          description: True indicates that the passowrd needs to be reset for the user, false indicates otherwise.
+          example: false
     Restaurants:
       type: object
       properties:
