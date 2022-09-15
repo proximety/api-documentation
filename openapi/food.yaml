@@ -51,7 +51,7 @@ paths:
       tags:
       - Authentication
       summary: Refresh Auth Token
-      description: Generates a new authentication token based on the provided refresh token.
+      description: Generates a new authentication token based on the provided refresh token. When the access token expires, this API should be invoked with the refresh token to generate a new access token. If the refresh token has also expired, then the login API needs to be invoked to generate new access and refresh tokens.
       operationId: refreshToken
       requestBody:
         description: The details of the refresh token to be used to generate a new authentication token. 
