@@ -11,15 +11,15 @@ servers:
   - url: https://staging.proximety.io/api
   - url: https://www.proximety.io/api
 paths:
-  /food-courts/auth/login:
+  /restaurants/auth/login:
     post: 
       tags:
         - Authentication
       summary: Login 
-      description: Logs in the specified food court and returns the authentication token which can then be used for all subsequent API requests.
+      description: Logs in the specified user and returns the authentication token which can then be used for all subsequent API requests.
       operationId: loginFoodCourt
       requestBody:
-        description: The login details for food court. 
+        description: The login details for restaurant user.. 
         content:
           application/json:
             schema:
@@ -45,7 +45,7 @@ paths:
                   "title": "Invalid username/password",
                   "detail": "The username or password you specified is incorrect.",
                 }
-  /food-courts/auth/refresh:
+  /restaurants/auth/refresh:
     post: 
       tags:
       - Authentication
@@ -93,7 +93,7 @@ paths:
                   "detail": "The refresh token you have specified has expired. Please login and try again.",
                   "tags":["REFRESH_TOKEN_EXPIRED"]
                 }
-  /food-courts/auth/reset-password:
+  /restaurants/auth/reset-password:
     post: 
       tags:
         - Authentication
@@ -127,7 +127,7 @@ paths:
                   "title": "Failed to send password reset email",
                   "detail": "Failed to send password reset email. A password reset email was already sent for the specified user. Please refer to the email for password reset instructions.",
                 }
-  /food-courts/auth/password: 
+  /restaurants/auth/password: 
     put: 
       tags:
         - Authentication
