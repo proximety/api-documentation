@@ -303,13 +303,13 @@ paths:
                   "detail": "The specified access token has expired. Please try again with an active access token.",
                   "tags":[]
                 }
-  /stores/{storeId}/brand-logo:
-    put:
+  /stores/{storeId}/images:
+    post: 
       tags:
         - Images
-      summary: Update brand logo.
-      description: Updates the brand logo image for the specified store.
-      operationId: updateBrandLogo
+      summary: Add store image 
+      description: Adds images related to the store like brand logo and store image.
+      operationId: addImage
       parameters:
         - name: Authorization
           in: header
@@ -325,17 +325,26 @@ paths:
           schema:
             type: string
       requestBody:
-        description: The request body for updating the brand logo for a store.
-        required: true
         content:
-          image/png:
+          multipart/form-data:
             schema:
-              type: string
-              format: binary
-          image/jpg:
-            schema:
-              type: string
-              format: binary
+              type: object
+              required:
+                - imageCategory
+                - image
+              properties: # Request parts
+                imageCategory:
+                  type: string
+                  example: BRAND_IMAGE
+                  enum:
+                    - BRAND_IMAGE
+                    - STORE_IMAGE
+                image:
+                  type: string
+                  format: binary
+            encoding: # The same level as schema
+              profileImage: # Property name (see above)
+                contentType: image/png, image/jpeg
       responses:
         '200':
           description: Successful operation
@@ -389,6 +398,92 @@ paths:
                   "detail": "The specified access token has expired. Please try again with an active access token.",
                   "tags":[]
                 }
+  # /stores/{storeId}/brand-logo:
+  #   put:
+  #     tags:
+  #       - Images
+  #     summary: Update brand logo.
+  #     description: Updates the brand logo image for the specified store.
+  #     operationId: updateBrandLogo
+  #     parameters:
+  #       - name: Authorization
+  #         in: header
+  #         description: The authentication bearer token.
+  #         required: true
+  #         example: Bearer asd.js2jd9a.gC6paXtNOg0OZL4-adsd-asd
+  #         schema:
+  #           type: string
+  #       - name: storeId
+  #         in: path
+  #         description: The internal system handle of the store whose brand logo image needs to be updated.
+  #         required: true
+  #         schema:
+  #           type: string
+  #     requestBody:
+  #       description: The request body for updating the brand logo for a store.
+  #       required: true
+  #       content:
+  #         image/png:
+  #           schema:
+  #             type: string
+  #             format: binary
+  #         image/jpg:
+  #           schema:
+  #             type: string
+  #             format: binary
+  #     responses:
+  #       '200':
+  #         description: Successful operation
+  #         content:
+  #           application/json:
+  #             schema:
+  #               type: object
+  #               properties:
+  #                 brandLogoUrl:
+  #                   type: string
+  #                   example: https://picsum.photos/id/237/200/300.jpg
+  #       "400":
+  #         description: Bad request
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: "#/components/schemas/GlobalException"
+  #             example: 
+  #               {
+  #                 "status": 403,
+  #                 "type": "BAD_REQUEST",
+  #                 "title": "Unsupported image format.",
+  #                 "detail": "The specified image format is not supported. Please specify a .png or .jpg file and try again.",
+  #                 "tags":[]
+  #               }
+  #       "404":
+  #         description: Not found
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: "#/components/schemas/GlobalException"
+  #             example: 
+  #               {
+  #                 "status": 403,
+  #                 "type": "NOT_FOUND",
+  #                 "title": "Store not found",
+  #                 "detail": "No store found for the specified store id.",
+  #                 "tags":[]
+  #               }
+  #       "403":
+  #         description: Forbidden
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: "#/components/schemas/GlobalException"
+  #             example: 
+  #               {
+  #                 "status": 403,
+  #                 "type": "FORBIDDEN",
+  #                 "title": "Token expired.",
+  #                 "detail": "The specified access token has expired. Please try again with an active access token.",
+  #                 "tags":[]
+  #               }
   /stores/_search:
     post: 
       tags:
@@ -420,92 +515,92 @@ paths:
               schema:
                 type: object
                 $ref: '#/components/schemas/StoreSearchResponse'
-  /stores/{storeId}/store-image:
-    put:
-      tags:
-        - Images
-      summary: Update store image.
-      description: Updates the store image for the specified store.
-      operationId: updateStoreImage
-      parameters:
-        - name: Authorization
-          in: header
-          description: The authentication bearer token.
-          required: true
-          example: Bearer asd.js2jd9a.gC6paXtNOg0OZL4-adsd-asd
-          schema:
-            type: string
-        - name: storeId
-          in: path
-          description: The internal system handle of the store whose store image needs to be updated.
-          required: true
-          schema:
-            type: string
-      requestBody:
-        description: The request body for updating the store image.
-        required: true
-        content:
-          image/png:
-            schema:
-              type: string
-              format: binary
-          image/jpg:
-            schema:
-              type: string
-              format: binary
-      responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  imageUrl:
-                    type: string
-                    example: https://picsum.photos/id/237/200/300.jpg
-        "400":
-          description: Bad request
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/GlobalException"
-              example: 
-                {
-                  "status": 403,
-                  "type": "BAD_REQUEST",
-                  "title": "Unsupported image format.",
-                  "detail": "The specified image format is not supported. Please specify a .png or .jpg file and try again.",
-                  "tags":[]
-                }
-        "404":
-          description: Not found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/GlobalException"
-              example: 
-                {
-                  "status": 403,
-                  "type": "NOT_FOUND",
-                  "title": "Store not found",
-                  "detail": "No store found for the specified store id.",
-                  "tags":[]
-                }
-        "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/GlobalException"
-              example: 
-                {
-                  "status": 403,
-                  "type": "FORBIDDEN",
-                  "title": "Token expired.",
-                  "detail": "The specified access token has expired. Please try again with an active access token.",
-                  "tags":[]
-                }
+  # /stores/{storeId}/store-image:
+  #   put:
+  #     tags:
+  #       - Images
+  #     summary: Update store image.
+  #     description: Updates the store image for the specified store.
+  #     operationId: updateStoreImage
+  #     parameters:
+  #       - name: Authorization
+  #         in: header
+  #         description: The authentication bearer token.
+  #         required: true
+  #         example: Bearer asd.js2jd9a.gC6paXtNOg0OZL4-adsd-asd
+  #         schema:
+  #           type: string
+  #       - name: storeId
+  #         in: path
+  #         description: The internal system handle of the store whose store image needs to be updated.
+  #         required: true
+  #         schema:
+  #           type: string
+  #     requestBody:
+  #       description: The request body for updating the store image.
+  #       required: true
+  #       content:
+  #         image/png:
+  #           schema:
+  #             type: string
+  #             format: binary
+  #         image/jpg:
+  #           schema:
+  #             type: string
+  #             format: binary
+  #     responses:
+  #       '200':
+  #         description: Successful operation
+  #         content:
+  #           application/json:
+  #             schema:
+  #               type: object
+  #               properties:
+  #                 storeImageUrl:
+  #                   type: string
+  #                   example: https://picsum.photos/id/237/200/300.jpg
+  #       "400":
+  #         description: Bad request
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: "#/components/schemas/GlobalException"
+  #             example: 
+  #               {
+  #                 "status": 403,
+  #                 "type": "BAD_REQUEST",
+  #                 "title": "Unsupported image format.",
+  #                 "detail": "The specified image format is not supported. Please specify a .png or .jpg file and try again.",
+  #                 "tags":[]
+  #               }
+  #       "404":
+  #         description: Not found
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: "#/components/schemas/GlobalException"
+  #             example: 
+  #               {
+  #                 "status": 403,
+  #                 "type": "NOT_FOUND",
+  #                 "title": "Store not found",
+  #                 "detail": "No store found for the specified store id.",
+  #                 "tags":[]
+  #               }
+  #       "403":
+  #         description: Forbidden
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: "#/components/schemas/GlobalException"
+  #             example: 
+  #               {
+  #                 "status": 403,
+  #                 "type": "FORBIDDEN",
+  #                 "title": "Token expired.",
+  #                 "detail": "The specified access token has expired. Please try again with an active access token.",
+  #                 "tags":[]
+  #               }
   /stores/{storeId}/offers:
     get: 
       tags:
@@ -654,7 +749,7 @@ components:
           description: The criteria based on which the results need to be supported.
           example: DATE_LAUNCHED
           enum:
-            - DATE_LAUNCHED
+            - DATE_LAUNCHED_ASC
             - POPULARITY
         offset:
           type: integer
@@ -730,11 +825,11 @@ components:
         brandsAvailable:
           type: string
           description: A comma separated list of the brands available at the store.
-        brandLogo:
+        brandLogoUrl:
           type: string
           description: The URL to the brand logo image. 
           example: https://dev.proximety.io/images/21423.jpg
-        storeImage:
+        storeImageUrl:
           type: string
           description: The URL to the store display image.
           example: https://dev.proximety.io/images/21423.jpg
