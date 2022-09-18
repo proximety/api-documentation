@@ -848,7 +848,7 @@ components:
     OTPLoginRequest:
       type: object
       properties:
-        phoneNumber:
+        phone:
           description: The phone number to which the OTP was sent.
           $ref: '#/components/schemas/PhoneNumber'
         otp: 
