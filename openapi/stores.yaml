@@ -484,7 +484,7 @@ paths:
   #                 "detail": "The specified access token has expired. Please try again with an active access token.",
   #                 "tags":[]
   #               }
-  /stores/_search:
+  /stores/_query:
     post: 
       tags:
         - "Store Search"
@@ -743,20 +743,21 @@ components:
             - APPARELS
             - SUPERMARKET
             - JEWELLERY
+            - FASHION
           example: [FOOTWEAR, APPARELS]
         sortBy:
           type: string
-          description: The criteria based on which the results need to be supported.
-          example: DATE_LAUNCHED
+          description: The sort criteria to be applied when searching for stores. if no value is specified, then the search will be performed alphabetically.
+          example: DATE_LAUNCHED_DESC
           enum:
-            - DATE_LAUNCHED_ASC
+            - DATE_LAUNCHED_DESC
             - POPULARITY
-        offset:
+        page:
           type: integer
           description: The search offset for doing paginated search.
           example: 20
           default: 0
-        limit: 
+        size: 
           type: integer
           description: The page size for doing paginated search
           example: 10
