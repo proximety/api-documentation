@@ -7,6 +7,7 @@ info:
     name: Proximety
     url: www.proximety.io
 servers:
+  - url: http://localhost:8081/api
   - url: https://app-dev.proximety.io/api
   - url: https://app-staging.proximety.io/api
   - url: https://app-patch.proximety.io/api
@@ -396,6 +397,91 @@ paths:
                   "detail": "The specified access token has expired. Please try again with an active access token.",
                   "tags":[]
                 }
+  //users/{userId}/store-purchases:
+    get:
+      tags:
+        - Shopping
+      summary: Get purchases
+      description: Retrieves details about the various store purchases for the specified user.
+      operationId: getPurchases
+      parameters:
+        - name: Authorization
+          in: header
+          description: The authentication bearer token.
+          required: true
+          example: Bearer asd.js2jd9a.gC6paXtNOg0OZL4-adsd-asd
+          schema:
+            type: string
+        - name: storeId
+          in: query
+          description: The internal system handle of the store for which users purchase detaisl are to be retrieved.
+          required: false
+          schema:
+            type: string
+          example: ba8d158e-bc50-49eb-b47e-a33c918b6a28
+        - name: summaryOnly
+          in: query
+          description: True indicates that only the purchase summary needs to be fetched, false indicates otherwise.
+          required: false
+          example: true
+          schema:
+            type: string
+        - name: userId
+          in: path
+          description: The internal system handle of the user whose purchase details are to be retrieved.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/StorePurchaseResponse'
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GlobalException"
+              example: 
+                {
+                  "status": 403,
+                  "type": "BAD_REQUEST",
+                  "title": "Unsupported image format.",
+                  "detail": "The specified image format is not supported. Please specify a .png or .jpg file and try again.",
+                  "tags":[]
+                }
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GlobalException"
+              example: 
+                {
+                  "status": 403,
+                  "type": "NOT_FOUND",
+                  "title": "User not found",
+                  "detail": "No user found for the specified user id.",
+                  "tags":[]
+                }
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GlobalException"
+              example: 
+                {
+                  "status": 403,
+                  "type": "FORBIDDEN",
+                  "title": "Token expired.",
+                  "detail": "The specified access token has expired. Please try again with an active access token.",
+                  "tags":[]
+                }
   /users/{userId}/profile-picture:
     put:
       tags:
@@ -701,6 +787,58 @@ paths:
       #     description: Unauthorized access   
 components:
   schemas:
+    StorePurchaseResponse:
+      type: object
+      description: The detaisl regarding a customers store purchases.
+      properties:
+        purchaseSummary: 
+          $ref: '#/components/schemas/PurchaseSummary'
+        purchases: 
+          type: array
+          items:
+            $ref: '#/components/schemas/StorePurchase'
+    StorePurchase: 
+      type: object
+      description: The details of a specific store purchases.
+      properties:
+        storeId:
+          type: string
+          description: The store id for the store from which the purchase was made.
+          example: ba8d158e-bc50-49eb-b47e-a33c918b6a28
+        purchaseDate:
+          type: string
+          description: The purchase date. 
+          pattern: /([0-9]{4})-(?:[0-9]{2})-([0-9]{2})/
+          example: "2022-05-17"
+        purchaseAmount: 
+          $ref: '#/components/schemas/CurrencyAmount'
+          description: The purchase amount.
+        rewardPointsEarned:
+          type: integer
+          description: The number of reward points earned for the purchase
+          example: 1000
+    PurchaseSummary: 
+      type: object
+      description: A summary of the purchases for a customer.
+      properties:
+        totalPurchases:
+          type: integer
+          description: The total number of purchases done by the customer.
+          example: 5
+        totallPurchaseAmount:
+          $ref: '#/components/schemas/CurrencyAmount'
+          description: The total purchase amount for the customer.
+    CurrencyAmount:
+      type: object
+      properties:
+        currencyCoude:
+          type: string
+          description: The currency code.
+          example: INR 
+        value:
+          type: number
+          description: The currency value.
+          example: 2500.00
     TicketDetails:
       type: object
       properties:
