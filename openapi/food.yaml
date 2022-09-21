@@ -177,6 +177,8 @@ paths:
                 }
   /foodcourt/globaldata:
     get: 
+      tags:
+        - Global data
       summary: Returns food court global data
       description: Returns food court global data
       operationId: getGlobalData
@@ -191,6 +193,8 @@ paths:
           description: Error  
   /restaurants:
     post: 
+      tags:
+        - Restaurant
       summary: Create restaurant
       description: Create restaurant.
       operationId: createRestaurant
@@ -212,6 +216,8 @@ paths:
     
   /restaurants/_query:
     post: 
+      tags:
+        - Restaurant
       summary: Returns list of restaurants
       description: Returns list of restaurants.
       operationId: getRestaurants
@@ -232,6 +238,8 @@ paths:
           description: Error   
   /restaurants/{restaurantId}:
     get: 
+      tags:
+        - Restaurant
       summary: Get restaurant
       description: Get restaurant.
       operationId: getRestaurant
@@ -253,6 +261,8 @@ paths:
         "500":
           description: Error 
     put: 
+      tags:
+        - Restaurant
       summary: Update restaurant
       description: Update restaurant.
       operationId: updateRestaurant
@@ -280,6 +290,8 @@ paths:
         "500":
           description: Error
     delete: 
+      tags:
+        - Restaurant
       summary: Delete restaurant
       description: Delete restaurant.
       operationId: deleteRestaurant
@@ -298,6 +310,8 @@ paths:
           description: Error  
   /restaurants/{restaurantId}/dishes:
     post: 
+      tags:
+        - Dishes
       summary: Create dish
       description: Create dish.
       operationId: createDish
@@ -326,6 +340,8 @@ paths:
           description: Error
   /dishes/{dishId}:
     put: 
+      tags:
+        - Dishes
       summary: Update dish
       description: Update dish.
       operationId: updateDish
@@ -353,6 +369,8 @@ paths:
         "500":
           description: Error
     delete: 
+      tags:
+        - Dishes
       summary: Delete dish
       description: Delete dish
       operationId: deleteDish
@@ -371,6 +389,8 @@ paths:
           description: Error
   /dishes/_query:
     post: 
+      tags:
+        - Dishes
       summary: Returns dishes
       description: Returns dishes in a restaurant.
       operationId: getDishes
@@ -390,6 +410,8 @@ paths:
           description: Error 
   /restaurants/{restaurantId}/add-on-groups:
     post: 
+      tags:
+        - Add-on Groups
       summary: Create add on group
       description: Create add on group.
       operationId: createAddOnGroup
@@ -417,6 +439,8 @@ paths:
         "500":
           description: Error
     get: 
+      tags:
+        - Add-on Groups
       summary: Get add on groups
       description: Get add on groups
       operationId: getAddOnGroups
@@ -439,6 +463,8 @@ paths:
           description: Error
   /add-on-groups/{addOnGroupId}:
     put: 
+      tags:
+        - Add-on Groups
       summary: Update add on group
       description: Update add on group.
       operationId: updateAddOnGroup
@@ -466,6 +492,8 @@ paths:
         "500":
           description: Error
     delete: 
+      tags:
+        - Add-on Groups
       summary: Delete add on group
       description: Delete add on group.
       operationId: deleteAddOnGroup
@@ -484,6 +512,8 @@ paths:
           description: Error
   /dishes/{dishId}/variant-groups:
     post: 
+      tags:
+        - Variant Groups
       summary: Create dish variant group
       description: Create dish variant group
       operationId: createVariantGroup
@@ -511,6 +541,8 @@ paths:
         "500":
           description: Error
     put: 
+      tags:
+        - Variant Groups
       summary: Update dish variant group
       description: Update dish variant group.
       operationId: updateVariantGroup
@@ -538,6 +570,8 @@ paths:
         "500":
           description: Error
     get: 
+      tags:
+        - Variant Groups
       summary: Get dish variant groups
       description: Get dish variant groups
       operationId: getVariantGroups
@@ -560,6 +594,8 @@ paths:
           description: Error
   /variant-groups/{variantGroupId}:
     delete: 
+      tags:
+        - Variant Groups
       summary: Delete dish variant group
       description: Delete dish variant group.
       operationId: deleteVariantGroup
@@ -578,6 +614,8 @@ paths:
           description: Error
   /foodcourt/combo:
     post: 
+      tags:
+        - Others
       summary: Create combo
       description: Create combo
       operationId: createCombo
@@ -597,6 +635,8 @@ paths:
         "500":
           description: Error 
     put: 
+      tags:
+        - Others
       summary: Update combo
       description: Update combo
       operationId: updateCombo
@@ -617,6 +657,8 @@ paths:
           description: Error 
   /foodcourt/combos:
     get: 
+      tags:
+        - Others
       summary: Returns list of combos.
       description: Returns list of combos for the user.
       operationId: getCombos
@@ -631,6 +673,8 @@ paths:
           description: Error 
   /foodcourt/combos/{comboId}:
     get: 
+      tags:
+        - Others
       summary: Delete combo
       description: Delete combo
       operationId: deleteCombo
@@ -653,6 +697,8 @@ paths:
           description: Error
   /foodcourt/coupons:
     get: 
+      tags:
+        - Others
       summary: Returns list of coupons
       description: Returns list of coupons
       operationId: getCoupons
@@ -667,6 +713,8 @@ paths:
           description: Error  
   /foodcourt/order/coupons/_query:
     post: 
+      tags:
+        - Others
       summary: Returns list of coupons appliacble for an order
       description: Returns list of coupons appliacble for an order
       operationId: getApplicableCoupons
@@ -687,6 +735,8 @@ paths:
           description: Error
   /foodcourt/orders:
     post: 
+      tags:
+        - Others
       summary: Place orders
       description: Place orders
       operationId: placeOrder
@@ -707,6 +757,8 @@ paths:
           description: Error
   /foodcourt/orders/_query:
     post: 
+      tags:
+        - Others
       summary: Returns orders
       description: Returns orders
       operationId: getOrders
@@ -727,6 +779,8 @@ paths:
           description: Error
   /foodcourt/orders/{orderId}:
     get: 
+      tags:
+        - Others
       summary: Get order
       description: Get order.
       operationId: getOrder
@@ -749,6 +803,8 @@ paths:
           description: Error
   /foodcourt/orders/{orderId}/status:
     patch: 
+      tags:
+        - Others
       summary: Update order status
       description: Update order status
       operationId: updateOrderStatus
@@ -777,6 +833,8 @@ paths:
           description: Error 
   /dishes/{dishId}/review:
     get: 
+      tags:
+        - Others
       summary: Returns dish reviews
       description: Returns dish reviews.
       operationId: getDishReviews
@@ -798,6 +856,8 @@ paths:
         "500":
           description: Error
     post: 
+      tags:
+        - Others
       summary: Create dish review
       description: Create dish review.
       operationId: createDishReview
@@ -826,6 +886,8 @@ paths:
           description: Error
   /restaurants/{restaurantId}/review:
     get: 
+      tags:
+        - Others
       summary: Returns restaurant reviews
       description: Returns restaurant reviews.
       operationId: getRestaurantReviews
@@ -847,6 +909,8 @@ paths:
         "500":
           description: Error
     post: 
+      tags:
+        - Others
       summary: Create restaurant review
       description: Create restaurant review.
       operationId: createRestaurantReview
@@ -875,6 +939,8 @@ paths:
           description: Error
   /restaurants/{restaurantId}/openstatus:
     patch: 
+      tags:
+        - Others
       summary: Update offline status of a restaurant
       description: Update offline status of a restaurant.
       operationId: updateOffline
@@ -899,6 +965,8 @@ paths:
           description: Error
   /foodcourt/files/upload:
     post: 
+      tags:
+        - Others
       summary: Upload files 
       description: Upload files 
       operationId: uploadFile
@@ -940,6 +1008,8 @@ paths:
           description: Error
   /foodcourt/search/suggestions:
     get: 
+      tags:
+        - Others
       summary: Returns search suggestions
       description: Returns search suggestions
       operationId: getSearchSuggestions
