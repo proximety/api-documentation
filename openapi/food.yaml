@@ -1,0 +1,1914 @@
+openapi: '3.0.2'
+info:
+  title: Food Service
+  version: '1.0'
+  description: Provides a set of API operations to order food from restaurants.
+  license:
+    name: Proximety
+    url: www.proximety.io
+servers:
+  - url: https://dev.proximety.io/api
+  - url: https://staging.proximety.io/api
+  - url: https://www.proximety.io/api
+paths:
+  /restaurants/auth/login:
+    post: 
+      tags:
+        - Authentication
+      summary: Login 
+      description: Logs in the specified user and returns the authentication token which can then be used for all subsequent API requests.
+      operationId: loginFoodCourt
+      requestBody:
+        description: The login details for restaurant user.. 
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+        required: true
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GlobalException"
+              example: 
+                {
+                  "status": 400,
+                  "type": "BAD_REQUEST",
+                  "title": "Invalid username/password",
+                  "detail": "The username or password you specified is incorrect.",
+                }
+  /restaurants/auth/refresh:
+    post: 
+      tags:
+      - Authentication
+      summary: Refresh Auth Token
+      description: Generates a new authentication token based on the provided refresh token. When the access token expires, this API should be invoked with the refresh token to generate a new access token. If the refresh token has also expired, then the login API needs to be invoked to generate new access and refresh tokens.
+      operationId: refreshToken
+      requestBody:
+        description: The details of the refresh token to be used to generate a new authentication token. 
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RefreshTokenRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GlobalException"
+              example: 
+                {
+                  "status": 400,
+                  "type": "BAD_REQUEST",
+                  "title": "Bad request",
+                  "detail": "Please specify a valid refresh token and try again.",
+                }
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GlobalException"
+              example: 
+                {
+                  "status": 403,
+                  "type": "FORBIDDEN",
+                  "title": "Refresh token expired",
+                  "detail": "The refresh token you have specified has expired. Please login and try again.",
+                  "tags":["REFRESH_TOKEN_EXPIRED"]
+                }
+  /restaurants/auth/reset-password:
+    post: 
+      tags:
+        - Authentication
+      summary: Reset password
+      description: Resets the password for the specified user and sends a mail with the new password to the user's registered email id.
+      operationId: resetPassword 
+      requestBody:
+        description: The password reset request.
+        content:
+          application/json:
+            schema: 
+               $ref: '#/components/schemas/PasswordResetRequest'
+        required: true
+      responses:
+        "202":
+          description: Accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PasswordResetResponse'
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GlobalException"
+              example: 
+                {
+                  "status": 400,
+                  "type": "BAD_REQUEST",
+                  "title": "Failed to send password reset email",
+                  "detail": "Failed to send password reset email. A password reset email was already sent for the specified user. Please refer to the email for password reset instructions.",
+                }
+  /restaurants/auth/password: 
+    put: 
+      tags:
+        - Authentication
+      summary: Update password
+      description: Updates the password for the specified user.
+      operationId: updatePassword
+      requestBody:
+        description: Request body for updating the password.
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/PasswordUpdateRequest'
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PasswordUpdateResponse'
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GlobalException"
+              example: 
+                {
+                  "status": 403,
+                  "type": "BAD_REQUEST",
+                  "title": "Invalid username/password.",
+                  "detail": "The specified username/password is invalid. Please try again with a valid username/password.",
+                  "tags":[]
+                }
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GlobalException"
+              example: 
+                {
+                  "status": 403,
+                  "type": "FORBIDDEN",
+                  "title": "Token expired.",
+                  "detail": "The specified access token has expired. Please try again with an active access token.",
+                  "tags":[]
+                }
+  /foodcourt/globaldata:
+    get: 
+      summary: Returns food court global data
+      description: Returns food court global data
+      operationId: getGlobalData
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                 $ref: '#/components/schemas/FoodCourtGlobalData'
+        "500":
+          description: Error  
+  /restaurants:
+    post: 
+      summary: Create restaurant
+      description: Create restaurant.
+      operationId: createRestaurant
+      requestBody:
+        description: Restaurant information. 
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Restaurant'
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Restaurant'
+        "500":
+          description: Error
+    
+  /restaurants/_query:
+    post: 
+      summary: Returns list of restaurants
+      description: Returns list of restaurants.
+      operationId: getRestaurants
+      requestBody:
+        description: Restaurant information. 
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetRestaurantsRequest'
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Restaurants'
+        "500":
+          description: Error   
+  /restaurants/{restaurantId}:
+    get: 
+      summary: Get restaurant
+      description: Get restaurant.
+      operationId: getRestaurant
+      parameters:
+        - name: restaurantId
+          required: true
+          in: path
+          description: Restaurant Id
+          example: "123"
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Restaurant'
+        "500":
+          description: Error 
+    put: 
+      summary: Update restaurant
+      description: Update restaurant.
+      operationId: updateRestaurant
+      parameters:
+        - name: restaurantId
+          required: true
+          in: path
+          description: Restaurant Id
+          example: "123"
+          schema:
+            type: string
+      requestBody:
+        description: Restaurant information. 
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Restaurant'
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Restaurant'
+        "500":
+          description: Error
+    delete: 
+      summary: Delete restaurant
+      description: Delete restaurant.
+      operationId: deleteRestaurant
+      parameters:
+        - name: restaurantId
+          required: true
+          in: path
+          description: Restaurant Id
+          example: "123"
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful operation
+        "500":
+          description: Error  
+  /restaurants/{restaurantId}/dishes:
+    post: 
+      summary: Create dish
+      description: Create dish.
+      operationId: createDish
+      parameters:
+        - name: restaurantId
+          required: true
+          in: path
+          description: Restaurant Id.
+          example: "123"
+          schema:
+            type: string
+      requestBody:
+        description: Dish information. 
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Dish'
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Dish'
+        "500":
+          description: Error
+  /dishes/{dishId}:
+    put: 
+      summary: Update dish
+      description: Update dish.
+      operationId: updateDish
+      parameters:
+        - name: dishId
+          required: true
+          in: path
+          description: Dish Id.
+          example: "123"
+          schema:
+            type: string
+      requestBody:
+        description: Dish information. 
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Dish'
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Dish'
+        "500":
+          description: Error
+    delete: 
+      summary: Delete dish
+      description: Delete dish
+      operationId: deleteDish
+      parameters:
+        - name: dishId
+          required: true
+          in: path
+          description: Dish Id.
+          example: "123"
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful operation
+        "500":
+          description: Error
+  /dishes/_query:
+    post: 
+      summary: Returns dishes
+      description: Returns dishes in a restaurant.
+      operationId: getDishes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetDishesRequest'
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Dishes'
+        "500":
+          description: Error 
+  /restaurants/{restaurantId}/add-on-groups:
+    post: 
+      summary: Create add on group
+      description: Create add on group.
+      operationId: createAddOnGroup
+      parameters:
+        - name: restaurantId
+          required: true
+          in: path
+          description: Restaurant Id.
+          example: "123"
+          schema:
+            type: string
+      requestBody:
+        description: Add on group information. 
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddOnGroup'
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddOnGroup'
+        "500":
+          description: Error
+    get: 
+      summary: Get add on groups
+      description: Get add on groups
+      operationId: getAddOnGroups
+      parameters:
+        - name: restaurantId
+          required: true
+          in: path
+          description: Restaurant Id.
+          example: "123"
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddOnGroups'
+        "500":
+          description: Error
+  /add-on-groups/{addOnGroupId}:
+    put: 
+      summary: Update add on group
+      description: Update add on group.
+      operationId: updateAddOnGroup
+      parameters:
+        - name: addOnGroupId
+          required: true
+          in: path
+          description: Add on group id.
+          example: "123"
+          schema:
+            type: string
+      requestBody:
+        description: Add on group information. 
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddOnGroup'
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddOnGroup'
+        "500":
+          description: Error
+    delete: 
+      summary: Delete add on group
+      description: Delete add on group.
+      operationId: deleteAddOnGroup
+      parameters:
+        - name: addOnGroupId
+          required: true
+          in: path
+          description: Add on group Id.
+          example: "123"
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful operation
+        "500":
+          description: Error
+  /dishes/{dishId}/variant-groups:
+    post: 
+      summary: Create dish variant group
+      description: Create dish variant group
+      operationId: createVariantGroup
+      parameters:
+        - name: dishId
+          required: true
+          in: path
+          description: Restaurant Id.
+          example: "123"
+          schema:
+            type: string
+      requestBody:
+        description: Add on group information. 
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DishVariantGroup'
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DishVariantGroup'
+        "500":
+          description: Error
+    put: 
+      summary: Update dish variant group
+      description: Update dish variant group.
+      operationId: updateVariantGroup
+      parameters:
+        - name: dishId
+          required: true
+          in: path
+          description: Dish Id.
+          example: "123"
+          schema:
+            type: string
+      requestBody:
+        description: Add on group information. 
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DishVariantGroup'
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DishVariantGroup'
+        "500":
+          description: Error
+    get: 
+      summary: Get dish variant groups
+      description: Get dish variant groups
+      operationId: getVariantGroups
+      parameters:
+        - name: dishId
+          required: true
+          in: path
+          description: Dish Id.
+          example: "123"
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DishVariantGroups'
+        "500":
+          description: Error
+  /variant-groups/{variantGroupId}:
+    delete: 
+      summary: Delete dish variant group
+      description: Delete dish variant group.
+      operationId: deleteVariantGroup
+      parameters:
+        - name: variantGroupId
+          required: true
+          in: path
+          description: Variant group Id.
+          example: "123"
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful operation
+        "500":
+          description: Error
+  /foodcourt/combo:
+    post: 
+      summary: Create combo
+      description: Create combo
+      operationId: createCombo
+      requestBody:
+        description: Combo info. 
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Combo'
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Combo'
+        "500":
+          description: Error 
+    put: 
+      summary: Update combo
+      description: Update combo
+      operationId: updateCombo
+      requestBody:
+        description: Combo info. 
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Combo'
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Combo'
+        "500":
+          description: Error 
+  /foodcourt/combos:
+    get: 
+      summary: Returns list of combos.
+      description: Returns list of combos for the user.
+      operationId: getCombos
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Combos'
+        "500":
+          description: Error 
+  /foodcourt/combos/{comboId}:
+    get: 
+      summary: Delete combo
+      description: Delete combo
+      operationId: deleteCombo
+      parameters:
+        - name: comboId
+          required: true
+          in: path
+          description: Combo Id.
+          example: "123"
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Combos'
+        "500":
+          description: Error
+  /foodcourt/coupons:
+    get: 
+      summary: Returns list of coupons
+      description: Returns list of coupons
+      operationId: getCoupons
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Coupons'
+        "500":
+          description: Error  
+  /foodcourt/order/coupons/_query:
+    post: 
+      summary: Returns list of coupons appliacble for an order
+      description: Returns list of coupons appliacble for an order
+      operationId: getApplicableCoupons
+      requestBody:
+        description: Cart information. 
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Cart'
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Coupons'
+        "500":
+          description: Error
+  /foodcourt/orders:
+    post: 
+      summary: Place orders
+      description: Place orders
+      operationId: placeOrder
+      requestBody:
+        description: Cart information.  
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Cart'
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Orders'
+        "500":
+          description: Error
+  /foodcourt/orders/_query:
+    post: 
+      summary: Returns orders
+      description: Returns orders
+      operationId: getOrders
+      requestBody:
+        description: Cart information.  
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetOrdersRequest'
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Orders'
+        "500":
+          description: Error
+  /foodcourt/orders/{orderId}:
+    get: 
+      summary: Get order
+      description: Get order.
+      operationId: getOrder
+      parameters:
+        - name: orderId
+          in: path
+          required: true
+          description: Order Id.
+          example: "123"
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+        "500":
+          description: Error
+  /foodcourt/orders/{orderId}/status:
+    patch: 
+      summary: Update order status
+      description: Update order status
+      operationId: updateOrderStatus
+      parameters:
+        - name: orderId
+          required: true
+          in: path
+          description: Order Id.
+          example: "123"
+          schema:
+            type: string
+      requestBody:
+        description: Order Status. 
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderStatus'
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+        "500":
+          description: Error 
+  /dishes/{dishId}/review:
+    get: 
+      summary: Returns dish reviews
+      description: Returns dish reviews.
+      operationId: getDishReviews
+      parameters:
+        - name: dishId
+          in: path
+          required: true
+          description: Dish Id.
+          example: "123"
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Reviews'
+        "500":
+          description: Error
+    post: 
+      summary: Create dish review
+      description: Create dish review.
+      operationId: createDishReview
+      parameters:
+        - name: dishId
+          in: path
+          required: true
+          description: Dish Id.
+          example: "123"
+          schema:
+            type: string
+      requestBody:
+        description: cart. 
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Review'
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Review'
+        "500":
+          description: Error
+  /restaurants/{restaurantId}/review:
+    get: 
+      summary: Returns restaurant reviews
+      description: Returns restaurant reviews.
+      operationId: getRestaurantReviews
+      parameters:
+        - name: restaurantId
+          in: path
+          required: true
+          description: Restaurant Id.
+          example: "123"
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Reviews'
+        "500":
+          description: Error
+    post: 
+      summary: Create restaurant review
+      description: Create restaurant review.
+      operationId: createRestaurantReview
+      parameters:
+        - name: restaurantId
+          in: path
+          required: true
+          description: Restaurant Id.
+          example: "123"
+          schema:
+            type: string
+      requestBody:
+        description: cart. 
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Review'
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Review'
+        "500":
+          description: Error
+  /restaurants/{restaurantId}/openstatus:
+    patch: 
+      summary: Update offline status of a restaurant
+      description: Update offline status of a restaurant.
+      operationId: updateOffline
+      parameters:
+        - name: restaurantId
+          required: true
+          in: path
+          description: Restaurant Id.
+          example: "123"
+          schema:
+            type: string
+      requestBody:
+        description: Offline Status. 
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateRestaurantOpenStatus'
+      responses:
+        "200":
+          description: Successful operation
+        "500":
+          description: Error
+  /foodcourt/files/upload:
+    post: 
+      summary: Upload files 
+      description: Upload files 
+      operationId: uploadFile
+      parameters:
+        - name: fileCategory
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/FileCategoryEnum'
+        - name: objectId
+          in: query
+          required: true
+          schema:
+            type: string
+          example: "123"
+        - name: objectType
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/ObjectTypeEnum'
+          example: "123"
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties: 
+                file:
+                  type: string
+                  format: binary
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FileInfo'
+        "500":
+          description: Error
+  /foodcourt/search/suggestions:
+    get: 
+      summary: Returns search suggestions
+      description: Returns search suggestions
+      operationId: getSearchSuggestions
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchSuggestions'
+        "500":
+          description: Error  
+
+components:
+  schemas:
+    FoodCourtGlobalData:
+      type: object
+      properties:
+        dishCategories:
+            type: array
+            items:
+              $ref: '#/components/schemas/DishCategory'
+        dishTypes:
+            type: array
+            items:
+              $ref: '#/components/schemas/DishType'
+        cuisineStyles:
+            type: array
+            items:
+              $ref: '#/components/schemas/CuisineStyle'
+        cuisineTypes:
+            type: array
+            items:
+              $ref: '#/components/schemas/CuisineType'
+        floorInfo:
+            type: array
+            items:
+              $ref: '#/components/schemas/FloorInfo'
+    DishCategory:
+      type: object
+      properties:
+        dishCategoryId:
+          type: string
+          example: "123"
+          description: Dish category Id.
+        categoryName:
+          type: string
+          example: Biriyani
+          description: Dish type name.
+        dishCategoryImageUrl:
+          type: string
+          example: https://aws.proximety.io/s3/image1.jpg
+          description: Image URL.
+    DishType:
+      type: object
+      properties:
+        dishTypeId:
+          type: string
+          example: "123"
+          description: Dish type Id.
+        dishTypeName:
+          type: string
+          example: Main course
+          description: Dish type name.
+    CuisineStyle:  
+      type: object
+      properties:
+        cuisineStyleId:
+          type: string  
+          example: "123"
+          description: Cuisine style Id.
+        cuisineStyleName:
+          type: string  
+          example: Arabic
+          description: Cuisine style name.
+    CuisineType:  
+      type: object
+      properties:
+        cuisineTypeId:
+          type: string  
+          example: "123"
+          description: Cuisine type Id.
+        cuisineTypeName:
+          type: string  
+          example: Veg
+          description: Cuisine type name.
+    FloorInfo:  
+      type: object
+      properties:
+        floorId:
+          type: string  
+          example: "123"
+          description: Floor Id.
+        floorName:
+          type: string  
+          example: First Floor
+          description: Floor name.
+    Restaurants:
+      type: object
+      properties:
+        restaurants:
+          description: List od restaurants.
+          type: array
+          items:
+            $ref: '#/components/schemas/Restaurant'
+    Restaurant:
+      type: object
+      properties:
+        restaurantId:
+          type: string
+          example: "123"
+          description: Restaurant Id.
+        restaurantName:
+          type: string
+          example: Paragon
+          description: Restaurant name.
+        ownerName:
+          type: string
+          example: Mohan
+          description: Restaurant owner name.
+        priorityPhoneNumber:
+          $ref: '#/components/schemas/PhoneNumber'
+        restaurantPhoneNumberPrimary:
+          $ref: '#/components/schemas/PhoneNumber'
+        restaurantPhoneNumberSecondary:
+          $ref: '#/components/schemas/PhoneNumber'
+        ownerPhoneNumberPrimary:
+          $ref: '#/components/schemas/PhoneNumber'
+        ownerPhoneNumberSecondary:
+          $ref: '#/components/schemas/PhoneNumber'
+        email:
+          type: string
+          example: a@b.com
+          description: Email.
+        floorId:
+          type: string
+          example: "123"
+          description: Floor id.
+        averageCostPerPerson:
+          type: number
+          example: 100
+          description: Average cost per person.
+        cuisineStyleIds:
+          type: array
+          example: ["123", "234"]
+          items:
+            type: string
+          description: Cuisine style Ids.
+        dishCategoryIds:
+          type: array
+          example: ["123", "345"]
+          items:
+            type: number
+          description: Dish categories the restaurant sells
+        openingTime:
+          type: string
+          example: '10:00'
+          description: Restaurant opening time.
+        closingTime:
+          type: number
+          example: '20:00'
+          description: Restaurant closing time.
+        restaurantImageUrl:
+          type: string
+          example: https://aws.proximety.io/s3/image1.jpg
+          description: Image URL.
+        restaurantLogoUrl:
+          type: string
+          example: https://aws.proximety.io/s3/image1.jpg
+        menuImageUrl:
+          type: string
+          example: https://aws.proximety.io/s3/image1.jpg
+          description: Image URL.
+        gstCertificateUrl:
+          type: string
+          example: https://aws.proximety.io/s3/image1.jpg
+        panFileUrl:
+          type: string
+          example: https://aws.proximety.io/s3/image1.jpg
+        fssaiCertificateUrl:
+          type: string
+          example: https://aws.proximety.io/s3/image1.jpg
+        rating:
+          type: number
+          example: 4.1
+          description: Restaurant user rating.
+        numberOfRatings:
+          type: number
+          example: 99
+          description: Number of ratings.
+        restaurantOpen:
+          type: boolean
+          description: Indivated whether restaurant is open or closed.
+        cuisineTypeId:
+          type: string
+          example: "123"
+          description: Cuisine type id.
+        bankAccount:
+          $ref: '#/components/schemas/BankAccount'
+    Dishes:
+      type: object
+      properties:
+        dishes:
+          type: array
+          items:
+            $ref: '#/components/schemas/Dish'
+          description: List of dishes.
+    Dish:
+      type: object
+      properties:
+        dishId:
+          type: string
+          example: "123"
+          description: Dish Id.
+        restaurantId:
+          type: string
+          example: "123"
+          description: Restaurant Id.
+        dishName:
+          type: string
+          example: Chicken Biriyani
+          description: Dish name.
+        dishTypeId:
+          type: string
+          example: "123"
+        dishCategoryId:
+          type: string
+          example: "123"
+          description: Dish category Id.
+        cuisineTypeId:
+          type: string
+          example: "123"
+          description: Cuisine type Id.
+        cuisineStyleId:
+          type: string
+          example: "123"
+          description: Cuisine style Id.
+        price:
+          type: number
+          example: 125.5
+          description: Dish price.
+        description:
+          type: string
+          example: British style nadan biriyani
+          description: Dish description.
+        bestSeller:
+          type: boolean
+          example: true
+          description: Indicates whether the dish is a best seller.
+        inStock:
+          type: boolean
+          example: true
+          description: Indicates whether the dish is in stock.
+        rating:
+          type: number
+          example: 3.5
+          description: Dish rating.
+        numberOfRatings:
+          type: integer
+          example: 17
+          description: Number of ratings.
+        dishImageUrl:
+          type: string
+          example: https://aws.proximety.io/s3/image1.jpg
+          description: Image URL.
+        addOnGroupIds:
+          type: array
+          example: ["123", "234"]
+          items:
+            type: string
+          description: List of add on groups linked to the dish.
+        dishVariantGroupIds:
+          type: array
+          example: ["123", "234"]
+          items:
+            type: string
+          description: List of dish variant groups available for the dish.
+    AddOnGroups:
+      type: object
+      properties:
+        addOnGroups:
+          type: array
+          items:
+            $ref: '#/components/schemas/AddOnGroup'
+          description: List of dishes.
+    AddOnGroup:
+      type: object
+      properties:
+        addOnGroupId:
+          type: number
+          example: "123"
+        addOnGroupName:
+          type: string
+          example: toppings
+          description: Customization group name.
+        restaurantId:
+          type: string
+          example: "123"
+          description: Restaurant Id.
+        minimunValue:
+          type: number
+          description: Minimum number to be selected.
+        maximumValue:
+          type: number
+          description: Maximum number to be selected.
+        inStock:
+          type: boolean
+          description: Indicates whether add on is in stock.
+        addOns:
+          type: array
+          items:
+            $ref: '#/components/schemas/AddOn'  
+          description: List of add ons.
+    AddOn:
+      type: object
+      properties:
+        addOnId:
+          type: string
+          example: "123"
+          description: Item Id.
+        addOnName:
+          type: string
+          example: Almond Milk
+          description: Item name.
+        price:
+          type: number
+          example: 30
+          description: Price for the customization.
+        cuisineTypeId:
+          type: string
+          example: "123"
+          description: Cuisine type Id.
+    DishVariantGroups:
+      type: object
+      properties:
+        variantGroups:
+          type: array
+          items:
+            $ref: '#/components/schemas/DishVariantGroup'
+          description: List of dish variant groups.
+    DishVariantGroup:
+      type: object
+      properties:
+        dishVariantGroupId:
+          type: string
+          example: "123"
+          description: Dish variant group Id.
+        variantGroupName:
+          type: string
+          example: Quantity
+          description: Dish variant group name.
+        variantPrice:
+          type: array
+          items:
+            $ref: '#/components/schemas/DishVariant'
+          description: List of dish variants.
+    DishVariant:
+      type: object
+      properties:
+        dishVariantId:
+          type: string
+          example: "123"
+          description: Dish variant Id.
+        variantName:
+          type: string
+          example: Half Biriyani
+          description: Dish variant name.
+        price:
+          type: number
+          example: 100
+          description: Dish variant price.
+        inStock:
+          type: boolean
+          description: Indicates whether dish variant is in stock.
+    Combos:
+      type: object
+      properties:
+        combos:
+          type: array
+          items:
+            $ref: '#/components/schemas/Combo'
+          description: Image URL.
+    Combo:
+      type: object
+      properties:
+        comboId:
+          type: string
+          example: "123"
+          description: Combo Id.
+        comboName:
+          type: string
+          example: Celebration Combo
+          description: Combo name.
+        comboImageUrl:
+          type: string
+          example: https://aws.proximety.io/s3/image1.jpg
+          description: Image URL.
+        comboDescription:
+          type: string
+          example: 1 biriyani + 1 drink
+          description: Combo description.
+        price:
+          type: number
+          example: 500
+          description: Combo price.
+        bestSeller:
+          type: boolean
+          description: Indicates whether the combo is a best seller.
+        comboCategories:
+          type: array
+          items:
+            $ref: '#/components/schemas/ComboCategory'
+          description: List of combo categories.
+    ComboCategory:      
+      type: object
+      properties:
+        comboCategoryId:
+          type: string
+          example: "123"
+        categoryName:
+          type: string
+          example: Biriyanio
+          description: Combo category name
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/ComboItem'
+          description: List of items/dishes in combo category.
+    ComboItem:      
+      type: object
+      properties:
+        comboItemId:
+          type: string
+          example: "123"
+        restaurantId:
+          type: string
+          example: "123"
+        dishId:
+          type: string
+          example: "123"
+        dishVariantId:
+          type: string
+          example: "123"
+    Reviews:      
+      type: object
+      properties:
+        averageRating:
+          type: number
+          example: 3.5
+          description: Average rating.
+        numberOfRatings:
+          type: integer
+          example: 20
+          description: Number of ratings.
+        userReviews:
+          type: array
+          items:
+            $ref: '#/components/schemas/Review'
+          description: List of reviews.
+    Review: 
+      type: object
+      properties:
+        reviewId:
+          type: string
+          example: "123"
+          description: Review Id.
+        username:
+          type: string
+          example: Sunder
+        userImageUrl:
+          type: string
+          example: https://aws.proximety.io/s3/image1.jpg
+          description: Image URL.
+        rating:
+          type: number
+          example: 3.5
+          description: Rating.
+        message:
+          type: string
+          example: awesome food 
+          description: Message.
+    Coupons:
+      type: object
+      properties:
+        coupons:
+          type: array
+          items:
+            $ref: '#/components/schemas/Coupon' 
+          description: List of coupons.
+    Coupon:
+      type: object
+      properties:
+        couponId:
+          type: string
+          example: "123"
+          description: Coupon Id.
+        restaurantId:
+          type: string
+          example: "123"
+          description: Restaurant Id.
+        couponTitle:
+          type: string
+          example: HILITE20
+          description: Coupon title.
+        couponSummary:
+          type: string
+          example: 30% OFF
+          description: Coupon summary.
+        maxDiscountAmount:
+          type: number
+          example: 50
+          description: Max discount amount.
+        couponDescription:
+          type: string
+          example: 'Get 30% off upto 50 RS.'
+          description: Coupon description.
+        couponImageUrl:
+          type: string
+          example: https://aws.proximety.io/s3/image1.jpg
+          description: Image URL.
+    Cart:
+      type: object
+      properties:
+        orders:
+          type: array
+          items:
+            $ref: '#/components/schemas/Order'
+          description: List of orders.
+    Orders:
+      type: object
+      properties:
+        orders:
+          type: array
+          items:
+            $ref: '#/components/schemas/Order'
+          description: List of orders.
+    Order:
+      type: object
+      properties:
+        orderId:
+          type: string
+          example: "123"  
+          description: Order Id.
+        orderPlacedTime:
+          type: string  
+          example: '20/10/2021 10:00'
+          description: Order date.
+        expectedDeliveryTime:
+          type: string  
+          example: '20/10/2021 11:00'
+          description: Order date.
+        otp: 
+          type: integer
+          example: 5678
+          description: OTP. Present only after order is moved to ORDER_READY status.
+        preparationTime: 
+          type: number
+          example: 30
+          description: Preparation time (in minutes) updated by restaurant. Default 10 min. Present only after order is moved to CONFIRMED_AND_PREPARING_ORDER step.
+        restaurantId:
+          type: string
+          example: "123"
+          description: Restaurant Id.
+        couponId:
+          type: string
+          example: "123"
+          description: Coupon Id.
+        price:
+          type: number
+          example: 100
+          description: Order total price.
+        orderDishes:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderDish' 
+          description: List of dishes selected by the user from the restaurant.
+        orderSteps:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderStep'
+          description: Sequence of steps through which order has gone.
+    OrderDish:
+      type: object
+      properties: 
+        dishId:
+          type: string
+          example: "123"
+          description: Dish Id.
+        addedCustomizationIds:
+          type: array
+          example: ["123", "567"]
+          items: 
+            type: string
+          description: List of added customization Ids.
+        addedVariantIds:
+          type: array
+          example: ["123", "234"]
+          items: 
+            type: string
+          description: Dish variant Ids. In the absence of this, default variant will be taken. 
+    OrderStep:
+      type: object
+      properties:
+        sequenceId:
+          type: integer  
+          example: 1
+          description: Sequence Id.
+        step:
+          $ref: '#/components/schemas/OrderStatusEnum'
+        message:
+          type: string
+          example: Your order is ready
+          description: Message.
+        stepStartTime:
+          type: string
+          example: 3.10 PM
+          description: Step start time.
+        stepEndTime:
+          type: string
+          example: 3.15 PM
+          description: Step end time. Present only if the step is completed.
+    UpdateRestaurantOpenStatus:  
+      type: object
+      properties:
+        online:
+          type: boolean  
+          example: true
+          description: Pass this as false to update restaurant status as closed. True for going online again.
+        offlineReason:
+          $ref: '#/components/schemas/OfflineReasonEnum'  
+        backOnlineStrategy:
+          $ref: '#/components/schemas/BackOnlineStrategyEnum'
+        backOnlineTime:
+          type: string
+          example: '10/10/2021 10:00 AM'
+          description: Back online time. Pass this only if the backOnlineStrategy is SPECIFIC_DATE_AND_TIME.
+    PhoneNumber: 
+      type: object
+      properties:
+        countryCode:
+          type: string
+          description: The country code prefix for the phone number.
+          example: "+91"
+        phoneNumber: 
+          type: number 
+          example: 9898989898
+          description: The 10-digit mobile number 
+    BankAccount:
+      type: object
+      properties:
+        bankAccountId:
+          type: string
+          example: "123"
+          description: Account Id.
+        accountName:
+          type: string
+          example: Savings account
+          description: Account name.
+        accountNumber:
+          type: string
+          example: 321321321
+          description: Account number.
+        bankName:
+          type: string
+          example: SBI
+          description: Bank name.
+        ifscCode:
+          type: string
+          example: SBIN13
+          description: IFSC code.
+        upiId:
+          type: string
+          example: paragon@upi
+          description: UPI Id Id.
+    OrderStatus:
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/OrderStatusEnum'
+        preparationTime: 
+          type: number
+          example: 30
+          description: Preparation time (in minutes). Default 10 min. Pass this value only for CONFIRMED_AND_PREPARING_ORDER step.
+    FileInfo:
+      type: object
+      properties:
+        fileUrl:
+          type: string
+          example: https://s3.ap-south-1.amazonaws.com/proximety.io/store-images-dev/88372e01-feed-461b-8ade-0ff00881e458.jpeg
+    SearchSuggestions:
+      type: object
+      properties:
+        suggestions:
+          type: array
+          items:
+            $ref: '#/components/schemas/SearchSuggestion'
+    SearchSuggestion:
+      type: object
+      properties:
+        suggestionType:
+          type: string
+          enum:
+            - DISH_CATEGORY
+            - RESTAURANT
+        objectId:
+          type: string
+          example: "123"
+          description: Dish category or restaurant Id.
+    GetOrdersRequest:
+      type: object
+      properties:
+        startDate:
+          description: Start date.
+          example: '20/10/2020 10:10'
+        endDate:
+          description: End date.
+          example: '20/10/2020 10:10'
+        restaurantId:
+          type: string
+          example: "123"
+          description: Restaurant Id.
+        excludeOrderSteps:
+          type: boolean
+          description: To exclude order step info from order object.
+        inProgress:
+          type: boolean
+          description: Return in progress orders.
+        delivered:
+          type: boolean
+          description: Return delivered orders.
+        dishName:
+          type: string
+          description: Dish name filter.
+    GetRestaurantsRequest:
+      type: object
+      properties:
+        restaurantName:
+          type: string
+          description: Restaurant name filter. Supports wildcard search also.
+          example: "para"
+        sortStrategy:
+          type: string
+          description: Sort strategy.
+          enum:
+              - RATING
+              - AVERAGE_COST
+        sortOrder:
+          type: string
+          description: Sort strategy.
+          enum:
+              - ASC
+              - DESC
+        dishCategoryId:
+          type: string
+          description: Dish category Id.
+          example: "123"
+    GetDishesRequest:
+      type: object
+      properties:
+        restaurantId:
+          type: string
+          description: Restaurant Id.
+          example: "123"
+        cuisineTypeId:
+          type: string
+          description: Cuisine type Id filter.
+          example: "123"
+        addOnGroupId:
+          type: string
+          description: Filter to return dishes based on add on group Id.
+          example: "123"
+        dishTypeId:
+          type: string
+          description: Dish type Id filter.
+          example: "123"
+        dishName:
+          type: string
+          description: Dish name filter. Supports wildcard search.
+          example: "bir"
+        outOfStock:
+          type: boolean
+          description: Return dishes which are out of stock.
+        imageNotUploaded:
+          type: boolean
+          description: Return dishes with no image available.
+    OrderStatusEnum:
+      type: string
+      enum:
+            - ORDER_RECEIVED
+            - CONFIRMED_AND_PREPARING_ORDER
+            - ORDER_READY
+            - ORDER_DELIVERED
+            - ORDER_REJECTED
+            - REFUND_INITIATED
+    OfflineReasonEnum:
+      type: string
+      enum:
+        - RAW_MATERIAL_OR_ITEM_OUT_OF_STOCK
+        - HIGH_ORDER_RUSH_OR_KITCHEN_IS_FULL
+        - KITCHEN_STAFF_NOT_AVAILABLE
+        - NEARING_CLOSING_TIME
+        - TEMPORARLY_CLOSED
+        - ISSUES_WITH_MENU
+        - OTHERS
+    BackOnlineStrategyEnum:
+      type: string
+      enum:
+        - AFTER_TWO_HOURS
+        - AFTER_FOUR_HOURS
+        - TOMORROW_MORNING
+        - SPECIFIC_DATE_AND_TIME
+        - WILL_TURN_ON_MANUALLY
+    FileCategoryEnum:
+      type: string
+      enum:
+        - RESTAURANT_IMAGE
+        - RESTAURANT_LOGO
+        - RESAURANT_MENU_IMAGE
+        - RESTAURANT_GST_CERTIFICATE
+        - RESTAURANT_PAN
+        - RESTAURANT_FSSAI_CERTIFICATE
+    ObjectTypeEnum:
+          type: string
+          enum:
+            - RESTAURANT
+            - DISH
+    RefreshTokenRequest:
+      type: object
+      required:
+        - refreshToken
+      properties:
+        refreshToken: 
+          type: string
+          description: The refresh token based on which the new authentication token needs to be generated.
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJ1bV9hY2N
+    PasswordUpdateRequest:
+      type: object
+      description: The password update request.
+      required:
+        - username
+        - currentPassword
+        - newPassword
+      properties:
+        username: 
+          type: string
+          description: The username for the user whose password needs to be updated.
+          example: proximety-user101
+        currentPassword:
+          type: string
+          description: The current password for the user whose passoword needs to be updated.
+          example: uuiwquqxx
+          format: password
+        newPassword:
+          type: string
+          description: The new password for the user whose passoword needs to be updated.
+          example: 1235c12
+          format: password
+    PasswordUpdateResponse:
+      type: object
+      description: The password update response.
+      properties:
+        username:
+          type: string
+          description: The user name for the user logged into the system.
+          example: proximety-user101
+        foodCourtId:
+          type: string
+          description: The internal system identifier for the food court.
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+        accessToken:
+          type: string
+          description: The token generated after authentication which needs to be passed in all subsequent calls to the system.
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJ1bV9hY2Nlc3MiLCJleHAiOjE2NjAyODE5
+        accessTokenType: 
+          type: string
+          description: The type of access token used.
+          example: Bearer
+        refreshToken:
+          type: string
+          description: The refresh token that can be used to regenerate the access token once it has expired.
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJ1bV9hY2N
+    PasswordResetRequest:
+      type: object
+      description: The password reset request.
+      required:
+        - username
+      properties:
+        username:
+          type: string
+          description: The username for the user whose password needs to be reset. 
+          example: proximety-user101
+    PasswordResetResponse:
+      type: object
+      description: The password reset response.
+      properties:
+        username: 
+          type: string
+          description: The username for the user whose password is being reset.
+          example: proximety-user101
+        message:
+          type: string
+          description: The response message for the attempted password reset.
+          example: An email has been sent to x***z@gmail.com with password reset instructions.
+    LoginRequest:
+      type: object
+      required:
+        - username
+        - password
+      properties:
+        username:
+          type: string
+          description: The username for the food court that needs to log info.
+          example: xyz@gmail.com
+        password:
+          type: string
+          description: The password of the food court trying to log into the system.
+          format: password
+          example: password
+    GlobalException:
+      type: object
+      description: An exception thrown by the system.
+      properties:
+        status:
+          type: integer
+          description: The status code for the error.
+          example: 401
+        type:
+          type: string
+          description: The type name for the error being thrown.
+          example: UNAUTHORIZED
+        title:
+          type: string
+          description: The error title.
+          example: Token expired.
+        detail:
+          type: string
+          description: The details of the error being thrown.
+          example: The access token has expired for the user. Please generate a new token and try again.
+        tags:
+          type: array
+          description: The varios tags associated with the error that provides additional information about the error.
+          items: 
+            type: string
+            example: ACCESS_TOKEN_INVALID 
+    LoginResponse:
+      type: object
+      properties:
+        username:
+          type: string
+          description: The user name for the user logged into the system.
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+        foodCourtId:
+          type: string
+          description: The internal system identifier for the food court.
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+        accessToken:
+          type: string
+          description: The token generated after authentication which needs to be passed in all subsequent calls to the system.
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJ1bV9hY2Nlc3MiLCJleHAiOjE2NjAyODE5
+        accessTokenType: 
+          type: string
+          description: The type of access token used.
+          example: Bearer
+        refreshToken:
+          type: string
+          description: The refresh token that can be used to regenerate the access token once it has expired.
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJ1bV9hY2N
+        needsPasswordReset:
+          type: string
+          description: True indicates that the passowrd needs to be reset for the user, false indicates otherwise.
+          example: false
+    
