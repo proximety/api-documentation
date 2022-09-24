@@ -840,8 +840,8 @@ components:
       type: object
       properties:
         dishCategoryId:
-          type: string
-          example: "123"
+          type: number
+          example: 123
           description: Dish category Id.
         categoryName:
           type: string
@@ -855,8 +855,8 @@ components:
       type: object
       properties:
         dishTypeId:
-          type: string
-          example: "123"
+          type: number
+          example: 123
           description: Dish type Id.
         dishTypeName:
           type: string
@@ -866,8 +866,8 @@ components:
       type: object
       properties:
         cuisineStyleId:
-          type: string  
-          example: "123"
+          type: number
+          example: 123
           description: Cuisine style Id.
         cuisineStyleName:
           type: string  
@@ -877,8 +877,8 @@ components:
       type: object
       properties:
         cuisineTypeId:
-          type: string  
-          example: "123"
+          type: number
+          example: 123
           description: Cuisine type Id.
         cuisineTypeName:
           type: string  
@@ -888,8 +888,8 @@ components:
       type: object
       properties:
         floorId:
-          type: string  
-          example: "123"
+          type: number
+          example: 123
           description: Floor Id.
         floorName:
           type: string  
@@ -933,8 +933,8 @@ components:
           example: a@b.com
           description: Email.
         floorId:
-          type: string
-          example: "123"
+          type: number
+          example: 123
           description: Floor id.
         averageCostPerPerson:
           type: number
@@ -942,13 +942,13 @@ components:
           description: Average cost per person.
         cuisineStyleIds:
           type: array
-          example: ["123", "234"]
+          example: [123, 234]
           items:
-            type: string
+            type: number
           description: Cuisine style Ids.
         dishCategoryIds:
           type: array
-          example: ["123", "345"]
+          example: [123, 345]
           items:
             type: number
           description: Dish categories the restaurant sells
@@ -992,8 +992,8 @@ components:
           type: boolean
           description: Indivated whether restaurant is open or closed.
         cuisineTypeId:
-          type: string
-          example: "123"
+          type: number
+          example: 123
           description: Cuisine type id.
         bankAccount:
           $ref: '#/components/schemas/BankAccount'
@@ -1021,19 +1021,19 @@ components:
           example: Chicken Biriyani
           description: Dish name.
         dishTypeId:
-          type: string
-          example: "123"
+          type: number
+          example: 123
         dishCategoryId:
-          type: string
-          example: "123"
+          type: number
+          example: 123
           description: Dish category Id.
         cuisineTypeId:
-          type: string
-          example: "123"
+          type: number
+          example: 123
           description: Cuisine type Id.
         cuisineStyleId:
-          type: string
-          example: "123"
+          type: number
+          example: 123
           description: Cuisine style Id.
         price:
           type: number
@@ -1127,8 +1127,8 @@ components:
           example: 30
           description: Price for the customization.
         cuisineTypeId:
-          type: string
-          example: "123"
+          type: number
+          example: 123
           description: Cuisine type Id.
     DishVariantGroups:
       type: object
@@ -1551,9 +1551,9 @@ components:
               - ASC
               - DESC
         dishCategoryId:
-          type: string
+          type: number
           description: Dish category Id.
-          example: "123"
+          example: 123
     GetDishesRequest:
       type: object
       properties:
@@ -1562,17 +1562,17 @@ components:
           description: Restaurant Id.
           example: "123"
         cuisineTypeId:
-          type: string
+          type: number
           description: Cuisine type Id filter.
-          example: "123"
+          example: 123
         addOnGroupId:
           type: string
           description: Filter to return dishes based on add on group Id.
           example: "123"
         dishTypeId:
-          type: string
+          type: number
           description: Dish type Id filter.
-          example: "123"
+          example: 123
         dishName:
           type: string
           description: Dish name filter. Supports wildcard search.
