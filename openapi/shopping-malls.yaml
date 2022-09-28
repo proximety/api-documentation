@@ -1,0 +1,179 @@
+openapi: '3.0.2'
+info:
+  title: Shopping mall service
+  version: '1.0'
+  license:
+    name: Proximety
+    url: www.proximety.io
+servers:
+  - url: https://app-dev.proximety.io/api
+  - url: https://app-staging.proximety.io/api
+  - url: https://app-patch.proximety.io/api
+  - url: https://app.proximety.io/api
+tags:
+  
+# - name: User
+# - name: Issue Ticket
+paths:
+  /shopping-malls/auth/login:
+    post:
+      tags:
+        - Authentication
+      summary: Login admin user
+      description: Authenticates and logs in an admin user for a shopping mall.
+      operationId: login   
+      requestBody:
+        description: The details for logging in a user into the admin platform.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        203:
+          description: Created
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/schemas/LoginResponse'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/schemas/GlobalException'
+              example: 
+                {
+                  "status": 403,
+                  "type": "BAD_REQUEST",
+                  "title": "Email / Password incorrect. ",
+                  "detail": "The specified Email / Password is incorrect. Please specify a valid Email / Password and try again.",
+                  "tags":[]
+                }
+  /shopping-malls/auth/logout:
+    post:
+      tags:
+        - Authentication
+      summary: Log out admin user
+      description: Logs out an admin user from the admin platform.
+      operationId: logout   
+      parameters:
+        - name: Authorization
+          in: header
+          description: The authentication bearer token.
+          required: true
+          example: Bearer asd.js2jd9a.gC6paXtNOg0OZL4-adsd-asd
+          schema:
+            type: string
+      requestBody:
+        description: The details for logging out a user into the admin platform.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LogoutRequest'
+      responses:
+        203:
+          description: OK
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/schemas/LogoutResponse'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/schemas/GlobalException'
+              example: 
+                {
+                  "status": 403,
+                  "type": "BAD_REQUEST",
+                  "title": "User not found",
+                  "detail": "The specified user cannot be found.",
+                  "tags":[]
+                }
+  
+components:
+  schemas:
+    LogoutRequest:
+      type: object
+      description: The logout request.
+      properties:
+        userId:
+          type: string
+          description: The internal system identifier for the user trying to log out of the system.
+          example: 3hjhf97829132
+    LogoutResponse:
+      type: object
+      description: The logout response.
+      properties:
+        message: 
+          type: string
+          description: The logout message.
+          example: Logout successful.
+    LoginRequest:
+      type: object
+      description: The request for logging in an admin user.
+      properties:
+        email:
+          type: string
+          description: The registered email id for the user.
+          example: abc@xyz.com
+        password:
+          type: string
+          description: The passowrd for the user logging into the platform.
+          example: 37816dhk
+    LoginResponse:
+      type: object
+      description: The login response.
+      properties:
+        userId:
+          type: string
+          description: The internal system identfier for the user logged into the system.
+          example: hdjahdihy83871
+        mallId:
+          type: string
+          description: The internal system identifier for the shopping mall to which the admin user has access token.
+          example: djajksd89797
+        accessToken:
+          type: string
+          description: The token generated after authentication which needs to be passed in all subsequent calls to the system.
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJ1bV9hY2Nlc3MiLCJleHAiOjE2NjAyODE5
+        accessTokenType: 
+          type: string
+          description: The type of access token used.
+          example: Bearer
+        userRole: 
+          type: string
+          description: The user role for the loggged in user. The logged in user can either be a mall manager or a platform admin.
+          example: MANAGER
+          enum:
+            - MANAGER
+            - ADMIN
+    GlobalException:
+      type: object
+      description: An exception thrown by the system.
+      properties:
+        status:
+          type: integer
+          description: The status code for the error.
+          example: 401
+        type:
+          type: string
+          description: The type name for the error being thrown.
+          example: UNAUTHORIZED
+        title:
+          type: string
+          description: The error title.
+          example: Token expired.
+        detail:
+          type: string
+          description: The details of the error being thrown.
+          example: The access token has expired for the user. Please generate a new token and try again.
+        tags:
+          type: array
+          description: The varios tags associated with the error that provides additional information about the error.
+          items: 
+            type: string
+            example: ACCESS_TOKEN_INVALID
