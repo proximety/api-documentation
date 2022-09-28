@@ -230,6 +230,28 @@ paths:
           description: Successful operation
         "500":
           description: Error
+  /restaurants/{restaurantId}/dishgroupings:
+    get: 
+      summary: Returns dish groupings
+      description: Returns dishes in a restaurant.
+      operationId: getDishGroupings
+      parameters:
+        - name: restaurantId
+          required: true
+          in: path
+          description: Restaurant Id.
+          example: "123"
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DishGroupings'
+        "500":
+          description: Error 
   /restaurants/{restaurantId}/addongroup:
     post: 
       summary: Create add on group
@@ -801,6 +823,14 @@ paths:
       summary: Returns search suggestions
       description: Returns search suggestions
       operationId: getSearchSuggestions
+      parameters:
+        - name: keyword
+          required: true
+          in: query
+          description: Search keyword.
+          example: "para"
+          schema:
+            type: string
       responses:
         "200":
           description: Successful operation
@@ -808,6 +838,35 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SearchSuggestions'
+        "500":
+          description: Error  
+  /foodcourt/search/results:
+    get: 
+      summary: Returns search results
+      description: Returns search suggestions
+      operationId: getSearchResults
+      parameters:
+        - name: keyword
+          required: false
+          in: query
+          description: Search keyword.
+          example: "para"
+          schema:
+            type: string
+        - name: dishCategoryId
+          required: false
+          in: query
+          description: Diosh category Id.
+          example: 123
+          schema:
+            type: number
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchResults'
         "500":
           description: Error  
 
@@ -1075,6 +1134,26 @@ components:
           items:
             type: string
           description: List of dish variant groups available for the dish.
+    DishGroupings:
+      type: object
+      properties:
+        dishes:
+          type: array
+          items:
+            $ref: '#/components/schemas/DishGrouping'
+          description: List of dish groupings.
+    DishGrouping:
+      type: object
+      properties:
+        groupName:
+          type: string
+          example: "Recommended"
+          description: Dish group name.
+        dishIds:
+          type: array
+          example: ["123", "234"]
+          items:
+            type: string
     AddOnGroups:
       type: object
       properties:
@@ -1502,10 +1581,38 @@ components:
           enum:
             - DISH_CATEGORY
             - RESTAURANT
-        objectId:
+        dishCategoryId:
+          type: number
+          example: 123
+          description: Dish category Id.Present if suggestionType is DISH_CATEGORY.
+        dishCategoryImageUrl:
+          type: string
+          example: https://aws.proximety.io/s3/image1.jpg
+          description: Image URL. Present if suggestionType is DISH_CATEGORY.
+        restaurantId:
           type: string
           example: "123"
-          description: Dish category or restaurant Id.
+          description: Restaurant Id. Present if suggestionType is RESTAURANT.
+        restaurantImageUrl:
+          type: string
+          example: https://aws.proximety.io/s3/image1.jpg
+          description: Image URL. Present if suggestionType is RESTAURANT.
+    SearchResults:
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/SearchResult'
+    SearchResult:
+      type: object
+      properties:
+        restaurant:
+          $ref: '#/components/schemas/Restaurant'
+        dishes:
+          type: array
+          items:
+            $ref: '#/components/schemas/Dish'
     GetOrdersRequest:
       type: object
       properties:
