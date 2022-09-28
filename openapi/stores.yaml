@@ -656,8 +656,222 @@ paths:
                   "detail": "The specified access token has expired. Please try again with an active access token.",
                   "tags":[]
                 }
+  /stores/promoted-banners:
+    get: 
+      tags:
+        - Promoted Content
+      summary: Get promoted banners
+      description: Retrieves the list of promoted banners.
+      parameters:
+        - name: Authorization
+          in: header
+          description: The authentication bearer token.
+          required: true
+          example: Bearer asd.js2jd9a.gC6paXtNOg0OZL4-adsd-asd
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PromotedBanners'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GlobalException"
+              example: 
+                {
+                  "status": 403,
+                  "type": "FORBIDDEN",
+                  "title": "Token expired.",
+                  "detail": "The specified access token has expired. Please try again with an active access token.",
+                  "tags":[]
+               }
+    put: 
+      tags:
+        - Promoted Content
+      summary: Update promoted banners
+      description: Updates the banners that needs to be displayed in the promoted content section.
+      parameters:
+        - name: Authorization
+          in: header
+          description: The authentication bearer token.
+          required: true
+          example: Bearer asd.js2jd9a.gC6paXtNOg0OZL4-adsd-asd
+          schema:
+            type: string
+      requestBody:
+        description: The list of promoted banners.
+        content:
+          application/json:
+            schema:
+                $ref: '#/components/schemas/PromotedBanners'
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PromotedBanners'
+        "400":
+          description: Bad request          
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GlobalException"
+              example: 
+                {
+                  "status": 400,
+                  "type": "BAD_REQUEST",
+                  "title": "Mandatory fields missing from request.",
+                  "detail": "No id specified for the banner. Please specify an id for the banner and try again.",
+                }
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GlobalException"
+              example: 
+                {
+                  "status": 403,
+                  "type": "FORBIDDEN",
+                  "title": "Token expired.",
+                  "detail": "The specified access token has expired. Please try again with an active access token.",
+                  "tags":[]
+               }
+  /stores/promoted-offers:
+    get: 
+      tags:
+        - Promoted Content
+      summary: Get promoted offers
+      description: Retrieves the list of promoted offers.
+      parameters:
+        - name: Authorization
+          in: header
+          description: The authentication bearer token.
+          required: true
+          example: Bearer asd.js2jd9a.gC6paXtNOg0OZL4-adsd-asd
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PromotedOffers'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GlobalException"
+              example: 
+                {
+                  "status": 403,
+                  "type": "FORBIDDEN",
+                  "title": "Token expired.",
+                  "detail": "The specified access token has expired. Please try again with an active access token.",
+                  "tags":[]
+               }
+    put: 
+      tags:
+        - Promoted Content
+      summary: Update promoted offers
+      description: Updates the offers that needs to be displayed in the promoted content section.
+      parameters:
+        - name: Authorization
+          in: header
+          description: The authentication bearer token.
+          required: true
+          example: Bearer asd.js2jd9a.gC6paXtNOg0OZL4-adsd-asd
+          schema:
+            type: string
+      requestBody:
+        description: The list of promoted offers.
+        content:
+          application/json:
+            schema:
+                $ref: '#/components/schemas/PromotedOffers'
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PromotedOffers'
+        "400":
+          description: Bad request          
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GlobalException"
+              example: 
+                {
+                  "status": 400,
+                  "type": "BAD_REQUEST",
+                  "title": "Mandatory fields missing from request.",
+                  "detail": "No id specified for the banner. Please specify an id for the banner and try again.",
+                }
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GlobalException"
+              example: 
+                {
+                  "status": 403,
+                  "type": "FORBIDDEN",
+                  "title": "Token expired.",
+                  "detail": "The specified access token has expired. Please try again with an active access token.",
+                  "tags":[]
+               }
 components:
   schemas:
+    PromotedBanners:
+      type: object 
+      description: The list of promoted banners. (Max size - 5)
+      properties:
+        banners:
+          type: array
+          description: The list of promoted banners.
+          items:
+            type: object
+            description: The promoted banner
+            properties:
+              id: 
+                type: string
+                description: The internal system identifier for the banner.
+                example: 37813679djj
+              title:
+                type: string
+                description: The banner title.
+                example: Adidas - Buy 2 get 2 free.
+    PromotedOffers:
+      type: object 
+      description: The list of promoted offers. (Max size - 10)
+      properties:
+        offers:
+          type: array
+          description: The list of promoted offers.
+          items:
+            type: object
+            description: The promoted offer
+            properties:
+              id: 
+                type: string
+                description: The internal system identifier for the offer.
+                example: 37813679djj
+              title:
+                type: string
+                description: The offer title.
+                example: Adidas - Buy 2 get 2 free.
     StoreOffers:
       type: object
       description: The details of various offers provided by a store.
@@ -732,6 +946,13 @@ components:
         #   type: string
         #   description: The internal system identifier for the shopping malls whose stores are to be retrieved.
         #   example: 1d4122
+        storeIds: 
+          type: array
+          description: The list of store IDs whose store detaisl are to be fetched.
+          items:
+            type: string
+            description: The internal system identifier for the store.
+            example: 3781273897hjhj
         storeCategories:
           type: array
           items:
@@ -959,4 +1180,4 @@ components:
           description: The varios tags associated with the error that provides additional information about the error.
           items: 
             type: string
-            example: ACCESS_TOKEN_INVALID  
+            example: ACCESS_TOKEN_INVALID
