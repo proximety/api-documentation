@@ -1876,7 +1876,7 @@ components:
           type: string
           description: The user name for the user logged into the system.
           example: proximety-user101
-        foodCourtId:
+        restaurantId:
           type: string
           description: The internal system identifier for the food court.
           example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
@@ -1962,7 +1962,7 @@ components:
           type: string
           description: The user name for the user logged into the system.
           example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
-        foodCourtId:
+        restaurantId:
           type: string
           description: The internal system identifier for the food court.
           example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
@@ -1982,4 +1982,4 @@ components:
           type: string
           description: True indicates that the passowrd needs to be reset for the user, false indicates otherwise.
           example: false
-    
+   
