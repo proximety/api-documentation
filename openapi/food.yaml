@@ -235,12 +235,6 @@ paths:
                 ],
                 "openingTime": "10:00",
                 "closingTime": "20:00",
-                "restaurantImageUrl": "https://aws.proximety.io/s3/image1.jpg",
-                "restaurantLogoUrl": "https://aws.proximety.io/s3/image1.jpg",
-                "menuImageUrl": "https://aws.proximety.io/s3/image1.jpg",
-                "gstCertificateUrl": "https://aws.proximety.io/s3/image1.jpg",
-                "panFileUrl": "https://aws.proximety.io/s3/image1.jpg",
-                "fssaiCertificateUrl": "https://aws.proximety.io/s3/image1.jpg",
                 "bankAccount": {
                   "accountName": "Savings account",
                   "accountNumber": "321321321",
@@ -325,6 +319,45 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Restaurant'
+            example: 
+                {
+                  "restaurantId": "123",
+                  "restaurantName": "Paragon",
+                  "ownerName": "Mohan",
+                  "restaurantPhoneNumberPrimary": {
+                    "countryCode": "+91",
+                    "phoneNumber": 9898989898
+                  },
+                  "restaurantPhoneNumberSecondary": {
+                    "countryCode": "+91",
+                    "phoneNumber": 9898989898
+                  },
+                  "ownerPhoneNumberPrimary": {
+                    "countryCode": "+91",
+                    "phoneNumber": 9898989898
+                  },
+                  "ownerPhoneNumberSecondary": {
+                    "countryCode": "+91",
+                    "phoneNumber": 9898989898
+                  },
+                  "email": "a@b.com",
+                  "floor": "FIRST_FLOOR",
+                  "cuisineStyles": [
+                    "INDIAN"
+                  ],
+                  "dishCategories": [
+                    "BIRIYANI"
+                  ],
+                  "openingTime": "10:00",
+                  "closingTime": "20:00",
+                  "bankAccount": {
+                    "accountName": "Savings account",
+                    "accountNumber": "321321321",
+                    "bankName": "SBI",
+                    "ifscCode": "SBIN13",
+                    "upiId": "paragon@upi"
+                  }
+                }
       responses:
         "200":
           description: Successful operation
@@ -878,7 +911,7 @@ paths:
                 $ref: '#/components/schemas/Order'
         "500":
           description: Error 
-  /dishes/{dishId}/review:
+  /dishes/{dishId}/reviews:
     get: 
       tags:
         - Review
@@ -922,6 +955,12 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Review'
+            example:
+              {
+                "userId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+                "rating": 3.5,
+                "message": "awesome food"
+              }
       responses:
         "200":
           description: Successful operation
@@ -931,7 +970,7 @@ paths:
                 $ref: '#/components/schemas/Review'
         "500":
           description: Error
-  /restaurants/{restaurantId}/review:
+  /restaurants/{restaurantId}/reviews:
     get: 
       tags:
         - Review
@@ -975,6 +1014,12 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Review'
+            example:
+              {
+                "userId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+                "rating": 3.5,
+                "message": "awesome food"
+              }
       responses:
         "200":
           description: Successful operation
@@ -1842,13 +1887,13 @@ components:
     Review: 
       type: object
       properties:
-        reviewId:
-          type: string
-          example: "123"
-          description: Review Id.
         username:
           type: string
           example: Sunder
+        userId:
+          type: string
+          format: uuid
+          description: User Id.
         rating:
           type: number
           example: 3.5
@@ -1857,6 +1902,10 @@ components:
           type: string
           example: awesome food 
           description: Message.
+        userImageUrl:
+          type: string
+          example: https://aws.proximety.io/s3/image1.jpg
+          description: Image URL.
     Coupons:
       type: object
       properties:
