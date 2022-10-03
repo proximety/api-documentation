@@ -970,65 +970,6 @@ paths:
                 $ref: '#/components/schemas/Review'
         "500":
           description: Error
-  /restaurants/{restaurantId}/reviews:
-    get: 
-      tags:
-        - Review
-      summary: Returns restaurant reviews
-      description: Returns restaurant reviews.
-      operationId: getRestaurantReviews
-      parameters:
-        - name: restaurantId
-          in: path
-          required: true
-          description: Restaurant Id.
-          example: "123"
-          schema:
-            type: string
-      responses:
-        "200":
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Reviews'
-        "500":
-          description: Error
-    post: 
-      tags:
-        - Review
-      summary: Create restaurant review
-      description: Create restaurant review.
-      operationId: createRestaurantReview
-      parameters:
-        - name: restaurantId
-          in: path
-          required: true
-          description: Restaurant Id.
-          example: "123"
-          schema:
-            type: string
-      requestBody:
-        description: cart. 
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Review'
-            example:
-              {
-                "userId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-                "rating": 3.5,
-                "message": "awesome food"
-              }
-      responses:
-        "200":
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Review'
-        "500":
-          description: Error
   /restaurants/{restaurantId}/offer:
     get:
       tags:
@@ -1181,8 +1122,8 @@ paths:
           description: Successful operation
         "500":
           description: Error
-  /restaurants/{restaurantId}/menu/_query:
-    post:
+  /restaurants/{restaurantId}/menu:
+    get:
       tags:
         - Dishes
       summary: Returns dish menu
@@ -1196,12 +1137,6 @@ paths:
           example: "123"
           schema:
             type: string
-      requestBody:
-        description: Offer activation Status. 
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/MenuRequest'
       responses:
         "200":
           description: Successful operation
@@ -1327,31 +1262,26 @@ paths:
           description: Successful operation
         "500":
           description: Error
-  /foodcourt/files/upload:
+  /restaurants/{restaurantId}/files/upload:
     post: 
       tags:
         - File Upload
-      summary: Upload files 
-      description: Upload files 
-      operationId: uploadFile
+      summary: Upload restaurant files 
+      description: Upload restaurant files 
+      operationId: uploadRestaurantFile
       parameters:
         - name: fileCategory
           in: query
           required: true
           schema:
-            $ref: '#/components/schemas/FileCategoryEnum'
-        - name: objectId
-          in: query
+            $ref: '#/components/schemas/RestaurantFileCategoryEnum'
+        - name: restaurantId
           required: true
+          in: path
+          description: Restaurant Id.
+          example: "123"
           schema:
             type: string
-          example: "123"
-        - name: objectType
-          in: query
-          required: true
-          schema:
-            $ref: '#/components/schemas/ObjectTypeEnum'
-          example: "123"
       requestBody:
         content:
           multipart/form-data:
@@ -1367,7 +1297,103 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/FileInfo'
+                $ref: '#/components/schemas/Restaurant'
+        "500":
+          description: Error
+  /restaurants/{restaurantId}/files:
+    delete: 
+      tags:
+        - File Upload
+      summary: Delete restaurant files 
+      description: Delete restaurant files 
+      operationId: deleteRestaurantFile
+      parameters:
+        - name: fileCategory
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/RestaurantFileCategoryEnum'
+        - name: restaurantId
+          required: true
+          in: path
+          description: Restaurant Id.
+          example: "123"
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Restaurant'
+        "500":
+          description: Error
+  /dishes/{dishId}/files/upload:
+    post: 
+      tags:
+        - File Upload
+      summary: Upload dish files 
+      description: Upload dish files 
+      operationId: uploadDishFile
+      parameters:
+        - name: fileCategory
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/DishFileCategoryEnum'
+        - name: dishId
+          required: true
+          in: path
+          description: Dish Id.
+          example: "123"
+          schema:
+            type: string
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties: 
+                file:
+                  type: string
+                  format: binary
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Dish'
+        "500":
+          description: Error
+  /dishes/{dishId}/files:
+    delete: 
+      tags:
+        - File Upload
+      summary: Delete dish files 
+      description: Delete dish files 
+      operationId: deleteDishFile
+      parameters:
+        - name: fileCategory
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/DishFileCategoryEnum'
+        - name: dishId
+          required: true
+          in: path
+          description: Dish Id.
+          example: "123"
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Dish'
         "500":
           description: Error
   /foodcourt/search/suggestions:
@@ -2239,26 +2265,19 @@ components:
           example: "123"
         dishType:
           $ref: '#/components/schemas/DishTypeEnum'
-        dishName:
+        keyword:
           type: string
           description: Dish name filter. Supports wildcard search.
           example: "bir"
         outOfStock:
           type: boolean
           description: Return dishes which are out of stock.
+        bestSeller:
+          type: boolean
+          description: Return dishes best seller dishes.
         imageNotUploaded:
           type: boolean
           description: Return dishes with no image available.
-    MenuRequest:
-      type: object
-      properties:
-       inStock:
-         type: boolean
-       keyword:
-         type: string
-         description: Filter based on dish name or something.
-       bestSeller:
-         type: boolean
     Menu:
       type: object
       properties:
@@ -2311,7 +2330,7 @@ components:
         - TOMORROW_MORNING
         - SPECIFIC_DATE_AND_TIME
         - WILL_TURN_ON_MANUALLY
-    FileCategoryEnum:
+    RestaurantFileCategoryEnum:
       type: string
       enum:
         - RESTAURANT_IMAGE
@@ -2320,6 +2339,10 @@ components:
         - RESTAURANT_GST_CERTIFICATE
         - RESTAURANT_PAN
         - RESTAURANT_FSSAI_CERTIFICATE
+    DishFileCategoryEnum:
+      type: string
+      enum:
+        - DISH_IMAGE
     DishCategoryEnum:
       type: string
       description: Dynamic list. Obtained from globaldata API.
