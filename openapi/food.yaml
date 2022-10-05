@@ -759,22 +759,6 @@ paths:
                 $ref: '#/components/schemas/Combos'
         "500":
           description: Error
-  /foodcourt/coupons:
-    get: 
-      tags:
-        - Offer
-      summary: Returns list of coupons
-      description: Returns list of coupons
-      operationId: getCoupons
-      responses:
-        "200":
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Coupons'
-        "500":
-          description: Error  
   /foodcourt/order/coupons/_query:
     post: 
       tags:
@@ -788,13 +772,29 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Cart'
+            example:
+              {
+                "items": [
+                  {
+                    "dishId": "123",
+                    "addOnIds": [
+                      "123",
+                      "456"
+                    ],
+                    "dishVariantIds": [
+                      "123",
+                      "456"
+                    ]
+                  }
+                ]
+              }
       responses:
         "200":
           description: Successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Coupons'
+                $ref: '#/components/schemas/Offers'
         "500":
           description: Error
   /foodcourt/orders:
@@ -1262,7 +1262,7 @@ paths:
           description: Successful operation
         "500":
           description: Error
-  /restaurants/{restaurantId}/files/upload:
+  /restaurants/{restaurantId}/files:
     post: 
       tags:
         - File Upload
@@ -1300,7 +1300,6 @@ paths:
                 $ref: '#/components/schemas/Restaurant'
         "500":
           description: Error
-  /restaurants/{restaurantId}/files:
     delete: 
       tags:
         - File Upload
@@ -1329,7 +1328,7 @@ paths:
                 $ref: '#/components/schemas/Restaurant'
         "500":
           description: Error
-  /dishes/{dishId}/files/upload:
+  /dishes/{dishId}/files:
     post: 
       tags:
         - File Upload
@@ -1367,7 +1366,6 @@ paths:
                 $ref: '#/components/schemas/Dish'
         "500":
           description: Error
-  /dishes/{dishId}/files:
     delete: 
       tags:
         - File Upload
@@ -1468,10 +1466,6 @@ components:
             type: array
             items:
               $ref: '#/components/schemas/CuisineStyle'
-        cuisineTypes:
-            type: array
-            items:
-              $ref: '#/components/schemas/CuisineType'
         floorInfo:
             type: array
             items:
@@ -1495,11 +1489,6 @@ components:
       properties:
         cuisineStyle:
           $ref: '#/components/schemas/CuisineStyleEnum'
-    CuisineType:  
-      type: object
-      properties:
-        cuisineType:
-          $ref: '#/components/schemas/CuisineTypeEnum'
     FloorInfo:  
       type: object
       properties:
@@ -1725,14 +1714,6 @@ components:
         inStock:
           type: boolean
           description: Indicates whether add on is in stock.
-    DishVariantGroups:
-      type: object
-      properties:
-        variantGroups:
-          type: array
-          items:
-            $ref: '#/components/schemas/DishVariantGroup'
-          description: List of dish variant groups.
     DishVariantGroup:
       type: object
       properties:
@@ -1932,53 +1913,36 @@ components:
           type: string
           example: https://aws.proximety.io/s3/image1.jpg
           description: Image URL.
-    Coupons:
-      type: object
-      properties:
-        coupons:
-          type: array
-          items:
-            $ref: '#/components/schemas/Coupon' 
-          description: List of coupons.
-    Coupon:
-      type: object
-      properties:
-        couponId:
-          type: string
-          example: "123"
-          description: Coupon Id.
-        restaurantId:
-          type: string
-          example: "123"
-          description: Restaurant Id.
-        couponTitle:
-          type: string
-          example: HILITE20
-          description: Coupon title.
-        couponSummary:
-          type: string
-          example: 30% OFF
-          description: Coupon summary.
-        maxDiscountAmount:
-          type: number
-          example: 50
-          description: Max discount amount.
-        couponDescription:
-          type: string
-          example: 'Get 30% off upto 50 RS.'
-          description: Coupon description.
-        couponImageUrl:
-          type: string
-          example: https://aws.proximety.io/s3/image1.jpg
-          description: Image URL.
     Cart:
       type: object
       properties:
-        orders:
+        items:
           type: array
           items:
-            $ref: '#/components/schemas/Order'
-          description: List of orders.
+            $ref: '#/components/schemas/CartItem'
+          description: List of items.
+        appliedOfferIds:
+          type: array
+          example: ["123", "456"]
+          items:
+            type: string
+    CartItem:
+      type: object
+      properties:
+        dishId:
+          type: string
+          example: "123"  
+          description: Dish Id.
+        addOnIds:
+          type: array
+          example: ["123", "456"]
+          items:
+            type: string
+        dishVariantIds:
+          type: array
+          example: ["123", "456"]
+          items:
+            type: string
     Orders:
       type: object
       properties:
@@ -2014,23 +1978,23 @@ components:
           type: string
           example: "123"
           description: Restaurant Id.
-        couponId:
+        appliedOfferId:
           type: string
           example: "123"
           description: Coupon Id.
-        price:
+        amount:
           type: number
           example: 100
           description: Order total price.
-        orderDishes:
+        orderItems:
           type: array
           items:
-            $ref: '#/components/schemas/OrderDish' 
+            $ref: '#/components/schemas/OrderItem' 
           description: List of dishes selected by the user from the restaurant.
-        orderSteps:
+        orderWorkflow:
           type: array
           items:
-            $ref: '#/components/schemas/OrderStep'
+            $ref: '#/components/schemas/OrderStage'
           description: Sequence of steps through which order has gone.
     OrdersCount:
       type: object
@@ -2047,33 +2011,28 @@ components:
         count:
           type: number
           example: 3
-    OrderDish:
+    OrderItem:
       type: object
       properties: 
-        dishId:
-          type: string
-          example: "123"
-          description: Dish Id.
-        addedCustomizationIds:
+        dish:
+          $ref: '#/components/schemas/Dish'
+        addedCustomizations:
           type: array
-          example: ["123", "567"]
           items: 
-            type: string
-          description: List of added customization Ids.
-        addedVariantIds:
+            $ref: '#/components/schemas/AddOn'
+          description: List of add ons.
+        addedVariants:
           type: array
-          example: ["123", "234"]
           items: 
-            type: string
-          description: Dish variant Ids. In the absence of this, default variant will be taken. 
-    OrderStep:
+            $ref: '#/components/schemas/DishVariant'
+    OrderStage:
       type: object
       properties:
         sequenceId:
           type: integer  
           example: 1
           description: Sequence Id.
-        step:
+        status:
           $ref: '#/components/schemas/OrderStatusEnum'
         message:
           type: string
@@ -2081,11 +2040,11 @@ components:
           description: Message.
         stepStartTime:
           type: string
-          example: 3.10 PM
+          example: 3:10 
           description: Step start time.
         stepEndTime:
           type: string
-          example: 3.15 PM
+          example: 3:15
           description: Step end time. Present only if the step is completed.
     UpdateRestaurantOpenStatus:  
       type: object
@@ -2149,12 +2108,6 @@ components:
           type: number
           example: 30
           description: Preparation time (in minutes). Default 10 min. Pass this value only for CONFIRMED_AND_PREPARING_ORDER step.
-    FileInfo:
-      type: object
-      properties:
-        fileUrl:
-          type: string
-          example: https://s3.ap-south-1.amazonaws.com/proximety.io/store-images-dev/88372e01-feed-461b-8ade-0ff00881e458.jpeg
     SearchSuggestions:
       type: object
       properties:
@@ -2213,7 +2166,7 @@ components:
           type: string
           example: "123"
           description: Restaurant Id.
-        excludeOrderSteps:
+        excludeOrderWorkflow:
           type: boolean
           description: To exclude order step info from order object.
         inProgress:
@@ -2222,11 +2175,11 @@ components:
         delivered:
           type: boolean
           description: Return delivered orders.
-        keyWord:
+        searchKeyword:
           type: string
           description: Dish name/Order Id filter.
         status:
-          $ref: '#/components/schemas/OrderStatus'
+          $ref: '#/components/schemas/OrderStatusEnum'
         timeSlab:
           $ref: '#/components/schemas/OrderTimeSlabEnum'
     GetRestaurantsRequest:
@@ -2375,11 +2328,6 @@ components:
       enum:
         - FIRST_FLOOR
         - SECOND_FLOOR
-    ObjectTypeEnum:
-          type: string
-          enum:
-            - RESTAURANT
-            - DISH
     TimeSlabEnum:
           type: string
           enum:
