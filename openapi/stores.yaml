@@ -937,6 +937,17 @@ components:
     StoreSearchRequest:
       type: object
       description: The search filters based on which a list of stores are to be retrieved.
+      example: {
+                "query": "",
+                "storeIds": [
+                ],
+                "storeCategories": [
+                  "APPAREL"
+                ],
+                "sortBy": "DATE_LAUNCHED_DESC",
+                "page": 0,
+                "size": 10
+              }
       properties:
         query: 
           type: string
@@ -960,12 +971,25 @@ components:
             description: The store category.
             example: FOOTWEAR
             enum: 
-            - FOOTWEAR
-            - APPARELS
-            - SUPERMARKET
-            - JEWELLERY
-            - FASHION
-          example: [FOOTWEAR, APPARELS]
+             - DEFAULT
+             - FOOTWEAR
+             - APPAREL
+             - JEWELLERY
+             - LUXURY
+             - ELECTRONICS
+             - COSMETICS
+             - WATCHES
+             - DECOR
+             - FASHION_MEN
+             - FASHION_WOMEN
+             - FASHION_KIDS
+             - TOYS
+             - BOOKS
+             - SALON_AND_SPA
+             - BAGS_AND_LUGGAGE
+             - DEPARTMENT_STORE
+             - HYPERMARKET
+          example: [APPAREL]
         sortBy:
           type: string
           description: The sort criteria to be applied when searching for stores. if no value is specified, then the search will be performed alphabetically.
@@ -1036,10 +1060,25 @@ components:
             type: string
             description: The category to which the store belongs.
             example: 
-            enum:
-              - APPAREL
-              - FASHION
-              - SHOES
+            enum: 
+             - DEFAULT
+             - FOOTWEAR
+             - APPAREL
+             - JEWELLERY
+             - LUXURY
+             - ELECTRONICS
+             - COSMETICS
+             - WATCHES
+             - DECOR
+             - FASHION_MEN
+             - FASHION_WOMEN
+             - FASHION_KIDS
+             - TOYS
+             - BOOKS
+             - SALON_AND_SPA
+             - BAGS_AND_LUGGAGE
+             - DEPARTMENT_STORE
+             - HYPERMARKET
         storeSizeInSqFt:
           type: integer
           description: The size of the store in square feet.
@@ -1101,10 +1140,25 @@ components:
             type: string
             description: The category to which the store belongs.
             example: 
-            enum:
-              - APPAREL
-              - FASHION
-              - SHOES
+            enum: 
+             - DEFAULT
+             - FOOTWEAR
+             - APPAREL
+             - JEWELLERY
+             - LUXURY
+             - ELECTRONICS
+             - COSMETICS
+             - WATCHES
+             - DECOR
+             - FASHION_MEN
+             - FASHION_WOMEN
+             - FASHION_KIDS
+             - TOYS
+             - BOOKS
+             - SALON_AND_SPA
+             - BAGS_AND_LUGGAGE
+             - DEPARTMENT_STORE
+             - HYPERMARKET
         brandLogo:
           type: string
           description: The URL to the brand logo image. 
