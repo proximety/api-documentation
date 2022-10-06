@@ -2067,6 +2067,10 @@ components:
           type: string
           example: "123"  
           description: Dish Id.
+        quantity:
+          type: number
+          example: 5 
+          description: Quantity.
         addOnIds:
           type: array
           example: ["123", "456"]
