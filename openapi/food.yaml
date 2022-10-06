@@ -817,6 +817,66 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Orders'
+              example:
+                          {
+                            "orders": [
+                              {
+                                "orderId": "123",
+                                "orderPlacedTime": "2021-10-20 10:00",
+                                "expectedDeliveryTime": "2021-10-20 11:00",
+                                "otp": 5678,
+                                "preparationTime": 30,
+                                "restaurantId": "123",
+                                "appliedOfferId": "123",
+                                "amount": 100,
+                                "orderItems": [
+                                  {
+                                    "dish": {
+                                      "dishId": "123",
+                                      "restaurantId": "123",
+                                      "dishName": "Chicken Biriyani",
+                                      "dishType": "MAIN_COURSE",
+                                      "dishCategory": "BIRIYANI",
+                                      "cuisineType": "VEG",
+                                      "cuisineStyle": "INDIAN",
+                                      "price": 125.5,
+                                      "description": "British style nadan biriyani",
+                                      "bestSeller": true,
+                                      "inStock": true,
+                                      "rating": 3.5,
+                                      "numberOfRatings": 17,
+                                      "dishImageUrl": "https://aws.proximety.io/s3/image1.jpg",
+                                    },
+                                    "addedCustomizations": [
+                                      {
+                                        "addOnId": "123",
+                                        "addOnName": "Almond Milk",
+                                        "price": 30,
+                                        "cuisineType": "VEG",
+                                        "inStock": true
+                                      }
+                                    ],
+                                    "addedVariants": [
+                                      {
+                                        "dishVariantId": "123",
+                                        "variantName": "Half Biriyani",
+                                        "price": 100,
+                                        "inStock": true
+                                      }
+                                    ]
+                                  }
+                                ],
+                                "orderWorkflow": [
+                                  {
+                                    "sequenceId": 1,
+                                    "orderStatus": "ORDER_RECEIVED",
+                                    "stepStartTime": "3:10",
+                                    "stepEndTime": "3:15"
+                                  }
+                                ]
+                              }
+                            ]
+                          }
         "500":
           description: Error
   /foodcourt/orders/_query:
@@ -839,6 +899,66 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Orders'
+              example:
+                {
+                  "orders": [
+                    {
+                      "orderId": "123",
+                      "orderPlacedTime": "2021-10-20 10:00",
+                      "expectedDeliveryTime": "2021-10-20 11:00",
+                      "otp": 5678,
+                      "preparationTime": 30,
+                      "restaurantId": "123",
+                      "appliedOfferId": "123",
+                      "amount": 100,
+                      "orderItems": [
+                        {
+                          "dish": {
+                            "dishId": "123",
+                            "restaurantId": "123",
+                            "dishName": "Chicken Biriyani",
+                            "dishType": "MAIN_COURSE",
+                            "dishCategory": "BIRIYANI",
+                            "cuisineType": "VEG",
+                            "cuisineStyle": "INDIAN",
+                            "price": 125.5,
+                            "description": "British style nadan biriyani",
+                            "bestSeller": true,
+                            "inStock": true,
+                            "rating": 3.5,
+                            "numberOfRatings": 17,
+                            "dishImageUrl": "https://aws.proximety.io/s3/image1.jpg",
+                          },
+                          "addedCustomizations": [
+                            {
+                              "addOnId": "123",
+                              "addOnName": "Almond Milk",
+                              "price": 30,
+                              "cuisineType": "VEG",
+                              "inStock": true
+                            }
+                          ],
+                          "addedVariants": [
+                            {
+                              "dishVariantId": "123",
+                              "variantName": "Half Biriyani",
+                              "price": 100,
+                              "inStock": true
+                            }
+                          ]
+                        }
+                      ],
+                      "orderWorkflow": [
+                        {
+                          "sequenceId": 1,
+                          "orderStatus": "ORDER_RECEIVED",
+                          "stepStartTime": "3:10",
+                          "stepEndTime": "3:15"
+                        }
+                      ]
+                    }
+                  ]
+            }
         "500":
           description: Error
   /foodcourt/orders/{orderId}:
@@ -1240,8 +1360,8 @@ paths:
     patch: 
       tags:
         - Restaurant
-      summary: Update offline status of a restaurant
-      description: Update offline status of a restaurant.
+      summary: Update online/offline status of a restaurant
+      description: Update online/offline status of a restaurant.
       operationId: updateOffline
       parameters:
         - name: restaurantId
@@ -1256,7 +1376,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UpdateRestaurantOpenStatus'
+              $ref: '#/components/schemas/UpdateRestaurantStatus'
       responses:
         "200":
           description: Successful operation
@@ -1394,6 +1514,22 @@ paths:
                 $ref: '#/components/schemas/Dish'
         "500":
           description: Error
+  /foodcourt/search/history:
+    get: 
+      tags:
+        - Search
+      summary: Returns search history
+      description: Returns search history of the user
+      operationId: getSearchHistory
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchHistory'
+        "500":
+          description: Error  
   /foodcourt/search/suggestions:
     get: 
       tags:
@@ -1585,8 +1721,6 @@ components:
         restaurantOpen:
           type: boolean
           description: Indivated whether restaurant is open or closed.
-        cuisineType:
-          $ref: '#/components/schemas/CuisineTypeEnum'
         bankAccount:
           $ref: '#/components/schemas/BankAccount'
     Dishes:
@@ -1853,7 +1987,7 @@ components:
           description: Coupon for the offer.
         runningTime:
            type: string
-           example: 3.15 PM
+           example: 20:15 
         runningDays:
            $ref: '#/components/schemas/OfferDaysEnum'
         status:
@@ -1960,11 +2094,11 @@ components:
           description: Order Id.
         orderPlacedTime:
           type: string  
-          example: '20/10/2021 10:00'
+          example: '2021-10-20 10:00'
           description: Order date.
         expectedDeliveryTime:
           type: string  
-          example: '20/10/2021 11:00'
+          example: '2021-10-20 11:00'
           description: Order date.
         otp: 
           type: integer
@@ -2032,12 +2166,8 @@ components:
           type: integer  
           example: 1
           description: Sequence Id.
-        status:
+        orderStatus:
           $ref: '#/components/schemas/OrderStatusEnum'
-        message:
-          type: string
-          example: Your order is ready
-          description: Message.
         stepStartTime:
           type: string
           example: 3:10 
@@ -2046,7 +2176,7 @@ components:
           type: string
           example: 3:15
           description: Step end time. Present only if the step is completed.
-    UpdateRestaurantOpenStatus:  
+    UpdateRestaurantStatus:  
       type: object
       properties:
         online:
@@ -2059,7 +2189,7 @@ components:
           $ref: '#/components/schemas/BackOnlineStrategyEnum'
         backOnlineTime:
           type: string
-          example: '10/10/2021 10:00 AM'
+          example: '2021-10-20 10:00'
           description: Back online time. Pass this only if the backOnlineStrategy is SPECIFIC_DATE_AND_TIME.
     PhoneNumber: 
       type: object
@@ -2108,6 +2238,14 @@ components:
           type: number
           example: 30
           description: Preparation time (in minutes). Default 10 min. Pass this value only for CONFIRMED_AND_PREPARING_ORDER step.
+    SearchHistory:
+      type: object
+      properties:
+        recentSearches:
+          type: array
+          example: ["Biriyani", "paragon hotel"]
+          items:
+            type: string
     SearchSuggestions:
       type: object
       properties:
@@ -2133,6 +2271,9 @@ components:
           type: string
           example: "123"
           description: Restaurant Id. Present if suggestionType is RESTAURANT.
+        restaurantName:
+          type: string
+          example: "Paragon"
         restaurantImageUrl:
           type: string
           example: https://aws.proximety.io/s3/image1.jpg
@@ -2158,10 +2299,10 @@ components:
       properties:
         startDate:
           description: Start date.
-          example: '20/10/2020 10:10'
+          example: '2020-10-20'
         endDate:
           description: End date.
-          example: '20/10/2020 10:10'
+          example: '2020-10-22'
         restaurantId:
           type: string
           example: "123"
@@ -2489,17 +2630,17 @@ components:
           example: 1000
         date:
           description: End date.
-          example: '20/10/2020 10:10'
+          example: '2021-10-20 10:10'
     TimeSlabRequest:
       type: object
       description: Request body of analytics
       properties:
         startDate:
           type: string
-          example: '20/10/2020'
+          example: '2021-10-20'
         endDate:
           type: string
-          example: '25/10/2020'
+          example: '2021-10-20'
         timeSlab:
           $ref: '#/components/schemas/TimeSlabEnum'
     Analytics: 
