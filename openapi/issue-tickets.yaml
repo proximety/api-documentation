@@ -6,9 +6,10 @@ info:
     name: Proximety
     url: www.proximety.io
 servers:
-  - url: https://dev.proximety.io/api
-  - url: https://staging.proximety.io/api
-  - url: https://www.proximety.io/api
+  - url: https://app-dev.proximety.io/api
+  - url: https://app-staging.proximety.io/api
+  - url: https://app-patch.proximety.io/api
+  - url: https://app.proximety.io/api
 tags:
 - name: Issue Ticket
   
@@ -32,7 +33,7 @@ paths:
             example: {
                         "userId": "eejash12==",
                         "userType": "CUSTOMER",
-                        "type": "PAYMENT",
+                        "issueType": "PAYMENT",
                         "description": "Order confirmation failed for order# 121 but th payment was processed. Please review and resolve.",
                       }
       responses:
@@ -222,7 +223,7 @@ paths:
                       "detail": "The specified access token has expired. Please try again with an active access token.",
                       "tags":[]
                     }
-  /issue-tickets/_search:
+  /issue-tickets/_query:
     post: 
       tags:
         - "Search"
@@ -306,12 +307,12 @@ components:
       type: object
       description: The search filters based on which a list of issue tickets are to be retrieved.
       properties:
-        userIdFilter:
-          type: array
-          items:
-            type: string
-            description: The user id.
-            example: ahfh1233njhs
+        # userIdFilter:
+        #   type: array
+        #   items:
+        #     type: string
+        #     description: The user id.
+        #     example: ahfh1233njhs
         userTypeFilter:
           type: array
           items:
@@ -342,23 +343,23 @@ components:
             - PAYMENT
             - OTHER
           example: [PAYMENT, OTHER]
-        sortBy:
-          type: string
-          description: The criteria based on which the results need to be supported.
-          example: DATE_LAUNCHED
-          enum:
-            - DATE_LAUNCHED
-            - POPULARITY
-        offset:
+        # sortBy:
+        #   type: string
+        #   description: The criteria based on which the results need to be supported.
+        #   example: DATE_LAUNCHED
+        #   enum:
+        #     - DATE_LAUNCHED
+        #     - POPULARITY
+        page:
           type: integer
           description: The search offset for doing paginated search.
           example: 20
           default: 0
-        limit: 
+        size: 
           type: integer
           description: The page size for doing paginated search
           example: 10
-          default: 10 
+          default: 10
     IssueTicket: 
         type: object
         description: The details related to an issue ticket raised by a user.
@@ -383,7 +384,7 @@ components:
             enum:
               - CUSTOMER
               - RESTAURANT
-          type:
+          issueType:
             type: string
             description: The issue type for the issue ticket raised by a user.
             enum:
