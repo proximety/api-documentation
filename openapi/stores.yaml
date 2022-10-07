@@ -7,9 +7,10 @@ info:
     name: Proximety
     url: www.proximety.io
 servers:
-  - url: https://dev.proximety.io/api
-  - url: https://staging.proximety.io/api
-  - url: https://www.proximety.io/api
+  - url: https://app-dev.proximety.io/api
+  - url: https://app-staging.proximety.io/api
+  - url: https://app-patch.proximety.io/api
+  - url: https://app.proximety.io/api
 tags:
 - name: Stores
 # - name: User
@@ -937,17 +938,6 @@ components:
     StoreSearchRequest:
       type: object
       description: The search filters based on which a list of stores are to be retrieved.
-      example: {
-                "query": "",
-                "storeIds": [
-                ],
-                "storeCategories": [
-                  "APPAREL"
-                ],
-                "sortBy": "DATE_LAUNCHED_DESC",
-                "page": 0,
-                "size": 10
-              }
       properties:
         query: 
           type: string
@@ -971,25 +961,12 @@ components:
             description: The store category.
             example: FOOTWEAR
             enum: 
-             - DEFAULT
-             - FOOTWEAR
-             - APPAREL
-             - JEWELLERY
-             - LUXURY
-             - ELECTRONICS
-             - COSMETICS
-             - WATCHES
-             - DECOR
-             - FASHION_MEN
-             - FASHION_WOMEN
-             - FASHION_KIDS
-             - TOYS
-             - BOOKS
-             - SALON_AND_SPA
-             - BAGS_AND_LUGGAGE
-             - DEPARTMENT_STORE
-             - HYPERMARKET
-          example: [APPAREL]
+            - FOOTWEAR
+            - APPARELS
+            - SUPERMARKET
+            - JEWELLERY
+            - FASHION
+          example: [FOOTWEAR, APPARELS]
         sortBy:
           type: string
           description: The sort criteria to be applied when searching for stores. if no value is specified, then the search will be performed alphabetically.
@@ -1060,25 +1037,10 @@ components:
             type: string
             description: The category to which the store belongs.
             example: 
-            enum: 
-             - DEFAULT
-             - FOOTWEAR
-             - APPAREL
-             - JEWELLERY
-             - LUXURY
-             - ELECTRONICS
-             - COSMETICS
-             - WATCHES
-             - DECOR
-             - FASHION_MEN
-             - FASHION_WOMEN
-             - FASHION_KIDS
-             - TOYS
-             - BOOKS
-             - SALON_AND_SPA
-             - BAGS_AND_LUGGAGE
-             - DEPARTMENT_STORE
-             - HYPERMARKET
+            enum:
+              - APPAREL
+              - FASHION
+              - SHOES
         storeSizeInSqFt:
           type: integer
           description: The size of the store in square feet.
@@ -1140,25 +1102,10 @@ components:
             type: string
             description: The category to which the store belongs.
             example: 
-            enum: 
-             - DEFAULT
-             - FOOTWEAR
-             - APPAREL
-             - JEWELLERY
-             - LUXURY
-             - ELECTRONICS
-             - COSMETICS
-             - WATCHES
-             - DECOR
-             - FASHION_MEN
-             - FASHION_WOMEN
-             - FASHION_KIDS
-             - TOYS
-             - BOOKS
-             - SALON_AND_SPA
-             - BAGS_AND_LUGGAGE
-             - DEPARTMENT_STORE
-             - HYPERMARKET
+            enum:
+              - APPAREL
+              - FASHION
+              - SHOES
         brandLogo:
           type: string
           description: The URL to the brand logo image. 
@@ -1234,4 +1181,4 @@ components:
           description: The varios tags associated with the error that provides additional information about the error.
           items: 
             type: string
-            example: ACCESS_TOKEN_INVALID
+            example: ACCESS_TOKEN_INVALID  
