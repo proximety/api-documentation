@@ -1184,6 +1184,18 @@ components:
             type: string
             description: The internal system identifier for the offer
             example: 371890273gghg
+        storeIds: 
+          type: array
+          items:
+            type: string
+            description: The internal system identifier for the offer
+            example: 371890273gghg
+        restaurantIds: 
+          type: array
+          items:
+            type: string
+            description: The internal system identifier for the offer
+            example: 371890273gghg
         status:
           type: array
           items:
@@ -1568,6 +1580,18 @@ components:
             type: string
             description: The internal system identifier for the offer
             example: 371890273gghg
+        storeIds: 
+          type: array
+          items:
+            type: string
+            description: The internal system identifier for the offer
+            example: 371890273gghg
+        restaurantIds: 
+          type: array
+          items:
+            type: string
+            description: The internal system identifier for the offer
+            example: 371890273gghg
         status:
           type: array
           items:
@@ -1700,4 +1724,3 @@ components:
           type: string
           description: The URL link to the resource.
           example: http://dev.proximety.io/api/offers/abruishj293jjs
-    
