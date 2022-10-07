@@ -446,37 +446,37 @@ paths:
             schema:
               $ref: '#/components/schemas/Dish'
             example:
-                  {
-                    "restaurantId": "123",
-                    "dishName": "Chicken Biriyani",
-                    "dishType": "MAIN_COURSE",
-                    "dishCategory": "BIRIYANI",
-                    "cuisineType": "VEG",
-                    "cuisineStyle": "INDIAN",
-                    "price": 125.5,
-                    "description": "British style nadan biriyani",
-                    "bestSeller": true,
-                    "inStock": true,
-                    "dishImageUrl": "https://aws.proximety.io/s3/image1.jpg",
-                    "addOnGroups": [
-                      {
-                        "addOnGroupId": 123,
-                      }
-                    ],
-                    "dishVariantGroups": [
-                      {
-                        "variantGroupName": "Quantity",
-                        "variantPrice": [
-                          {
-                            "dishVariantId": "123",
-                            "variantName": "Half Biriyani",
-                            "price": 100,
-                            "inStock": true
-                          }
-                        ]
-                      }
-                    ]
-                  }
+                {
+                  "restaurantId": "b30a6100-1e2d-43a7-b301-bd0fda7571c2",
+                  "dishName": "CHICKOO",
+                  "dishType": "STARTER",
+                  "dishCategory": "COFFEE",
+                  "cuisineType": "VEG",
+                  "cuisineStyle": "INDIAN",
+                  "price": 125.5,
+                  "description": "British style nadan biriyani",
+                  "bestSeller": true,
+                  "inStock": true,
+                  "dishImageUrl": "https://aws.proximety.io/s3/image1.jpg",
+                  "addOnGroups": [
+                    {
+                      "addOnGroupId": "3dc0965f-7281-4433-b04b-c228eeccc9b5"
+                    }
+                  ],
+                  "dishVariantGroups": [
+                    {
+                      "variantGroupName": "Quantity",
+                      "dishVariants": [
+                        {
+                          "dishVariantId": "123",
+                          "variantName": "Half Biriyani",
+                          "price": 100,
+                          "inStock": true
+                        }
+                      ]
+                    }
+                  ]
+                }
       responses:
         "200":
           description: Successful operation
@@ -507,6 +507,61 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Dish'
+            example:
+              {
+                "dishId": "a7d8e5c3-bc24-4904-a193-62002fdb48fb",
+                "restaurantId": "b30a6100-1e2d-43a7-b301-bd0fda7571c2",
+                "dishName": "CHICKOO",
+                "dishType": "STARTER",
+                "dishCategory": "COFFEE",
+                "cuisineType": "VEG",
+                "cuisineStyle": "INDIAN",
+                "price": 125.5,
+                "description": "British style nadan biriyani",
+                "rating": 0.0,
+                "numberOfRatings": 0,
+                "dishImageUrl": null,
+                "dishVariantGroups": [
+                    {
+                        "dishVariantGroupId": "5573b176-963e-4dff-84cf-3048aadbe904",
+                        "variantGroupName": "Quantity",
+                        "dishVariants": [
+                            {
+                                "dishVariantId": "123",
+                                "variantName": "Half Biriyani",
+                                "price": 100.0,
+                                "inStock": false
+                            },
+                            {
+                                "variantName": "Full Biriyani",
+                                "price": 100.0,
+                                "inStock": false
+                            }
+                        ]
+                    }
+                ],
+                "addOnGroups": [
+                    {
+                        "addOnGroupId": "46e70a41-7b3c-4295-b088-e25a5441b5cf",
+                        "addOnGroupName": "toppings",
+                        "restaurantId": "b30a6100-1e2d-43a7-b301-bd0fda7571c2",
+                        "minimumValue": 0.0,
+                        "maximumValue": 0.0,
+                        "addOns": [
+                            {
+                                "addOnId": "4d64f6fe-a89f-4e31-a41f-02e6afa7cd3a",
+                                "addOnName": "Almond Milk",
+                                "price": 30.0,
+                                "cuisineType": null,
+                                "inStock": true
+                            }
+                        ],
+                        "inStock": true
+                    }
+                ],
+                "inStock": true,
+                "bestSeller": true
+            }
       responses:
         "200":
           description: Successful operation
@@ -689,6 +744,26 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Combo'
+            example:
+              {
+                "comboName": "Celebration Combo",
+                "comboImageUrl": "https://aws.proximety.io/s3/image1.jpg",
+                "comboDescription": "1 biriyani + 1 drink",
+                "price": 500,
+                "bestSeller": true,
+                "comboCategories": [
+                  {
+                    "comboCategoryName": "Biriyan4",
+                    "items": [
+                      {
+                        "restaurantId": "b30a6100-1e2d-43a7-b301-bd0fda7571c2",
+                        "dishId": "c6fdb497-5e17-49f9-95b4-3a9268af8ef5",
+                        "dishVariantId": "eab4c442-477e-458b-b106-a6d6345738aa"
+                      }
+                    ]
+                  }
+                ]
+              }
       responses:
         "200":
           description: Successful operation
@@ -1134,6 +1209,19 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Offer'
+            example:
+              {
+                "discountPercentage": 15,
+                "maxCap": 150,
+                "userType": "ALL_USERS",
+                "campaignStartDate": "2022-10-10 10:10",
+                "items": [
+                    "7ab8028c-b799-4f48-890c-c222",
+                    "7c650655-229e-46ab-a211-777f2222"
+                ],
+                "couponCode": "2222222",
+                "runningDays": "FRIDAY"
+            }
       responses:
         "200":
           description: Successful operation
@@ -1234,7 +1322,6 @@ paths:
               $ref: '#/components/schemas/Offer'
             example: 
               {
-                "offerId": "123",
                 "status": "INACTIVE"
               }
       responses:
@@ -1477,34 +1564,6 @@ paths:
                 file:
                   type: string
                   format: binary
-      responses:
-        "200":
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Dish'
-        "500":
-          description: Error
-    delete: 
-      tags:
-        - File Upload
-      summary: Delete dish files 
-      description: Delete dish files 
-      operationId: deleteDishFile
-      parameters:
-        - name: fileCategory
-          in: query
-          required: true
-          schema:
-            $ref: '#/components/schemas/DishFileCategoryEnum'
-        - name: dishId
-          required: true
-          in: path
-          description: Dish Id.
-          example: "123"
-          schema:
-            type: string
       responses:
         "200":
           description: Successful operation
@@ -2006,9 +2065,13 @@ components:
     OfferDaysEnum:
       type: string
       enum:
-         - MON
-         - TUE
-         - WED
+         - MONDAY
+         - TUESDAY
+         - WEDNESDAY
+         - THURSDAY
+         - FRIDAY
+         - SATURDAY
+         - SUNDAY
     Reviews:      
       type: object
       properties:
