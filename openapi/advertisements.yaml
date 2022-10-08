@@ -508,7 +508,27 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/OfferDetails'
+            example:  {
+                          "id": "371827398ghjh",
+                          "title": "Adidas - Buy 1 get 20% off",
+                          "ownerDetails": {
+                            "ownerId": "88d899132",
+                            "ownerType": "STORE"
+                          },
+                          "proposedLandingPage": "DETAILS_PAGE",
+                          "status": "PENDING_APPROVAL",
+                          "cardContent": {
+                            "topText": "Buy 1",
+                            "bottomText": "Get 20% off"
+                          },
+                          "color": "BLUE",
+                          "couponCode": "XAPy123",
+                          "startDate": "2022-05-12",
+                          "endDate": "2022-06-15",
+                          "termsAndConditions": "This voucher is valid only in exclusive stores of Adidas."
+                        }
         required: true
+        
       responses:
         "200":
           description: Successful operation
@@ -626,6 +646,24 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/OfferDetails'
+            example: {
+                      "title": "Adidas - Buy 1 get 20% off",
+                      "ownerDetails": {
+                        "ownerId": "88d899132",
+                        "ownerType": "STORE"
+                      },
+                      "proposedLandingPage": "DETAILS_PAGE",
+                      "status": "PENDING_APPROVAL",
+                      "cardContent": {
+                        "topText": "Buy 1",
+                        "bottomText": "Get 20% off"
+                      },
+                      "color": "BLUE",
+                      "couponCode": "XAPy123",
+                      "startDate": "2022-05-12",
+                      "endDate": "2022-06-15",
+                      "termsAndConditions": "This voucher is valid only in exclusive stores of Adidas."
+                    }
         required: true
       responses:
         "200":
@@ -829,7 +867,7 @@ paths:
         content:
           application/json:
             schema:
-                $ref: '#/components/schemas/PromotedBanners'
+                $ref: '#/components/schemas/PromotedBannersRequest'
       responses:
         "200":
           description: Successful operation
@@ -917,7 +955,7 @@ paths:
         content:
           application/json:
             schema:
-                $ref: '#/components/schemas/PromotedOffers'
+                $ref: '#/components/schemas/PromotedOffersRequest'
       responses:
         "200":
           description: Successful operation
@@ -1005,7 +1043,7 @@ paths:
         content:
           application/json:
             schema:
-                $ref: '#/components/schemas/PromotedStores'
+                $ref: '#/components/schemas/PromotedStoresRequest'
       responses:
         "200":
           description: Successful operation
@@ -1093,7 +1131,7 @@ paths:
         content:
           application/json:
             schema:
-                $ref: '#/components/schemas/PromotedStores'
+                $ref: '#/components/schemas/PromotedStoresRequest'
       responses:
         "200":
           description: Successful operation
@@ -1130,6 +1168,22 @@ paths:
                }
 components:
   schemas:
+    
+    PromotedStoresRequest: 
+      type: object 
+      description: The list of promoted stores. (Max size - 5)
+      properties:
+        stores:
+          type: array
+          description: The list of promoted stores.
+          items:
+            type: object
+            description: The promoted store
+            properties:
+              id: 
+                type: string
+                description: The internal system identifier for the store.
+                example: 37813679djj
     PromotedStores: 
       type: object 
       description: The list of promoted stores. (Max size - 5)
@@ -1149,6 +1203,31 @@ components:
                 type: string
                 description: The store name.
                 example: Adidas.
+              brandLogoUrl: 
+                type: string
+                description: The brand logo url.
+                example: https://s3.ap-south-1.amazonaws.com/proximety.io/profile-pictures-dev/d5b37874-6c6f-43cf-ad3c-f306cb2d360a.png
+              storeImageUrl: 
+                type: string
+                description: The store image url.
+                example: https://s3.ap-south-1.amazonaws.com/proximety.io/profile-pictures-dev/d5b37874-6c6f-43cf-ad3c-f306cb2d360a.png
+              location:
+                type: object
+                description: The location of the store within a shopping mall.
+                $ref: "#/components/schemas/FloorDetails"
+
+    FloorDetails:
+      type: object
+      description: The details of a floor in a shopping mall.
+      properties:
+        floorId: 
+          type: integer
+          description: The internal system identifier for a floor.
+          example: 1
+        name: 
+          type: string
+          description: The name for the floor.
+          example: Ground floor
     BannerSearchResponse:
       type: object
       description: The banner search response that contains the list of banners matching the search criteria.
@@ -1336,6 +1415,22 @@ components:
           type: string
           description: The URL for the image associated with the banner.
           example: https://s3.ap-south-1.amazonaws.com/proximety.io/profile-pictures-dev/d5b37874-6c6f-43cf-ad3c-f306cb2d360a.png
+      example: {
+                "id": "37182396hcfh1738",
+                "title": "Indigo Nation - Buy 2 get 2 free, Buy 1 get 20% off",
+                "ownerDetails": {
+                  "ownerId": "88d899132",
+                  "ownerType": "STORE"
+                },
+                "proposedLandingPage": "DETAILS_PAGE",
+                "category": "APPARELS",
+                "status": "PENDING_APPROVAL",
+                "couponCode": "XDgh123",
+                "startDate": "2022-05-17",
+                "endDate": "2022-05-17",
+                "termsAndConditions": "1. This voucher is valid until 10 days from the date of purchase.",
+                "bannerImageUrl": "https://s3.ap-south-1.amazonaws.com/proximety.io/profile-pictures-dev/d5b37874-6c6f-43cf-ad3c-f306cb2d360a.png"
+              }
     BannerCreationRequest:
       type: object
       description: The request for creating a new ad banner in the platform.
@@ -1397,6 +1492,19 @@ components:
           type: string
           description: The html formatted terms and conditions tied to the banner being created.
           example: 1. This voucher is valid until 10 days from the date of purchase.
+      example: {
+                "title": "Indigo Nation - Buy 2 get 2 free, Buy 1 get 20% off",
+                "ownerDetails": {
+                  "ownerId": "88d899132",
+                  "ownerType": "STORE"
+                },
+                "proposedLandingPage": "DETAILS_PAGE",
+                "category": "APPARELS",
+                "couponCode": "XDgh123",
+                "startDate": "2022-05-17",
+                "endDate": "2022-05-17",
+                "termsAndConditions": "1. This voucher is valid until 10 days from the date of purchase."
+              }
     OfferCreationRequest:
       type: object
       description: The offer c reation request
@@ -1450,8 +1558,8 @@ components:
         termsAndConditions:
           type: string
           description: The terms and conditions tied to the offer.
-          example: This voucher is valid only in exclusive stores of Adidas.
-    PromotedBanners:
+          example: This voucher is valid only in exclusive stores of Adidas.   
+    PromotedBannersRequest:
       type: object 
       description: The list of promoted banners. (Max size - 5)
       properties:
@@ -1466,11 +1574,29 @@ components:
                 type: string
                 description: The internal system identifier for the banner.
                 example: 37813679djj
-              title:
-                type: string
-                description: The banner title.
-                example: Adidas - Buy 2 get 2 free.
+    PromotedBanners:
+      type: object 
+      description: The list of promoted banners. (Max size - 5)
+      properties:
+        banners:
+          type: array
+          description: The list of promoted banners.
+          items:
+            type: object
+            description: The promoted Banner
+            $ref: "#/components/schemas/BannerDetails" 
     PromotedOffers:
+      type: object 
+      description: The list of promoted offers. (Max size - 10)
+      properties:
+        offers:
+          type: array
+          description: The list of promoted offers.
+          items:
+            type: object
+            description: The promoted offer.
+            $ref: '#/components/schemas/OfferDetails'
+    PromotedOffersRequest:
       type: object 
       description: The list of promoted offers. (Max size - 10)
       properties:
@@ -1485,10 +1611,6 @@ components:
                 type: string
                 description: The internal system identifier for the offer.
                 example: 37813679djj
-              title:
-                type: string
-                description: The offer title.
-                example: Adidas - Buy 2 get 2 free.
     OfferDetails: 
       type: object
       description: The offer c reation request
@@ -1562,6 +1684,29 @@ components:
           type: string
           description: The terms and conditions tied to the offer.
           example: This voucher is valid only in exclusive stores of Adidas.
+      example: 
+                  {
+                    "id": "371827398ghjh",
+                    "title": "Adidas - Buy 1 get 20% off",
+                    "ownerDetails": {
+                      "ownerId": "88d899132",
+                      "ownerType": "STORE",
+                      "name": "Adidas",
+                      "brandImageUrl": "https://s3.ap-south-1.amazonaws.com/proximety.io/profile-pictures-dev/d5b37874-6c6f-43cf-ad3c-f306cb2d360a.png"
+                    },
+                    "proposedLandingPage": "DETAILS_PAGE",
+                    "status": "PENDING_APPROVAL",
+                    "cardContent": {
+                      "topText": "Buy 1",
+                      "bottomText": "Get 20% off"
+                    },
+                    "color": "BLUE",
+                    "couponCode": "XAPy123",
+                    "startDate": "2022-05-12",
+                    "endDate": "2022-06-15",
+                    "termsAndConditions": "This voucher is valid only in exclusive stores of Adidas."
+                  }
+                
     OfferSearchRequest:
       type: object
       description: The search filters based on which a list of offers are to be retrieved.
@@ -1659,6 +1804,18 @@ components:
           enum:
             - STORE
             - RESTAURANT
+        name:
+          type: string
+          description: The name of the owning store/restaurant.
+          example: Adidas
+        brandLogoUrl: 
+          type: string
+          description: The brand image url
+          example: https://s3.ap-south-1.amazonaws.com/proximety.io/profile-pictures-dev/d5b37874-6c6f-43cf-ad3c-f306cb2d360a.png
+        location:
+                type: object
+                description: The location of the store within a shopping mall.
+                $ref: "#/components/schemas/FloorDetails"
         # links:
         #   type: array
         #   items: 
@@ -1724,3 +1881,4 @@ components:
           type: string
           description: The URL link to the resource.
           example: http://dev.proximety.io/api/offers/abruishj293jjs
+    
