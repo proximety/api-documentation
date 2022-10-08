@@ -399,6 +399,179 @@ paths:
                   "detail": "The specified access token has expired. Please try again with an active access token.",
                   "tags":[]
                 }
+  /stores/{storeId}/account-details:
+    post: 
+      tags:
+        - Bank details
+      summary: Update bank account
+      description: Updates the bank account details for the specified store.
+      operationId: updateBankAccount
+      parameters:
+        - name: Authorization
+          in: header
+          description: The authentication bearer token.
+          required: true
+          example: Bearer asd.js2jd9a.gC6paXtNOg0OZL4-adsd-asd
+          schema:
+            type: string
+        - name: storeId
+          in: path
+          required: true
+          description: The internal system identifier for the store whose details are to be fetched.
+          schema:
+            type: string       
+      requestBody:
+        description: The details of the store that needs to be updated.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StoreBankDetails'
+        required: true    
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StoreBankDetails'
+        "400":
+          description: Bad request          
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GlobalException"
+              example: 
+                {
+                  "status": 400,
+                  "type": "BAD_REQUEST",
+                  "title": "Mandatory fields missing from request.",
+                  "detail": "No account number specified for the account. Please specify an account number for the account and try again.",
+                }
+        "404":
+          description: Not found         
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GlobalException"
+              example: 
+                {
+                  "status": 404,
+                  "type": "NOT_FOUND",
+                  "title": "Store not found",
+                  "detail": "No store found for the specified store id. Please specify a valid store id and try again.",
+                }
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GlobalException"
+              example: 
+                {
+                  "status": 403,
+                  "type": "FORBIDDEN",
+                  "title": "Token expired.",
+                  "detail": "The specified access token has expired. Please try again with an active access token.",
+                  "tags":[]
+                }
+    get: 
+      tags:
+        - Bank details
+      summary: Get bank account
+      description: Retrieves the bank account details for the specified store.
+      operationId: getBankAccount
+      parameters:
+        - name: Authorization
+          in: header
+          description: The authentication bearer token.
+          required: true
+          example: Bearer asd.js2jd9a.gC6paXtNOg0OZL4-adsd-asd
+          schema:
+            type: string
+        - name: storeId
+          in: path
+          required: true
+          description: The internal system identifier for the store whose details are to be fetched.
+          schema:
+            type: string        
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StoreBankDetails'
+        "404":
+          description: Not found         
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GlobalException"
+              example: 
+                {
+                  "status": 404,
+                  "type": "NOT_FOUND",
+                  "title": "Store not found",
+                  "detail": "No store found for the specified store id. Please specify a valid store id and try again.",
+                }
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GlobalException"
+              example: 
+                {
+                  "status": 403,
+                  "type": "FORBIDDEN",
+                  "title": "Token expired.",
+                  "detail": "The specified access token has expired. Please try again with an active access token.",
+                  "tags":[]
+                }
+  /stores/bank-accounts:  
+    get: 
+      tags:
+        - Bank details
+      summary: Get bank account by UPI ID
+      description: Gets the bank account details for the specified UPI ID.
+      operationId: GetAccountByUpiId
+      parameters:
+        - name: Authorization
+          in: header
+          description: The authentication bearer token.
+          required: true
+          example: Bearer asd.js2jd9a.gC6paXtNOg0OZL4-adsd-asd
+          schema:
+            type: string
+        - name: upiId
+          in: query
+          required: true
+          description: The UPI ID for the bank whose account details are to be fetched.
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/StoreBankDetails'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GlobalException"
+              example: 
+                {
+                  "status": 403,
+                  "type": "FORBIDDEN",
+                  "title": "Token expired.",
+                  "detail": "The specified access token has expired. Please try again with an active access token.",
+                  "tags":[]
+                }
   # /stores/{storeId}/brand-logo:
   #   put:
   #     tags:
@@ -935,6 +1108,30 @@ components:
               description: The list of stores matching the specified search criteria.
               items:
                 $ref: '#/components/schemas/StoreSummary'
+    StoreBankDetails:
+      type: object
+      description: The bank details for a store.
+      properties:
+        id:
+          type: string
+          description: The internal system identifier for the bank account tied to a store.
+          example: beb5a12f-0b8d-4535-a872-4ec684c2f9c6
+        storeId:
+          type: string
+          description: The internal system identifier of the store tied to the account.
+          example: FFE6EBEF-FF0B-4C24-9430-236A46E82248
+        accountNumber:
+          type: string
+          description: The account number tied to the account.
+          example: 3718813388293
+        accountName:
+          type: string
+          description: The account name tied to the account.
+          example: HiLite Demo account
+        upiId: 
+          type: string
+          description: The UPI ID tied to the account.
+          example: xyz@okhdfcbank
     StoreSearchRequest:
       type: object
       description: The search filters based on which a list of stores are to be retrieved.
@@ -954,6 +1151,13 @@ components:
             type: string
             description: The internal system identifier for the store.
             example: 3781273897hjhj
+        upiIds:
+          type: array
+          description: The list of UPI IDs based on which store details are to be fetched.
+          items:
+            type: string
+            description: The UPI id associated with the store.
+            example: xyz@okhdfcbank
         storeCategories:
           type: array
           items:
@@ -1181,4 +1385,4 @@ components:
           description: The varios tags associated with the error that provides additional information about the error.
           items: 
             type: string
-            example: ACCESS_TOKEN_INVALID  
+            example: ACCESS_TOKEN_INVALID
