@@ -2775,10 +2775,7 @@ components:
           type: string
           description: The refresh token that can be used to regenerate the access token once it has expired.
           example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJ1bV9hY2N
-        needsPasswordReset:
+        needsPasswordUpdate:
           type: string
           description: True indicates that the passowrd needs to be reset for the user, false indicates otherwise.
           example: false
-
-  
-   
