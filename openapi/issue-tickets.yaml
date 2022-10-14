@@ -78,6 +78,14 @@ paths:
       summary: Get issue ticket
       description: Retrieves the details of the specifed issue ticket.
       operationId: getTicketById
+      parameters: 
+        - name: ticketId
+          in: path
+          description: The internal system identifier for the issue ticket,
+          required: true
+          example: 87jd981093888123
+          schema: 
+            type: string
       responses:
         200:
           description: Successful operation
@@ -119,6 +127,14 @@ paths:
       summary: Patch issue ticket
       description: Updates the specified attributes of the issue ticket.
       operationId: patchUpdateIssueTicket
+      parameters: 
+        - name: ticketId
+          in: path
+          description: The internal system identifier for the issue ticket,
+          required: true
+          example: 87jd981093888123
+          schema: 
+            type: string
       requestBody:
         description: Details of the attributes of the issue ticket that needs to be updated.
         required: true
@@ -175,6 +191,14 @@ paths:
       summary: Update issue ticket
       description: Updates the details of the specified issue ticket.
       operationId: updateTicket
+      parameters: 
+        - name: ticketId
+          in: path
+          description: The internal system identifier for the issue ticket,
+          required: true
+          example: 87jd981093888123
+          schema: 
+            type: string
       requestBody:
         description: Details of the issue ticket that needs to be updated.
         required: true
@@ -307,12 +331,12 @@ components:
       type: object
       description: The search filters based on which a list of issue tickets are to be retrieved.
       properties:
-        # userIdFilter:
-        #   type: array
-        #   items:
-        #     type: string
-        #     description: The user id.
-        #     example: ahfh1233njhs
+        userIdFilter:
+          type: array
+          items:
+            type: string
+            description: The user id.
+            example: ahfh1233njhs
         userTypeFilter:
           type: array
           items:
