@@ -13,10 +13,10 @@ servers:
 tags:
 - name: EventsResource
 paths:
-  /events/_search:
+  /events/_query:
     post: 
       tags:
-        - Events Search
+        - Events
       summary: Returns Details of all Events of the Mall.
       operationId: getAdminAddedEvents
       requestBody:
@@ -47,16 +47,26 @@ paths:
       requestBody:
         description: The details of the event to be created.
         content:
-         application/json:
-            schema:
-              $ref: '#/components/schemas/EventRequest'
+         application/form-data:
+             schema:
+                type: object
+                properties:
+                 event:
+                  type: object
+                  $ref: '#/components/schemas/EventRequestDTO'
+                 banner:
+                  format: binary
+                  example: Expects an Image for event banner
+                 poster:
+                  format: binary
+                  example: Expects an Image for event poster
       responses:
         "201":
           description: Event Created successfully
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Event'
+                $ref: '#/components/schemas/EventResponseDTO'
         "400":
           description: Bad request
         "403":
@@ -80,7 +90,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Event'
+                $ref: '#/components/schemas/EventResponseDTO'
         "400":
           description: Bad request
         "403":
@@ -101,13 +111,27 @@ paths:
       requestBody:
        description: The Event Details to be Updated. 
        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/EventRequest'
+            application/form-data:
+             schema:
+                type: object
+                properties:
+                 event:
+                  type: object
+                  $ref: '#/components/schemas/EventRequestDTO'
+                 banner:
+                  format: binary
+                  example: Expects an Image for event banner
+                 poster:
+                  format: binary
+                  example: Expects an Image for event poster
        required: true
       responses:
         "204":
           description: Event Details Successfully Updated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventResponseDTO'
         "400":
           description: Bad request
         "403":
@@ -139,38 +163,34 @@ components:
       type: object
       description: The event search response that contains the list of events matching the search criteria.
       properties:
-        count: 
+        countInCurrentPage: 
           type: integer
           description: The count of events returned in the search response.
           example: 10
-        total: 
+        totalCount: 
           type: integer
           description: The total number of events that match the specified search criteria.
           example: 100
-        _embedded:
-          type: object
+        eventsList:
+          type: array
           description: The embedded search results
-          properties:
-            stores:
-              type: array
-              description: The list of events matching the specified search criteria.
-              items:
-                $ref: '#/components/schemas/Event'
-    Event:
+          items:
+                $ref: '#/components/schemas/EventResponseDTO'
+    EventResponseDTO:
       type: object
       properties:
-       id:
+       eventId:
           type: string
           description: The internal system identifier for the Event.
-          example: ee12jdskdfjhalss==
+          example: 00E7A620-4E8A-4F40-85DC-A1A62DF6D4EA
+       mallId:
+          type: string
+          description: The internal system identifier for the Mall.
+          example: 00E7A620-4E8A-4F40-85DC-A1A62DF6D4EA
        name:
           type: string
           description: Name of the Event.
           example: Womens' day celebration
-       schedule:
-          type: array
-          items:
-           $ref: '#/components/schemas/EventSchedule'
        status:
           type: string
           description: Represents the status of the Event whether its running,gone past or its upcoming.
@@ -179,11 +199,19 @@ components:
             - UPCOMING
             - NOW_RUNNING
             - PAST
-       posterUrl:
+       startDate:
+          type: string
+          description: Filter Events based on its Start Date
+          example: 2023-12-13T23:22:53.000000
+       endDate:
+          type: string
+          description: Filter Events based on its End Date
+          example: 2023-12-13T23:22:53.000000
+       poster:
           type: string
           format: uri
           example: https://dev.proximety.io/images/21423.jpg
-       bannerUrl:
+       banner:
           type: string
           format: uri
           example: https://dev.proximety.io/images/21423.jpg
@@ -191,65 +219,70 @@ components:
           type: string
           description: Gives general Info about the Event.
           example: Womens' day is celebrated 8th March every year.
-    EventSchedule:
-       type: object
-       required:
-         - startDate
-       properties:
-        startDate:
-         type: string
-         description: The date for Event happening on a particular day incase of multi day Events.
-         example: 05/15/2022
-        endDate:
-         type: string
-         description: The date for Event happening on a particular day incase of multi day Events.
-         example: 05/15/2022
-        startTime:
-         type: string
-         description: The time at which Event is scheuled to start for a particular day.
-         example: 2:00pm
-        endTime:
-         type: string
-         description: The time at which Event is scheuled to end for a particular dayt.
-         example: 2:00pm
-    EventRequest:
+       eventType:
+          type: string
+          example: ALL_DAY,MULTI_DAY,SCHEDULED
+          enum:
+              - ALL_DAY
+              - MULTI_DAY
+              - SCHEDULED
+    EventRequestDTO:
       type: object
       properties:
        name:
           type: string
           description: Name of the Event.
           example: Womens' day celebration
-       schedule:
-          type: array
-          items:
-           $ref: '#/components/schemas/EventSchedule'
+       startDate:
+          type: string
+          description: Filter Events based on its Start Date
+          example: 2023-12-13T23:22:53.000000
+       endDate:
+          type: string
+          description: Filter Events based on its End Date
+          example: 2023-12-13T23:22:53.000000
        description:
           type: string
           description: Gives general Info about the Event.
-          example: Womens' day is celebrated 8th March every year.     
+          example: Womens' day is celebrated 8th March every year.    
+       eventType:
+          type: string
+          example: ALL_DAY,MULTI_DAY,SCHEDULED
+          enum:
+              - ALL_DAY
+              - MULTI_DAY
+              - SCHEDULED
     EventSearchRequest:  
       type: object
-      properties:    
-        query: 
-          type: string
-          description: The search string based on which results need to be fetched.
-          example: adi
-        status:
+      properties:   
+        name:
+         type: string
+         description: Filter Events based on its Start Date
+         example: Event 1
+        eventStatuses:
           type: array
           description: A list of event status. Only events having a status specified in the list will be retrieved.
           items:
             type: string
-            example: NOW_RUNNING
+            example: RUNNING,GONEPAST,UPCOMING
             enum:
-              - PAST
-              - NOW_RUNNING
+              - GONEPAST
+              - RUNNING
               - UPCOMING
-        offset:
+        startDate:
+          type: string
+          description: Filter Events based on its Start Date
+          example: 2023-12-13T23:22:53.000000
+        endDate:
+          type: string
+          description: Filter Events based on its End Date
+          example: 2023-12-13T23:22:53.000000
+        page:
           type: integer
           description: The search offset for doing paginated search.
           example: 20
           default: 0
-        limit: 
+        size: 
           type: integer
           description: The page size for doing paginated search
           example: 10
