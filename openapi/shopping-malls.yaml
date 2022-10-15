@@ -150,7 +150,10 @@ components:
      example: {
                 "parkingLots": [
                     {
-                        "floor": "GROUND_FLOOR",
+                        "floor": {
+                "id": 1,
+                "name": "First floor"
+            },
                         "zones": [
                             {
                                 "zone": "A0",
