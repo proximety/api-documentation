@@ -10,7 +10,6 @@ servers:
   - url: https://app-staging.proximety.io/api
   - url: https://app-patch.proximety.io/api
   - url: https://app.proximety.io/api
-tags:
   
 # - name: User
 # - name: Issue Ticket
@@ -50,13 +49,56 @@ paths:
                   "detail": "The specified Email / Password is incorrect. Please specify a valid Email / Password and try again.",
                   "tags":[]
                 }
-  /shopping-malls/auth/logout:
-    post:
+  # /shopping-malls/auth/logout:
+  #   post:
+  #     tags:
+  #       - Authentication
+  #     summary: Log out admin user
+  #     description: Logs out an admin user from the admin platform.
+  #     operationId: logout   
+  #     parameters:
+  #       - name: Authorization
+  #         in: header
+  #         description: The authentication bearer token.
+  #         required: true
+  #         example: Bearer asd.js2jd9a.gC6paXtNOg0OZL4-adsd-asd
+  #         schema:
+  #           type: string
+  #     requestBody:
+  #       description: The details for logging out a user from the admin platform.
+  #       required: true
+  #       content:
+  #         application/json:
+  #           schema:
+  #             $ref: '#/components/schemas/LogoutRequest'
+  #     responses:
+  #       203:
+  #         description: OK
+  #         content:
+  #           application/json:
+  #             schema:
+  #                 $ref: '#/components/schemas/LogoutResponse'
+  #       400:
+  #         description: Bad request
+  #         content:
+  #           application/json:
+  #             schema:
+  #                 $ref: '#/components/schemas/GlobalException'
+  #             example: 
+  #               {
+  #                 "status": 403,
+  #                 "type": "BAD_REQUEST",
+  #                 "title": "User not found",
+  #                 "detail": "The specified user cannot be found.",
+  #                 "tags":[]
+  #               }
+  /shopping-malls:
+    get: 
       tags:
-        - Authentication
-      summary: Log out admin user
-      description: Logs out an admin user from the admin platform.
-      operationId: logout   
+        - Shopping mall
+      summary: Search malls
+      description: Rethrieves the list of malls tied to the proximety platform.
+      operationId: getMalls
       parameters:
         - name: Authorization
           in: header
@@ -65,37 +107,136 @@ paths:
           example: Bearer asd.js2jd9a.gC6paXtNOg0OZL4-adsd-asd
           schema:
             type: string
-      requestBody:
-        description: The details for logging out a user into the admin platform.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/LogoutRequest'
+        - name: areaCode
+          in: query
+          required: false 
+          example: KZD
+          schema:
+           type: string
       responses:
         203:
           description: OK
           content:
             application/json:
               schema:
-                  $ref: '#/components/schemas/LogoutResponse'
-        400:
-          description: Bad request
-          content:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/ShoppingMallDetails'
+  /parking-lots:
+    get: 
+      tags:
+        - Parking
+      summary: Get parking slots
+      description: Retrieves the details of parking slots for the specified shopping mall.
+      parameters:
+        - name: mallId
+          in: path
+          description: The intenal system identifier for the shopping mall whose parking slot details are to be fetched.
+          required: true
+          example: asd.js2jd9a.gC6paXtNOg0OZL4-adsd-asd
+          schema: 
+            type: string
+      responses:
+        200:
+          description: OK
+          content: 
             application/json:
-              schema:
-                  $ref: '#/components/schemas/GlobalException'
-              example: 
-                {
-                  "status": 403,
-                  "type": "BAD_REQUEST",
-                  "title": "User not found",
-                  "detail": "The specified user cannot be found.",
-                  "tags":[]
-                }
-  
+              schema: 
+                $ref: '#/components/schemas/ParkingLotDetails'
+
 components:
   schemas:
+    ParkingLotDetails:
+     type: object
+     description: The details of the parking lots for a mall.
+     properties:
+       parkingLots: 
+        type: array
+        description: The list of parking lots available in a shopping mall.
+        items: 
+          $ref: '#/components/schemas/ParkingLotGroup'
+     example:  { 
+                "parkingLots":[
+                    {
+                        "floor":"GROUND_FLOOR",
+                        "zone": "A0",
+                        "startingSlot":1,
+                        "endingSlot": 20
+                    },
+                    {
+                        "floor":"GROUND_FLOOR",
+                        "zone": "B0",
+                        "startingSlot":1,
+                        "endingSlot": 20
+                    },
+                            {
+                        "floor":"FIRST_FLOOR",
+                        "zone": "A1",
+                        "startingSlot":1,
+                        "endingSlot": 15
+                    },        {
+                        "floor":"FIRST_FLOOR",
+                        "zone": "B1",
+                        "startingSlot":1,
+                        "endingSlot": 25
+                    }
+                ]
+            }
+    ParkingLotGroup:
+      type: object
+      description: The details of a parking lot group.
+      properties:
+        floor: 
+          type: string
+          description: The floor in which the parking lot group is situated.
+          example: GROUND_FLOOR
+          enum:
+            - GROUND_FLOOR
+            - FIRST_FLOOR
+            - SECOND_FLOOR
+            - THIRD_FLOOR
+            - FOURTH_FLOOR
+            - FIFTH_FLOOR
+            - SIXTH_FLOOR
+            - SEVENTH_FLOOR
+            - EIGHTH_FLOOR
+            - MINUS_ONE
+            - MINUS_TWO
+            - DEFAULT
+        zone: 
+          type: string
+          description: The zone name for the parking lot.
+          example: A1 
+        startingSlot: 
+          type: integer
+          description: The starting parking slot number in the zone.
+          example: 1
+        endingSlot:
+          type: integer
+          description: The ending slot number in the zone.
+          example: 20
+    ShoppingMallDetails:
+      type: object
+      description: The details of a shopping mall.
+      properties:
+        id: 
+          type: string
+          description: The internal system identifier for the shopping mall
+          example: 936hdhjhjkh8881jhdja==
+        name: 
+          type: string
+          description: The name of the shopping mall
+          example: HiLite Mall, Kozhikode
+        areaCode:
+          type: string
+          description: The area code associated with the shopping mall.
+          example: KZD
+          enum: 
+            - KZD
+        mallImageUrl:
+          type: string
+          description: The image url for the mall's branding image.
+          example: https://s3.ap-south-1.amazonaws.com/proximety.io/profile-pictures-dev/d5b37874-6c6f-43cf-ad3c-f306cb2d360a.png
     LogoutRequest:
       type: object
       description: The logout request.
