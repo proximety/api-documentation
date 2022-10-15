@@ -396,7 +396,131 @@ paths:
                   "detail": "The specified access token has expired. Please try again with an active access token.",
                   "tags":[]
                 }
-  //users/{userId}/store-purchases:
+  /users/{userId}/parked-vehicles:
+    get: 
+      tags:
+        - Parking
+      summary: Get parked vehicles
+      description: Retrieves the list of parked vehicles for the user in the shopping mall.
+      parameters:
+        - name: Authorization
+          in: header
+          description: The authentication bearer token.
+          required: true
+          example: Bearer asd.js2jd9a.gC6paXtNOg0OZL4-adsd-asd
+          schema:
+            type: string
+        - name: userId
+          in: path
+          description: The internal system handle for the user.
+          required: true
+          schema:
+            type: string
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ParkedVehicle'
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GlobalException"
+              example: 
+                {
+                  "status": 403,
+                  "type": "NOT_FOUND",
+                  "title": "User not found",
+                  "detail": "No user found for the specified user id.",
+                  "tags":[]
+                }
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GlobalException"
+              example: 
+                {
+                  "status": 403,
+                  "type": "FORBIDDEN",
+                  "title": "Token expired.",
+                  "detail": "The specified access token has expired. Please try again with an active access token.",
+                  "tags":[]
+                }
+    post:
+      tags:
+        - Parking
+      summary: Add parked vehicle 
+      description: Captures the parking lot details for a parked vehicle in a shopping mall.
+      parameters:
+        - name: Authorization
+          in: header
+          description: The authentication bearer token.
+          required: true
+          example: Bearer asd.js2jd9a.gC6paXtNOg0OZL4-adsd-asd
+          schema:
+            type: string
+        - name: userId
+          in: path
+          description: The internal system handle for the user.
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Details of the parked vehicle and parking lot.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ParkedVehicle'
+            example: {
+                      "vehicleType": "CAR",
+                      "parkingLotDetails": {
+                        "lotId": "67hdjd73.389dhd"
+                      }
+                    }
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ParkedVehicle'
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GlobalException"
+              example: 
+                {
+                  "status": 403,
+                  "type": "NOT_FOUND",
+                  "title": "User not found",
+                  "detail": "No user found for the specified user id.",
+                  "tags":[]
+                }
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GlobalException"
+              example: 
+                {
+                  "status": 403,
+                  "type": "FORBIDDEN",
+                  "title": "Token expired.",
+                  "detail": "The specified access token has expired. Please try again with an active access token.",
+                  "tags":[]
+                }
+  /users/{userId}/store-purchases:
     get:
       tags:
         - Shopping
@@ -935,6 +1059,52 @@ components:
           type: array
           items: 
             $ref: '#/components/schemas/Link'
+    ParkedVehicle: 
+      type: object
+      description: The vehicle and parking lot details for a parked vehicle.
+      properties:
+        vehicleType: 
+          type: string
+          description: The type of vehicle parked in the parking solutions.
+          example: CAR 
+          enum:
+            - CAR
+            - BIKE
+        parkingLotDetails:
+          type: object
+          required:
+            - lotId
+          description: The details of the parking lot.
+          properties:
+            lotId:
+              type: string
+              description: The internal system identifier for the parking lot.
+              example: 67hdjd73.389dhd
+            lotName:
+              type: string
+              description: The name for the parking lot.
+              example: A0-1
+            zone:
+              type: string
+              description: The zone name for the parking lot.
+              example: A0
+            floor:
+              type: string
+              description: The floor for the parking lot.
+              example: GROUND_FLOOR
+              enum:
+              - GROUND_FLOOR
+              - FIRST_FLOOR
+              - SECOND_FLOOR
+              - THIRD_FLOOR
+              - FOURTH_FLOOR
+              - FIFTH_FLOOR
+              - SIXTH_FLOOR
+              - SEVENTH_FLOOR
+              - EIGHTH_FLOOR
+              - MINUS_ONE
+              - MINUS_TWO
+              - DEFAULT
     GlobalException:
       type: object
       description: An exception thrown by the system.
