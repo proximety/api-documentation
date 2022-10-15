@@ -486,12 +486,69 @@ paths:
                       }
                     }
       responses:
-        '201':
-          description: Created
+        '200':
+          description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ParkedVehicle'
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GlobalException"
+              example: 
+                {
+                  "status": 403,
+                  "type": "NOT_FOUND",
+                  "title": "User not found",
+                  "detail": "No user found for the specified user id.",
+                  "tags":[]
+                }
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GlobalException"
+              example: 
+                {
+                  "status": 403,
+                  "type": "FORBIDDEN",
+                  "title": "Token expired.",
+                  "detail": "The specified access token has expired. Please try again with an active access token.",
+                  "tags":[]
+                }
+  /users/{userId}}/parked-vehicles/{parkedVehicleId}:
+    delete: 
+      tags:
+        - Parking
+      summary: Remove parked vehicle
+      description: Removes a parked vehicle from its parking slot.
+      parameters:
+        - name: Authorization
+          in: header
+          description: The authentication bearer token.
+          required: true
+          example: Bearer asd.js2jd9a.gC6paXtNOg0OZL4-adsd-asd
+          schema:
+            type: string
+        - name: userId
+          in: path
+          description: The internal system handle for the user.
+          required: true
+          schema:
+            type: string
+        - name: parkedVehicleId
+          in: path
+          description: The internal system handle for the parked vehicle.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
         "404":
           description: Not found
           content:
@@ -1089,22 +1146,19 @@ components:
               description: The zone name for the parking lot.
               example: A0
             floor:
-              type: string
-              description: The floor for the parking lot.
-              example: GROUND_FLOOR
-              enum:
-              - GROUND_FLOOR
-              - FIRST_FLOOR
-              - SECOND_FLOOR
-              - THIRD_FLOOR
-              - FOURTH_FLOOR
-              - FIFTH_FLOOR
-              - SIXTH_FLOOR
-              - SEVENTH_FLOOR
-              - EIGHTH_FLOOR
-              - MINUS_ONE
-              - MINUS_TWO
-              - DEFAULT
+              $ref: '#/components/schemas/FloorDetails'
+    FloorDetails:
+      type: object
+      description: The details of a floor in a shopping mall.
+      properties:
+        floorId: 
+          type: integer
+          description: The internal system identifier for a floor.
+          example: 0
+        name: 
+          type: string
+          description: The name for the floor.
+          example: Ground floor    
     GlobalException:
       type: object
       description: An exception thrown by the system.
