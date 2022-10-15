@@ -128,14 +128,6 @@ paths:
         - Parking
       summary: Get parking slots
       description: Retrieves the details of parking slots for the specified shopping mall.
-      parameters:
-        - name: mallId
-          in: path
-          description: The intenal system identifier for the shopping mall whose parking slot details are to be fetched.
-          required: true
-          example: asd.js2jd9a.gC6paXtNOg0OZL4-adsd-asd
-          schema: 
-            type: string
       responses:
         200:
           description: OK
@@ -154,41 +146,255 @@ components:
         type: array
         description: The list of parking lots available in a shopping mall.
         items: 
-          $ref: '#/components/schemas/ParkingLotGroup'
-     example:  { 
-                "parkingLots":[
+          $ref: '#/components/schemas/ParkingLotFloor'
+     example: {
+                "parkingLots": [
                     {
-                        "floor":"GROUND_FLOOR",
-                        "zone": "A0",
-                        "startingSlot":1,
-                        "endingSlot": 20
-                    },
-                    {
-                        "floor":"GROUND_FLOOR",
-                        "zone": "B0",
-                        "startingSlot":1,
-                        "endingSlot": 20
-                    },
+                        "floor": "GROUND_FLOOR",
+                        "zones": [
                             {
-                        "floor":"FIRST_FLOOR",
-                        "zone": "A1",
-                        "startingSlot":1,
-                        "endingSlot": 15
-                    },        {
-                        "floor":"FIRST_FLOOR",
-                        "zone": "B1",
-                        "startingSlot":1,
-                        "endingSlot": 25
+                                "zone": "A0",
+                                "lots": [
+                                    {
+                                        "lotId": "duhh17321783987189",
+                                        "name": "A1-1"
+                                    },
+                                    {
+                                        "lotId": "duhh17321783987189",
+                                        "name": "A1-2"
+                                    },
+                                    {
+                                        "lotId": "duhh17321783987189",
+                                        "name": "A1-3"
+                                    },
+                                    {
+                                        "lotId": "duhh17321783987189",
+                                        "name": "A1-4"
+                                    },
+                                    {
+                                        "lotId": "duhh17321783987189",
+                                        "name": "A1-5"
+                                    },
+                                    {
+                                        "lotId": "duhh17321783987189",
+                                        "name": "A1-6"
+                                    },
+                                    {
+                                        "lotId": "duhh17321783987189",
+                                        "name": "A1-7"
+                                    },
+                                    {
+                                        "lotId": "duhh17321783987189",
+                                        "name": "A1-8"
+                                    },
+                                    {
+                                        "lotId": "duhh17321783987189",
+                                        "name": "A1-9"
+                                    },
+                                    {
+                                        "lotId": "duhh17321783987189",
+                                        "name": "A1-10"
+                                    },
+                                    {
+                                        "lotId": "duhh17321783987189",
+                                        "name": "A1-11"
+                                    },
+                                    {
+                                        "lotId": "duhh17321783987189",
+                                        "name": "A1-12"
+                                    },
+                                    {
+                                        "lotId": "duhh17321783987189",
+                                        "name": "A1-13"
+                                    }
+                                ]
+                            },
+                            {
+                                "zone": "B1",
+                                "lots": [
+                                    {
+                                        "lotId": "duhh17321783987189",
+                                        "name": "B1-1"
+                                    },
+                                    {
+                                        "lotId": "duhh17321783987189",
+                                        "name": "B1-2"
+                                    },
+                                    {
+                                        "lotId": "duhh17321783987189",
+                                        "name": "B1-3"
+                                    },
+                                    {
+                                        "lotId": "duhh17321783987189",
+                                        "name": "B1-4"
+                                    },
+                                    {
+                                        "lotId": "duhh17321783987189",
+                                        "name": "B1-5"
+                                    },
+                                    {
+                                        "lotId": "duhh17321783987189",
+                                        "name": "B1-6"
+                                    },
+                                    {
+                                        "lotId": "duhh17321783987189",
+                                        "name": "A1-7"
+                                    },
+                                    {
+                                        "lotId": "duhh17321783987189",
+                                        "name": "B1-8"
+                                    },
+                                    {
+                                        "lotId": "duhh17321783987189",
+                                        "name": "B1-9"
+                                    },
+                                    {
+                                        "lotId": "duhh17321783987189",
+                                        "name": "B1-10"
+                                    },
+                                    {
+                                        "lotId": "duhh17321783987189",
+                                        "name": "B1-11"
+                                    },
+                                    {
+                                        "lotId": "duhh17321783987189",
+                                        "name": "B1-12"
+                                    },
+                                    {
+                                        "lotId": "duhh17321783987189",
+                                        "name": "B1-13"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "floor": "FIRST_FLOOR",
+                        "zones": [
+                            {
+                                "zone": "A0",
+                                "lots": [
+                                    {
+                                        "lotId": "duhh17321783987189",
+                                        "name": "A1-1"
+                                    },
+                                    {
+                                        "lotId": "duhh17321783987189",
+                                        "name": "A1-2"
+                                    },
+                                    {
+                                        "lotId": "duhh17321783987189",
+                                        "name": "A1-3"
+                                    },
+                                    {
+                                        "lotId": "duhh17321783987189",
+                                        "name": "A1-4"
+                                    },
+                                    {
+                                        "lotId": "duhh17321783987189",
+                                        "name": "A1-5"
+                                    },
+                                    {
+                                        "lotId": "duhh17321783987189",
+                                        "name": "A1-6"
+                                    },
+                                    {
+                                        "lotId": "duhh17321783987189",
+                                        "name": "A1-7"
+                                    },
+                                    {
+                                        "lotId": "duhh17321783987189",
+                                        "name": "A1-8"
+                                    },
+                                    {
+                                        "lotId": "duhh17321783987189",
+                                        "name": "A1-9"
+                                    },
+                                    {
+                                        "lotId": "duhh17321783987189",
+                                        "name": "A1-10"
+                                    },
+                                    {
+                                        "lotId": "duhh17321783987189",
+                                        "name": "A1-11"
+                                    },
+                                    {
+                                        "lotId": "duhh17321783987189",
+                                        "name": "A1-12"
+                                    },
+                                    {
+                                        "lotId": "duhh17321783987189",
+                                        "name": "A1-13"
+                                    }
+                                ]
+                            },
+                            {
+                                "zone": "B1",
+                                "lots": [
+                                    {
+                                        "lotId": "duhh17321783987189",
+                                        "name": "B1-1"
+                                    },
+                                    {
+                                        "lotId": "duhh17321783987189",
+                                        "name": "B1-2"
+                                    },
+                                    {
+                                        "lotId": "duhh17321783987189",
+                                        "name": "B1-3"
+                                    },
+                                    {
+                                        "lotId": "duhh17321783987189",
+                                        "name": "B1-4"
+                                    },
+                                    {
+                                        "lotId": "duhh17321783987189",
+                                        "name": "B1-5"
+                                    },
+                                    {
+                                        "lotId": "duhh17321783987189",
+                                        "name": "B1-6"
+                                    },
+                                    {
+                                        "lotId": "duhh17321783987189",
+                                        "name": "A1-7"
+                                    },
+                                    {
+                                        "lotId": "duhh17321783987189",
+                                        "name": "B1-8"
+                                    },
+                                    {
+                                        "lotId": "duhh17321783987189",
+                                        "name": "B1-9"
+                                    },
+                                    {
+                                        "lotId": "duhh17321783987189",
+                                        "name": "B1-10"
+                                    },
+                                    {
+                                        "lotId": "duhh17321783987189",
+                                        "name": "B1-11"
+                                    },
+                                    {
+                                        "lotId": "duhh17321783987189",
+                                        "name": "B1-12"
+                                    },
+                                    {
+                                        "lotId": "duhh17321783987189",
+                                        "name": "B1-13"
+                                    }
+                                ]
+                            }
+                        ]
                     }
                 ]
             }
-    ParkingLotGroup:
+    ParkingLotFloor:
       type: object
-      description: The details of a parking lot group.
+      description: The parking lot details grouped by floor.
       properties:
         floor: 
           type: string
-          description: The floor in which the parking lot group is situated.
           example: GROUND_FLOOR
           enum:
             - GROUND_FLOOR
@@ -203,18 +409,37 @@ components:
             - MINUS_ONE
             - MINUS_TWO
             - DEFAULT
+        zones:
+          type: array
+          description: The list of zones in a floor.
+          items:
+            $ref: '#/components/schemas/ParkingLotZone'
+    ParkingLotZone:
+      type: object
+      description: The details of a parking lot zone.
+      properties:
         zone: 
           type: string
-          description: The zone name for the parking lot.
-          example: A1 
-        startingSlot: 
-          type: integer
-          description: The starting parking slot number in the zone.
-          example: 1
-        endingSlot:
-          type: integer
-          description: The ending slot number in the zone.
-          example: 20
+          description: The zone in which the parking lot group is situated.
+          example: A0
+          
+        lots: 
+          type: array
+          description: TThe list of parking lots in the specified zone.
+          items:
+            $ref: '#/components/schemas/ParkingLot'
+    ParkingLot: 
+      type: object
+      description: The details of a parking lot.
+      properties:
+        lotId: 
+          type: string
+          description: The internal system identifier for the parking lot.
+          example: "adasddad.87289791"
+        name: 
+          type: string
+          description: The display name for the parking lot.
+          example: A0-1
     ShoppingMallDetails:
       type: object
       description: The details of a shopping mall.
