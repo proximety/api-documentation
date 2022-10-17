@@ -983,6 +983,7 @@ paths:
                       "expectedDeliveryTime": "2021-10-20 11:00",
                       "otp": 5678,
                       "preparationTime": 30,
+                      "orderStatus": "ORDER_RECEIVED",
                       "restaurantId": "123",
                       "appliedOfferId": "123",
                       "amount": 100,
@@ -2175,6 +2176,8 @@ components:
           type: number
           example: 30
           description: Preparation time (in minutes) updated by restaurant. Default 10 min. Present only after order is moved to CONFIRMED_AND_PREPARING_ORDER step.
+        orderStatus:
+          $ref: '#/components/schemas/OrderStatusEnum'
         restaurantId:
           type: string
           example: "123"
