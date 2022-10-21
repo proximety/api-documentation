@@ -260,6 +260,21 @@ paths:
       summary: Returns list of restaurants
       description: Returns list of restaurants.
       operationId: getRestaurants
+      parameters:
+        - name: offset
+          required: false
+          in: query
+          description: Pagination offset
+          example: 10
+          schema:
+            type: number
+        - name: pageSize
+          required: false
+          in: query
+          description: Page size
+          example: 20
+          schema:
+            type: number
       requestBody:
         description: Restaurant information. 
         content:
@@ -273,6 +288,80 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Restaurants'
+              example: 
+                {
+                  "restaurants": [
+                      {
+                          "restaurantId": "d4b9f800-2f01-40ea-9407-66abdec65a2d",
+                          "restaurantName": "Paragon",
+                          "ownerName": "Mohan",
+                          "priorityPhoneNumber": null,
+                          "restaurantPhoneNumberPrimary": {
+                              "countryCode": "+91",
+                              "phoneNumber": 9898989898
+                          },
+                          "restaurantPhoneNumberSecondary": {
+                              "countryCode": "+91",
+                              "phoneNumber": 9898989898
+                          },
+                          "ownerPhoneNumberPrimary": {
+                              "countryCode": "+91",
+                              "phoneNumber": 9898989898
+                          },
+                          "ownerPhoneNumberSecondary": {
+                              "countryCode": "+91",
+                              "phoneNumber": 9898989898
+                          },
+                          "email": "a@b.com",
+                          "floor": "FIRST_FLOOR",
+                          "averageCostPerPerson": 150.0,
+                          "cuisineStyles": [
+                              "INDIAN"
+                          ],
+                          "dishCategories": [
+                              "BIRIYANI"
+                          ],
+                          "openingTime": "10:00",
+                          "closingTime": "20:00",
+                          "bankAccount": {
+                              "bankAccountId": "3cad46a7-70d5-424a-a670-f6d0ff6ea4b7",
+                              "accountName": "Savings account",
+                              "accountNumber": "321321321",
+                              "bankName": "SBI",
+                              "ifscCode": "SBIN13",
+                              "upiId": "paragon@upi"
+                          },
+                           "restaurantImageUrl": "https://aws.proximety.io/s3/image1.jpg",
+              			 "restaurantLogoUrl": "https://aws.proximety.io/s3/image1.jpg",
+              			 "menuImageUrl": "https://aws.proximety.io/s3/image1.jpg",
+              			 "gstCertificateUrl": "https://aws.proximety.io/s3/image1.jpg",
+              			 "panFileUrl": "https://aws.proximety.io/s3/image1.jpg",
+              			 "fssaiCertificateUrl": "https://aws.proximety.io/s3/image1.jpg",
+                          "rating": 0.0,
+                          "numberOfRatings": 0,
+                          "restaurantOpen": false
+                      }
+                  ],
+                  "pageable": {
+                      "sort": {
+                          "empty": false,
+                          "sorted": true,
+                          "unsorted": false
+                      },
+                      "offset": 16,
+                      "pageSize": 8,
+                      "pageNumber": 2,
+                      "unpaged": false,
+                      "paged": true
+                  },
+                  "number": 2,
+                  "numberOfElements": 1,
+                  "size": 8,
+                  "totalElements": 17,
+                  "totalPages": 3,
+                  "first": false,
+                  "last": true
+              }
         "500":
           description: Error   
   /restaurants/{restaurantId}:
@@ -1601,6 +1690,13 @@ paths:
       summary: Returns search history
       description: Returns search history of the user
       operationId: getSearchHistory
+      parameters:
+        - name: userId
+          required: true
+          in: query
+          description: User Id.
+          schema:
+            format: uuid
       responses:
         "200":
           description: Successful operation
@@ -2442,13 +2538,13 @@ components:
           type: string
           description: Restaurant name filter. Supports wildcard search also.
           example: "para"
-        sortStrategy:
+        sortBy:
           type: string
           description: Sort strategy.
           enum:
               - RATING
               - AVERAGE_COST
-        sortOrder:
+        sortDirection:
           type: string
           description: Sort strategy.
           enum:
