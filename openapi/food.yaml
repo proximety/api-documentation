@@ -872,6 +872,26 @@ paths:
                 $ref: '#/components/schemas/Offers'
         "500":
           description: Error
+  /foodcourt/orders/tariff:
+    post: 
+      tags:
+        - Order
+      summary: Return order tariff
+      description: Return order tariff
+      operationId: getOrderTariff
+      requestBody:
+        description: Cart information.  
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Cart'
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tariff'
   /foodcourt/orders:
     post: 
       tags:
@@ -1991,6 +2011,9 @@ components:
           type: string
           example: Biriyanio
           description: Combo category name
+        isRequired:
+          type: boolean
+          description: Indicates if it's a required combo category.
         items:
           type: array
           items:
@@ -2145,6 +2168,25 @@ components:
           example: ["123", "456"]
           items:
             type: string
+    Tariff:
+      type: object
+      properties:
+        orderTotal:
+          type: number
+          example: 500  
+          description: Order total.
+        tax:
+          type: number
+          example: 100  
+          description: Tax.
+        discount:
+          type: number
+          example: 25  
+          description: Discount.
+        toPay:
+          type: number
+          example: 575  
+          description: To pay.
     Orders:
       type: object
       properties:
