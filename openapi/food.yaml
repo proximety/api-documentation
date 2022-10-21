@@ -2171,7 +2171,7 @@ components:
     Tariff:
       type: object
       properties:
-        orderTotal:
+        amount:
           type: number
           example: 500  
           description: Order total.
