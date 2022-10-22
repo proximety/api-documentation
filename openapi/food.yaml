@@ -337,30 +337,64 @@ paths:
               			 "gstCertificateUrl": "https://aws.proximety.io/s3/image1.jpg",
               			 "panFileUrl": "https://aws.proximety.io/s3/image1.jpg",
               			 "fssaiCertificateUrl": "https://aws.proximety.io/s3/image1.jpg",
-                          "rating": 0.0,
-                          "numberOfRatings": 0,
-                          "restaurantOpen": false
+                      "rating": 0.0,
+                      "numberOfRatings": 0,
+                      "restaurantOpen": false,
+                      "dishes": [
+                                  {
+                                      "dishId": "01e36d88-338e-44cf-a3cd-f18474f56d79",
+                                      "restaurantId": "BEC4BD5D-AF1D-4265-9656-9707BAC5E82B",
+                                      "dishName": "test",
+                                      "dishType": "MAIN_COURSE",
+                                      "dishCategory": "BIRIYANI",
+                                      "cuisineType": "VEG",
+                                      "cuisineStyle": "INDIAN",
+                                      "price": 200.0,
+                                      "description": "vegetables panner ",
+                                      "rating": 0.0,
+                                      "numberOfRatings": 0,
+                                      "dishImageUrl": "https://s3.ap-south-1.amazonaws.com/proximety.io/food-court-files-dev/2a40dc8b-2551-4ab7-8eda-e3f034d94684.jpeg",
+                                      "dishVariantGroups": [
+                                          {
+                                              "dishVariantGroupId": "0a392058-4a74-4c12-b6f6-269c02670588",
+                                              "variantGroupName": "c",
+                                              "dishVariants": [
+                                                  {
+                                                      "dishVariantId": "4170b126-5ccc-4f27-a0ab-e4633e9fc13a",
+                                                      "variantName": "c",
+                                                      "price": 2.0
+                                                  }
+                                              ]
+                                          }
+                                      ],
+                                      "addOnGroups": null,
+                                      "inStock": true,
+                                      "bestSeller": false
+                                  }
+                            ],
                       }
                   ],
-                  "pageable": {
-                      "sort": {
-                          "empty": false,
-                          "sorted": true,
-                          "unsorted": false
-                      },
-                      "offset": 16,
-                      "pageSize": 8,
-                      "pageNumber": 2,
-                      "unpaged": false,
-                      "paged": true
-                  },
-                  "number": 2,
-                  "numberOfElements": 1,
-                  "size": 8,
-                  "totalElements": 17,
-                  "totalPages": 3,
-                  "first": false,
-                  "last": true
+                      "pageInfo": {
+                        "pageable": {
+                            "sort": {
+                                "empty": false,
+                                "sorted": true,
+                                "unsorted": false
+                            },
+                            "offset": 0,
+                            "pageSize": 2147483647,
+                            "pageNumber": 0,
+                            "paged": true,
+                            "unpaged": false
+                        },
+                        "number": 0,
+                        "numberOfElements": 17,
+                        "size": 2147483647,
+                        "totalElements": 17,
+                        "totalPages": 1,
+                        "first": true,
+                        "last": true
+                    }
               }
         "500":
           description: Error   
@@ -1730,36 +1764,6 @@ paths:
                 $ref: '#/components/schemas/SearchSuggestions'
         "500":
           description: Error  
-  /foodcourt/search/results:
-    get: 
-      tags:
-        - Search
-      summary: Returns search results
-      description: Returns search suggestions
-      operationId: getSearchResults
-      parameters:
-        - name: keyword
-          required: false
-          in: query
-          description: Search keyword.
-          example: "para"
-          schema:
-            type: string
-        - name: dishCategory
-          required: false
-          in: query
-          description: Dish category.
-          schema:
-            $ref: '#/components/schemas/DishCategoryEnum'
-      responses:
-        "200":
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/SearchResults'
-        "500":
-          description: Error  
 
 components:
   schemas:
@@ -1899,6 +1903,11 @@ components:
           description: Indivated whether restaurant is open or closed.
         bankAccount:
           $ref: '#/components/schemas/BankAccount'
+        dishes:
+          type: array
+          items:
+            $ref: '#/components/schemas/Dish'
+          description: List of dishes. Included only in specific cases.
     Dishes:
       type: object
       properties:
@@ -2486,22 +2495,14 @@ components:
           type: string
           example: https://aws.proximety.io/s3/image1.jpg
           description: Image URL. Present if suggestionType is RESTAURANT.
-    SearchResults:
-      type: object
-      properties:
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/SearchResult'
-    SearchResult:
-      type: object
-      properties:
-        restaurant:
-          $ref: '#/components/schemas/Restaurant'
-        dishes:
-          type: array
-          items:
-            $ref: '#/components/schemas/Dish'
+        searchKeyword:
+          type: string
+          description: Restaurant/Dish name filter. Supports wildcard search also.
+          example: "bir"
+        includeDishes:
+          type: boolean
+          description: Restaurant/Dish name filter. Supports wildcard search also.
+          example: "bir"
     GetOrdersRequest:
       type: object
       properties:
