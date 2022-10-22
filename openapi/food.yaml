@@ -332,11 +332,11 @@ paths:
                               "upiId": "paragon@upi"
                           },
                            "restaurantImageUrl": "https://aws.proximety.io/s3/image1.jpg",
-              			 "restaurantLogoUrl": "https://aws.proximety.io/s3/image1.jpg",
-              			 "menuImageUrl": "https://aws.proximety.io/s3/image1.jpg",
-              			 "gstCertificateUrl": "https://aws.proximety.io/s3/image1.jpg",
-              			 "panFileUrl": "https://aws.proximety.io/s3/image1.jpg",
-              			 "fssaiCertificateUrl": "https://aws.proximety.io/s3/image1.jpg",
+                     "restaurantLogoUrl": "https://aws.proximety.io/s3/image1.jpg",
+                     "menuImageUrl": "https://aws.proximety.io/s3/image1.jpg",
+                     "gstCertificateUrl": "https://aws.proximety.io/s3/image1.jpg",
+                     "panFileUrl": "https://aws.proximety.io/s3/image1.jpg",
+                     "fssaiCertificateUrl": "https://aws.proximety.io/s3/image1.jpg",
                       "rating": 0.0,
                       "numberOfRatings": 0,
                       "restaurantOpen": false,
@@ -1022,6 +1022,13 @@ paths:
       summary: Place orders
       description: Place orders
       operationId: placeOrder
+      parameters:
+        - name: userId
+          required: true
+          in: query
+          description: User Id.
+          schema:
+            format: uuid
       requestBody:
         description: Cart information.  
         content:
@@ -2553,6 +2560,9 @@ components:
               - DESC
         dishCategory:
           $ref: '#/components/schemas/DishCategoryEnum'
+        popularRestaurants:
+          type: boolean
+          default: false
     GetDishesRequest:
       type: object
       properties:
