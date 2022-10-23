@@ -334,7 +334,7 @@ paths:
               type: object
               required:
                 - imageCategory
-                - image
+                - file
               properties: # Request parts
                 imageCategory:
                   type: string
