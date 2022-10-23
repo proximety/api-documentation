@@ -48,6 +48,7 @@ paths:
                       "phoneNumber": 0
                     }
                   ],
+                  "website":"www.hilitemall.com",
                   "primaryEmail": "abc@xyz.com",
                   "location": {
                     "floorId": "aadjwinfinmkksk312"
@@ -195,6 +196,7 @@ paths:
                   "location": {
                     "floorId": "aadjwinfinmkksk312"
                   },
+                  "website":"www.hilitemall.com",
                   "categories": [
                     "APPAREL",
                     "SHOES"
@@ -1275,6 +1277,10 @@ components:
           type: integer
           description: The size of the store in square feet.
           example: 250
+        website:
+          type: string
+          description: The website for the store
+          example: www.hilitemall.com
         brandsAvailable:
           type: string
           description: A comma separated list of the brands available at the store.
