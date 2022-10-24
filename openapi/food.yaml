@@ -895,28 +895,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Combo'
         "500":
-          description: Error 
-    put: 
-      tags:
-        - Combo
-      summary: Update combo
-      description: Update combo
-      operationId: updateCombo
-      requestBody:
-        description: Combo info. 
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Combo'
-      responses:
-        "200":
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Combo'
-        "500":
-          description: Error 
+          description: Error
   /foodcourt/combos:
     get: 
       tags:
@@ -934,6 +913,58 @@ paths:
         "500":
           description: Error 
   /foodcourt/combos/{comboId}:
+    get: 
+      tags:
+        - Combo
+      summary: Get combo
+      description: Get combo
+      operationId: getCombo
+      parameters:
+        - name: comboId
+          required: true
+          in: path
+          description: Combo Id.
+          example: "123"
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Combo'
+        "500":
+          description: Error 
+    put: 
+      tags:
+        - Combo
+      summary: Update combo
+      description: Update combo
+      operationId: updateCombo
+      requestBody:
+        description: Combo info. 
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Combo'
+      parameters:
+        - name: comboId
+          required: true
+          in: path
+          description: Combo Id.
+          example: "123"
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Combo'
+        "500":
+          description: Error 
     delete: 
       tags:
         - Combo
@@ -1314,6 +1345,36 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Review'
+        "500":
+          description: Error
+  /dishes/{dishId}/last-unreviewed-order:
+    get: 
+      tags:
+        - Review
+      summary: Returns last unreviewed order for a user.
+      description: Returns last unreviewed order for a user.
+      operationId: getLastUnreviewedOrder
+      parameters:
+        - name: dishId
+          in: path
+          required: true
+          description: Dish Id.
+          example: "123"
+          schema:
+            type: string
+        - name: userId
+          in: query
+          required: true
+          example: "1234"
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
         "500":
           description: Error
   /restaurants/{restaurantId}/offer:
@@ -1792,7 +1853,7 @@ components:
         floorInfo:
             type: array
             items:
-              $ref: '#/components/schemas/FloorInfo'
+              $ref: '#/components/schemas/FloorDetails'
     DishCategory:
       type: object
       properties:
@@ -1812,11 +1873,18 @@ components:
       properties:
         cuisineStyle:
           $ref: '#/components/schemas/CuisineStyleEnum'
-    FloorInfo:  
+    FloorDetails:
       type: object
+      description: The details of a floor in a shopping mall.
       properties:
-        floor:
-          $ref: '#/components/schemas/FloorInfoEnum'
+        floorId: 
+          type: integer
+          description: The internal system identifier for a floor.
+          example: 1
+        name: 
+          type: string
+          description: The name for the floor.
+          example: Ground floor 
     Restaurants:
       type: object
       properties:
@@ -1855,7 +1923,7 @@ components:
           example: a@b.com
           description: Email.
         floor:
-          $ref: '#/components/schemas/FloorInfoEnum'
+          $ref: "#/components/schemas/FloorDetails"
         averageCostPerPerson:
           type: number
           example: 100
@@ -2123,7 +2191,7 @@ components:
           type: string
           example: Biriyanio
           description: Combo category name
-        isRequired:
+        required:
           type: boolean
           description: Indicates if it's a required combo category.
         items:
@@ -2249,6 +2317,10 @@ components:
     Cart:
       type: object
       properties:
+        userId:
+          type: string
+          example: '123'
+          description: User Id.
         items:
           type: array
           items:
@@ -2502,14 +2574,12 @@ components:
           type: string
           example: https://aws.proximety.io/s3/image1.jpg
           description: Image URL. Present if suggestionType is RESTAURANT.
-        searchKeyword:
-          type: string
-          description: Restaurant/Dish name filter. Supports wildcard search also.
-          example: "bir"
-        includeDishes:
+        floor:
+          $ref: "#/components/schemas/FloorDetails"
+        restaurntOpen:
           type: boolean
-          description: Restaurant/Dish name filter. Supports wildcard search also.
-          example: "bir"
+          example: true
+          description: Restaurant open status
     GetOrdersRequest:
       type: object
       properties:
@@ -2519,6 +2589,10 @@ components:
         endDate:
           description: End date.
           example: '2020-10-22'
+        userId:
+          type: string
+          example: "123"
+          description: User Id.
         restaurantId:
           type: string
           example: "123"
@@ -2535,6 +2609,9 @@ components:
         searchKeyword:
           type: string
           description: Dish name/Order Id filter.
+        dishId:
+          type: string
+          description: Dish Id filter.
         status:
           $ref: '#/components/schemas/OrderStatusEnum'
         timeSlab:
@@ -2563,6 +2640,14 @@ components:
         popularRestaurants:
           type: boolean
           default: false
+        searchKeyword:
+          type: string
+          description: Restaurant/Dish name filter. Supports wildcard search also.
+          example: "bir"
+        includeDishes:
+          type: boolean
+          description: Restaurant/Dish name filter. Supports wildcard search also.
+          example: "bir"
     GetDishesRequest:
       type: object
       properties:
