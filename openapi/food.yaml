@@ -896,13 +896,19 @@ paths:
                 $ref: '#/components/schemas/Combo'
         "500":
           description: Error
-  /foodcourt/combos:
-    get: 
+  /foodcourt/combos/_query:
+    post: 
       tags:
         - Combo
       summary: Returns list of combos.
       description: Returns list of combos for the user.
       operationId: getCombos
+      requestBody:
+        description: Restaurant information. 
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetCombosRequest'
       responses:
         "200":
           description: Successful operation
@@ -2676,6 +2682,12 @@ components:
         imageNotUploaded:
           type: boolean
           description: Return dishes with no image available.
+    GetCombosRequest:
+      type: object
+      properties:
+        popularCombos:
+          type: boolean
+          default: false
     Menu:
       type: object
       properties:
