@@ -1126,10 +1126,10 @@ components:
     FacebookLoginRequest:
       type: object
       properties:
-        userAccessToken:
+        facebookToken:
           type: string
           description: The user access token recieved on signing in with facebook.
-          example: eepadifmaifdmalli222nmfo==
+          example: EAAJfZBkQ8aEEBAMEMHraKMzBZCnl4cDmc74LoUHsZAbw6xLFZCsEl5XBMMAR9GsDBdGhhCWJlNZC7lxmTeTyUh69m4iQTaANyQEAHGUbiRAUFIz7OELM1eIndnsCZCs9ZCO2OxZBXQkj4GFAZAO9Sn21NMaKgzghRxyvAn8suBNbwTyYWsA3slP4PDicyF4py1WSRj7OEcGRiK39RcdgcP9Nq
     OTPLoginRequest:
       type: object
       properties:
