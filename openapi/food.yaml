@@ -861,7 +861,7 @@ paths:
           description: Successful operation
         "500":
           description: Error
-  /foodcourt/combo:
+  /foodcourt/combos:
     post: 
       tags:
         - Combo
@@ -1001,110 +1001,6 @@ paths:
                 $ref: '#/components/schemas/Combos'
         "500":
           description: Error
-  /foodcourt/promoted-combos:
-    get: 
-      tags:
-        - Combo
-      summary: Get promoted combos
-      description: Get promoted combos.
-      operationId: getPromotedCombo
-      responses:
-        "200":
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PromotedCombos'
-        "500":
-          description: Error 
-    post: 
-      tags:
-        - Restaurant
-      summary: Create promoted combos
-      description: Create promoted combos.
-      operationId: createPromotedCombos
-      requestBody:
-        description: Combo information. 
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PromotedCombos'
-      responses:
-        "200":
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PromotedCombos'
-        "500":
-          description: Error
-  /combos/{comboId}/files:
-    post: 
-      tags:
-        - File Upload
-      summary: Upload combo files 
-      description: Upload combo files 
-      operationId: uploadComboFile
-      parameters:
-        - name: fileCategory
-          in: query
-          required: true
-          schema:
-            $ref: '#/components/schemas/ComboFileCategoryEnum'
-        - name: comboId
-          required: true
-          in: path
-          description: Combo Id.
-          example: "123"
-          schema:
-            type: string
-      requestBody:
-        content:
-          multipart/form-data:
-            schema:
-              type: object
-              properties: 
-                file:
-                  type: string
-                  format: binary
-      responses:
-        "200":
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Combo'
-        "500":
-          description: Error
-    delete: 
-      tags:
-        - File Upload
-      summary: Delete combo files 
-      description: Delete combo files 
-      operationId: deleteComboFile
-      parameters:
-        - name: fileCategory
-          in: query
-          required: true
-          schema:
-            $ref: '#/components/schemas/ComboFileCategoryEnum'
-        - name: comboId
-          required: true
-          in: path
-          description: Combo Id.
-          example: "123"
-          schema:
-            type: string
-      responses:
-        "200":
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Combo'
-        "500":
-          description: Error
-  
   /foodcourt/order/coupons/_query:
     post: 
       tags:
@@ -1798,43 +1694,6 @@ paths:
           description: Successful operation
         "500":
           description: Error
-  /foodcourt/promoted-restaurants:
-    get: 
-      tags:
-        - Restaurant
-      summary: Get promoted restaurants
-      description: Get promoted restaurants.
-      operationId: getPromotedRestaurant
-      responses:
-        "200":
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PromotedRestaurants'
-        "500":
-          description: Error 
-    post: 
-      tags:
-        - Restaurant
-      summary: Create promoted restaurant
-      description: Create promoted restaurant.
-      operationId: createPromotedRestaurant
-      requestBody:
-        description: Restaurant information. 
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PromotedRestaurants'
-      responses:
-        "200":
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PromotedRestaurants'
-        "500":
-          description: Error
   /restaurants/{restaurantId}/files:
     post: 
       tags:
@@ -2047,29 +1906,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Restaurant'
-    PromotedRestaurants:
-      type: object
-      properties:
-        restaurants:
-          description: List od restaurants.
-          type: array
-          items:
-            $ref: '#/components/schemas/PromotedRestaurant'
-    PromotedRestaurant:
-      type: object
-      properties:
-        restaurantId:
-          type: string
-          example: "123"
-          description: Restaurant Id.
-        restaurantName:
-          type: string
-          example: Paragon
-          description: Restaurant name.
-        rank:
-          type: number
-          example: 1
-          description: Restaurant rank.
     Restaurant:
       type: object
       properties:
@@ -2319,29 +2155,6 @@ components:
         inStock:
           type: boolean
           description: Indicates whether dish variant is in stock.
-    PromotedCombos:
-      type: object
-      properties:
-        restaurants:
-          description: List od restaurants.
-          type: array
-          items:
-            $ref: '#/components/schemas/PromotedCombo'
-    PromotedCombo:
-      type: object
-      properties:
-        restaurantId:
-          type: string
-          example: "123"
-          description: Combo Id.
-        restaurantName:
-          type: string
-          example: Special Combo
-          description: Combo name.
-        rank:
-          type: number
-          example: 1
-          description: Combo rank.
     Combos:
       type: object
       properties:
@@ -2376,8 +2189,6 @@ components:
         bestSeller:
           type: boolean
           description: Indicates whether the combo is a best seller.
-        cuisineType:
-          $ref: '#/components/schemas/CuisineTypeEnum'
         comboCategories:
           type: array
           items:
@@ -2416,16 +2227,6 @@ components:
         dishVariantId:
           type: string
           example: "123"
-        price:
-          type: number
-          example: 125.5
-          description: Dish price.
-        cuisineType:
-          $ref: '#/components/schemas/CuisineTypeEnum'
-    ComboFileCategoryEnum:
-       type: string
-       enum:
-        - COMBO_IMAGE
     Offers:
       type: object
       properties:
