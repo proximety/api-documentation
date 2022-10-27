@@ -1064,6 +1064,7 @@ paths:
                   format: binary
       responses:
         "200":
+          description: Successful operation
           content:
             application/json:
               schema:
@@ -2475,8 +2476,11 @@ components:
         campaignStartDate:
           description: Start date.
           example: '20/10/2020'
-        menu:
-            $ref: '#/components/schemas/Menu'
+        items:
+          type: array
+          example: ["123", "456"]
+          items:
+            type: string
         couponCode:
           type: string
           example: "abcdf"
