@@ -2345,11 +2345,11 @@ components:
     PromotedCombo:
       type: object
       properties:
-        restaurantId:
+        comboId:
           type: string
           example: "123"
           description: Combo Id.
-        restaurantName:
+        comboName:
           type: string
           example: Special Combo
           description: Combo name.
