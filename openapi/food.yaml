@@ -2065,7 +2065,7 @@ components:
     PromotedRestaurants:
       type: object
       properties:
-        promotedRestaurants:
+        restaurants:
           description: List promoted restaurants.
           type: array
           items:
@@ -2337,7 +2337,7 @@ components:
     PromotedCombos:
       type: object
       properties:
-        promotedCombos:
+        combos:
           description: List promoted combos.
           type: array
           items:
