@@ -2877,14 +2877,15 @@ components:
         popularRestaurants:
           type: boolean
           default: false
+        cuisineType:
+          $ref: '#/components/schemas/CuisineTypeEnum'
         searchKeyword:
           type: string
           description: Restaurant/Dish name filter. Supports wildcard search also.
           example: "bir"
         includeDishes:
           type: boolean
-          description: Restaurant/Dish name filter. Supports wildcard search also.
-          example: "bir"
+          description: To include dishes. Support only for specific use cases.
     GetDishesRequest:
       type: object
       properties:
