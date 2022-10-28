@@ -2066,7 +2066,7 @@ components:
       type: object
       properties:
         restaurants:
-          description: List od restaurants.
+          description: List promoted restaurants.
           type: array
           items:
             $ref: '#/components/schemas/PromotedRestaurant'
@@ -2337,8 +2337,8 @@ components:
     PromotedCombos:
       type: object
       properties:
-        restaurants:
-          description: List od restaurants.
+        combos:
+          description: List promoted combos.
           type: array
           items:
             $ref: '#/components/schemas/PromotedCombo'
