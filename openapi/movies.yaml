@@ -398,6 +398,9 @@ components:
           enum: 
             - SOLDOUT
             - AVAILABLE
+        hasPremiumExperience:
+          type: boolean
+          description: Is premium experience available for the movie.
     OrderDetails:
       type: object
       properties:
