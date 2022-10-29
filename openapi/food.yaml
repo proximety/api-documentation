@@ -2840,9 +2840,6 @@ components:
         inProgress:
           type: boolean
           description: Return in progress orders.
-        delivered:
-          type: boolean
-          description: Return delivered orders.
         searchKeyword:
           type: string
           description: Dish name/Order Id filter.
@@ -2853,6 +2850,9 @@ components:
           $ref: '#/components/schemas/OrderStatusEnum'
         timeSlab:
           $ref: '#/components/schemas/OrderTimeSlabEnum'
+        statusPoll:
+          type: boolean
+          description: For status polling.
     GetRestaurantsRequest:
       type: object
       properties:
@@ -2886,6 +2886,10 @@ components:
         includeDishes:
           type: boolean
           description: To include dishes. Support only for specific use cases.
+        standardFilters:
+          type: array
+          items:
+            $ref: '#/components/schemas/RestaurantFilterEnum'
     GetDishesRequest:
       type: object
       properties:
@@ -2937,6 +2941,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Dish'
+    RestaurantFilterEnum:
+      type: string
+      enum: 
+            - RATING_FOUR_PLUS
     OrderTimeSlabEnum:
       type: string
       enum: 
