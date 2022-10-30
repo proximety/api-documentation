@@ -542,7 +542,11 @@ paths:
                 "priorityPhoneNumber": {
                   "countryCode": "+91",
                   "phoneNumber": 9898989898
-                }
+                },
+                 "averageCostPerPerson": "150",
+                  "closingTime": "20:00",
+                  "openingTime": "10:00",
+                  "cuisineStyles": ["CHINESE"]
               }
       responses:
         "200":
