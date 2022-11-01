@@ -2254,7 +2254,7 @@ components:
           type: string
           example: Quantity
           description: Dish variant group name.
-        variantPrice:
+        dishVariants:
           type: array
           items:
             $ref: '#/components/schemas/DishVariant'
