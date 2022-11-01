@@ -1271,67 +1271,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Orders'
-              example:
-                {
-                  "orders": [
-                    {
-                      "orderId": "123",
-                      "orderPlacedTime": "2021-10-20 10:00",
-                      "expectedDeliveryTime": "2021-10-20 11:00",
-                      "otp": 5678,
-                      "preparationTime": 30,
-                      "orderStatus": "ORDER_RECEIVED",
-                      "restaurantId": "123",
-                      "appliedOfferId": "123",
-                      "amount": 100,
-                      "orderItems": [
-                        {
-                          "dish": {
-                            "dishId": "123",
-                            "restaurantId": "123",
-                            "dishName": "Chicken Biriyani",
-                            "dishType": "MAIN_COURSE",
-                            "dishCategory": "BIRIYANI",
-                            "cuisineType": "VEG",
-                            "cuisineStyle": "INDIAN",
-                            "price": 125.5,
-                            "description": "British style nadan biriyani",
-                            "bestSeller": true,
-                            "inStock": true,
-                            "rating": 3.5,
-                            "numberOfRatings": 17,
-                            "dishImageUrl": "https://aws.proximety.io/s3/image1.jpg",
-                          },
-                          "addedCustomizations": [
-                            {
-                              "addOnId": "123",
-                              "addOnName": "Almond Milk",
-                              "price": 30,
-                              "cuisineType": "VEG",
-                              "inStock": true
-                            }
-                          ],
-                          "addedVariants": [
-                            {
-                              "dishVariantId": "123",
-                              "variantName": "Half Biriyani",
-                              "price": 100,
-                              "inStock": true
-                            }
-                          ]
-                        }
-                      ],
-                      "orderWorkflow": [
-                        {
-                          "sequenceId": 1,
-                          "orderStatus": "ORDER_RECEIVED",
-                          "stepStartTime": "3:10",
-                          "stepEndTime": "3:15"
-                        }
-                      ]
-                    }
-                  ]
-            }
         "500":
           description: Error
   /foodcourt/orders/{orderId}:
@@ -2627,6 +2566,10 @@ components:
           type: string
           example: "123"  
           description: Order Id.
+        displayId:
+          type: number
+          example: 1  
+          description: Display Id.
         orderPlacedTime:
           type: string  
           example: '2021-10-20 10:00'
@@ -2687,15 +2630,19 @@ components:
       properties: 
         dish:
           $ref: '#/components/schemas/Dish'
+        quantity:
+          type: integer  
+          example: 1
+          description: Quantity.
         addedCustomizations:
           type: array
           items: 
-            $ref: '#/components/schemas/AddOn'
+            $ref: '#/components/schemas/AddOnGroup'
           description: List of add ons.
         addedVariants:
           type: array
           items: 
-            $ref: '#/components/schemas/DishVariant'
+            $ref: '#/components/schemas/DishVariantGroup'
     OrderStage:
       type: object
       properties:
@@ -3137,12 +3084,16 @@ components:
         netReceivables:
          type: number
          example: 100
-        tax:
-         type: number
-         example: 100
-        total:
-         type: number
-         example: 100
+        utrId:
+          type: number
+          example: 1234
+        date:
+         type: string
+         example: '25/10/2020'
+        account:
+          type: string
+          example: 'xxx123'
+
     Transactions:
       type: object
       description: Transactions of a restaurant.
