@@ -3137,16 +3137,12 @@ components:
         netReceivables:
          type: number
          example: 100
-        utrId:
-          type: number
-          example: 1234
-        date:
-         type: string
-         example: '25/10/2020'
-        account:
-          type: string
-          example: 'xxx123'
-
+        tax:
+         type: number
+         example: 100
+        total:
+         type: number
+         example: 100
     Transactions:
       type: object
       description: Transactions of a restaurant.
