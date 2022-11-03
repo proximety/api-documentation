@@ -1297,13 +1297,19 @@ paths:
                 $ref: '#/components/schemas/Order'
         "500":
           description: Error
-  /foodcourt/orders/count:
-    get:
+  /foodcourt/orders/count/_query:
+    post:
       tags:
         - Order
       summary: Get orderes with count based on status grouping
       description: Get orderes with count based on status grouping
       operationId: geteOrdersCount
+      requestBody:
+        description: Cart information.  
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TimeSlabRequest'
       responses:
         "200":
           description: Successful operation
@@ -2351,9 +2357,6 @@ components:
           type: string
           example: Biriyanio
           description: Combo category name
-        restaurantId:
-          type: string
-          example: "123"
         required:
           type: boolean
           description: Indicates if it's a required combo category.
@@ -2417,10 +2420,6 @@ components:
           type: number
           example: 150
           description: Maximum amount of discount
-        minimumOrderValue:
-          type: number
-          example: 150
-          description: Minimum order value.
         userType:
           $ref: '#/components/schemas/OfferUserTypeEnum'
         campaignStartDate:
