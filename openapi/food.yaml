@@ -2908,7 +2908,7 @@ components:
         status:
           $ref: '#/components/schemas/OrderStatusEnum'
         timeSlab:
-          $ref: '#/components/schemas/OrderTimeSlabEnum'
+          $ref: '#/components/schemas/TimeSlabEnum'
         statusPoll:
           type: boolean
           description: For status polling.
@@ -3007,7 +3007,7 @@ components:
       type: string
       enum: 
             - RATING_FOUR_PLUS
-    OrderTimeSlabEnum:
+    TimeSlabEnum:
       type: string
       enum: 
             - TODAY
@@ -3086,11 +3086,6 @@ components:
       enum:
         - FIRST_FLOOR
         - SECOND_FLOOR
-    TimeSlabEnum:
-          type: string
-          enum:
-            - PAST_SEVEN_DAYS
-            - PAST_THIRTY_DAYS
     RefreshTokenRequest:
       type: object
       required:
@@ -3195,16 +3190,6 @@ components:
         netReceivables:
          type: number
          example: 100
-        utrId:
-          type: number
-          example: 1234
-        date:
-         type: string
-         example: '25/10/2020'
-        account:
-          type: string
-          example: 'xxx123'
-
     Transactions:
       type: object
       description: Transactions of a restaurant.
@@ -3218,6 +3203,12 @@ components:
       type: object
       description: Deduction in a transaction.
       properties:
+       total:
+         type: number
+         example: 123
+       tax:
+         type: number
+         example: 123
        commision:
          type: number
          example: 123
