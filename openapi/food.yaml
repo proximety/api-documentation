@@ -232,9 +232,6 @@ paths:
                 "cuisineStyles": [
                   "INDIAN"
                 ],
-                "dishCategories": [
-                  "BIRIYANI"
-                ],
                 "openingTime": "10:00",
                 "closingTime": "20:00",
                 "bankAccount": {
@@ -475,9 +472,6 @@ paths:
                   "cuisineStyles": [
                     "INDIAN"
                   ],
-                  "dishCategories": [
-                    "BIRIYANI"
-                  ],
                   "openingTime": "10:00",
                   "closingTime": "20:00",
                   "bankAccount": {
@@ -584,7 +578,9 @@ paths:
                   "restaurantId": "b30a6100-1e2d-43a7-b301-bd0fda7571c2",
                   "dishName": "CHICKOO",
                   "dishType": "STARTER",
-                  "dishCategory": "COFFEE",
+                  "menuCategory": {
+                      "menuCategoryId":"f94ce675-c2f5-4778-9398-08866b50e2f2"
+                  },
                   "cuisineType": "VEG",
                   "cuisineStyle": "INDIAN",
                   "price": 125.5,
@@ -647,7 +643,9 @@ paths:
                 "restaurantId": "b30a6100-1e2d-43a7-b301-bd0fda7571c2",
                 "dishName": "CHICKOO",
                 "dishType": "STARTER",
-                "dishCategory": "COFFEE",
+                "menuCategory": {
+                  "menuCategoryId":"f94ce675-c2f5-4778-9398-08866b50e2f2"
+                },
                 "cuisineType": "VEG",
                 "cuisineStyle": "INDIAN",
                 "price": 125.5,
@@ -1799,6 +1797,86 @@ paths:
                 $ref: '#/components/schemas/PromotedRestaurants'
         "500":
           description: Error
+  /restaurants/{restaurantId}/menu-categories:        
+    post: 
+      tags:
+        - Restaurant
+      summary: Create dish Category
+      description: Create dish Category
+      operationId: createDishCategory
+      parameters:
+        - name: restaurantId
+          required: true
+          in: path
+          description: Restaurant Id.
+          example: "123"
+          schema:
+            type: string
+      requestBody:
+        description: DishCategory information. 
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MenuCategory'
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MenuCategory'
+        "500":
+          description: Error
+    get: 
+      tags:
+        - Restaurant
+      summary: Get dish Categories
+      description: Get dish Categories
+      operationId: getDishCategories
+      parameters:
+        - name: restaurantId
+          required: true
+          in: path
+          description: Restaurant Id.
+          example: "123"
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MenuCategories'
+        "500":
+          description: Error
+  /restaurants/{restaurantId}/menu-categories/{menuCategoryId}:
+    delete: 
+      tags:
+        - Restaurant
+      summary: Delete menu Category
+      description: Delete menu Category
+      operationId: deleteMenuCategory
+      parameters:
+        - name: restaurantId
+          required: true
+          in: path
+          description: Restaurant Id.
+          example: "123"
+          schema:
+            type: string
+        - name: menuCategoryId
+          required: true
+          in: path
+          description: Menu Category Id.
+          example: "123"
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful operation
+        "500":
+          description: Error     
   /restaurants/{restaurantId}/files:
     post: 
       tags:
@@ -1981,6 +2059,31 @@ components:
           type: string
           example: https://aws.proximety.io/s3/image1.jpg
           description: Image URL.
+    MenuCategories:
+      type: object
+      properties:
+        menuCategories:
+            items:
+              $ref: '#/components/schemas/MenuCategory'
+    MenuCategory:
+      type: object
+      properties:
+        menuCategoryId:
+          type: string
+          description: The dish category Id.
+          example: 123
+        menuCategoryName:
+          type: string
+          description: The name  dish category.
+          example: Biriyani
+        menuCategoryImageUrl:
+          type: string
+          example: https://aws.proximety.io/s3/image1.jpg
+          description: Image URL.
+        restaurantId:
+          type: string
+          example: "123"
+          description: Restaurant Id.
     DishType:
       type: object
       properties:
@@ -2073,10 +2176,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/CuisineStyleEnum'
-        dishCategories:
-          type: array
-          items:
-            $ref: '#/components/schemas/DishCategoryEnum'
           description: Dish categories the restaurant sells
         openingTime:
           type: string
@@ -2116,7 +2215,10 @@ components:
           description: Number of ratings.
         restaurantOpen:
           type: boolean
-          description: Indivated whether restaurant is open or closed.
+          description: Indivated whether restaurant is open or closed
+        pureVeg:
+          type: boolean
+          description: Indivated whether restaurant is pure veg or not.
         bankAccount:
           $ref: '#/components/schemas/BankAccount'
         dishes:
@@ -2149,8 +2251,8 @@ components:
           description: Dish name.
         dishType:
           $ref: '#/components/schemas/DishTypeEnum'
-        dishCategory:
-          $ref: '#/components/schemas/DishCategoryEnum'
+        menuCategory:
+          $ref: '#/components/schemas/MenuCategory'
         cuisineType:
           $ref: '#/components/schemas/CuisineTypeEnum'
         cuisineStyle:
@@ -2840,6 +2942,9 @@ components:
           type: string
           description: Restaurant/Dish name filter. Supports wildcard search also.
           example: "bir"
+        pureVeg:
+          type: boolean
+          description: Indivated whether restaurant is pure veg or not.
         includeDishes:
           type: boolean
           description: To include dishes. Support only for specific use cases.
