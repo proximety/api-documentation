@@ -1704,6 +1704,36 @@ paths:
                 $ref: '#/components/schemas/Transactions'
         "500":
           description: Error
+  /restaurants/{restaurantId}/past-payout/_query:
+    post:
+      tags:
+        - Analytics
+      summary: Get PastPayout of a restaurant
+      description: Get PastPayout of a restaurant
+      operationId: getPastPayout
+      parameters:
+        - name: restaurantId
+          required: true
+          in: path
+          description: Restaurant Id.
+          example: "123"
+          schema:
+            type: string
+      requestBody:
+        description: PastPayout  request. 
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TimeSlabRequest'
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PastPayout'
+        "500":
+          description: Error
   /restaurants/{restaurantId}/analytics/_query:
     post:
       tags:
@@ -3178,6 +3208,30 @@ components:
           description: The password of the food court trying to log into the system.
           format: password
           example: password
+    PastPayout:
+      type: object
+      properties:
+        payments:
+            type: array
+            items:
+              $ref: '#/components/schemas/PastPayoutPayment'
+            description: Orders in past payout of a restaurant.
+    PastPayoutPayment:
+      type: object
+      description: Past payout payment of a restaurants.
+      properties:
+        date:
+          type: string
+          example: '2021-10-20 10:10'
+        utrId:
+          type: string
+          example: 'UTR1234'
+        netReceivables:
+         type: number
+         example: 100
+        account:
+         type: string
+         example: 'ABC'
     Payout:
       type: object
       description: Payout of a restaurants.
