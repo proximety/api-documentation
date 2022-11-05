@@ -2953,6 +2953,9 @@ components:
         dishId:
           type: string
           description: Dish Id filter.
+        offerId:
+          type: string
+          description: Offer Id filter.
         status:
           $ref: '#/components/schemas/OrderStatusEnum'
         timeSlab:
