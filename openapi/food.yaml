@@ -232,9 +232,6 @@ paths:
                 "cuisineStyles": [
                   "INDIAN"
                 ],
-                "dishCategories": [
-                  "BIRIYANI"
-                ],
                 "openingTime": "10:00",
                 "closingTime": "20:00",
                 "bankAccount": {
@@ -323,9 +320,6 @@ paths:
                           "cuisineStyles": [
                               "INDIAN"
                           ],
-                          "dishCategories": [
-                              "BIRIYANI"
-                          ],
                           "openingTime": "10:00",
                           "closingTime": "20:00",
                           "bankAccount": {
@@ -351,7 +345,10 @@ paths:
                                       "restaurantId": "BEC4BD5D-AF1D-4265-9656-9707BAC5E82B",
                                       "dishName": "test",
                                       "dishType": "MAIN_COURSE",
-                                      "dishCategory": "BIRIYANI",
+                                      "menuCategory": {
+                                          "menuCategoryId":"f94ce675-c2f5-4778-9398-08866b50e2f2",
+                                          "menuCategoryName":"Biriyani"
+                                      },
                                       "cuisineType": "VEG",
                                       "cuisineStyle": "INDIAN",
                                       "price": 200.0,
@@ -475,9 +472,6 @@ paths:
                   "cuisineStyles": [
                     "INDIAN"
                   ],
-                  "dishCategories": [
-                    "BIRIYANI"
-                  ],
                   "openingTime": "10:00",
                   "closingTime": "20:00",
                   "bankAccount": {
@@ -584,7 +578,9 @@ paths:
                   "restaurantId": "b30a6100-1e2d-43a7-b301-bd0fda7571c2",
                   "dishName": "CHICKOO",
                   "dishType": "STARTER",
-                  "dishCategory": "COFFEE",
+                  "menuCategory": {
+                      "menuCategoryId":"f94ce675-c2f5-4778-9398-08866b50e2f2"
+                  },
                   "cuisineType": "VEG",
                   "cuisineStyle": "INDIAN",
                   "price": 125.5,
@@ -647,7 +643,9 @@ paths:
                 "restaurantId": "b30a6100-1e2d-43a7-b301-bd0fda7571c2",
                 "dishName": "CHICKOO",
                 "dishType": "STARTER",
-                "dishCategory": "COFFEE",
+                "menuCategory": {
+                  "menuCategoryId":"f94ce675-c2f5-4778-9398-08866b50e2f2"
+                },
                 "cuisineType": "VEG",
                 "cuisineStyle": "INDIAN",
                 "price": 125.5,
@@ -1208,7 +1206,9 @@ paths:
                                       "restaurantId": "123",
                                       "dishName": "Chicken Biriyani",
                                       "dishType": "MAIN_COURSE",
-                                      "dishCategory": "BIRIYANI",
+                                      "menuCategory": {
+                                          "menuCategoryId":"f94ce675-c2f5-4778-9398-08866b50e2f2"
+                                      },
                                       "cuisineType": "VEG",
                                       "cuisineStyle": "INDIAN",
                                       "price": 125.5,
@@ -1297,13 +1297,19 @@ paths:
                 $ref: '#/components/schemas/Order'
         "500":
           description: Error
-  /foodcourt/orders/count:
-    get:
+  /foodcourt/orders/count/_query:
+    post:
       tags:
         - Order
       summary: Get orderes with count based on status grouping
       description: Get orderes with count based on status grouping
       operationId: geteOrdersCount
+      requestBody:
+        description: Cart information.  
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TimeSlabRequest'
       responses:
         "200":
           description: Successful operation
@@ -1700,6 +1706,36 @@ paths:
                 $ref: '#/components/schemas/Transactions'
         "500":
           description: Error
+  /restaurants/{restaurantId}/past-payout/_query:
+    post:
+      tags:
+        - Analytics
+      summary: Get PastPayout of a restaurant
+      description: Get PastPayout of a restaurant
+      operationId: getPastPayout
+      parameters:
+        - name: restaurantId
+          required: true
+          in: path
+          description: Restaurant Id.
+          example: "123"
+          schema:
+            type: string
+      requestBody:
+        description: PastPayout  request. 
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TimeSlabRequest'
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PastPayout'
+        "500":
+          description: Error
   /restaurants/{restaurantId}/analytics/_query:
     post:
       tags:
@@ -1793,6 +1829,86 @@ paths:
                 $ref: '#/components/schemas/PromotedRestaurants'
         "500":
           description: Error
+  /restaurants/{restaurantId}/menu-categories:        
+    post: 
+      tags:
+        - Restaurant
+      summary: Create menu Category
+      description: Create menu Category
+      operationId: createMenuCategory
+      parameters:
+        - name: restaurantId
+          required: true
+          in: path
+          description: Restaurant Id.
+          example: "123"
+          schema:
+            type: string
+      requestBody:
+        description: MenuCategory information. 
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MenuCategory'
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MenuCategory'
+        "500":
+          description: Error
+    get: 
+      tags:
+        - Restaurant
+      summary: Get menu Categories
+      description: Get menu Categories
+      operationId: getMenuCategories
+      parameters:
+        - name: restaurantId
+          required: true
+          in: path
+          description: Restaurant Id.
+          example: "123"
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MenuCategories'
+        "500":
+          description: Error
+  /restaurants/{restaurantId}/menu-categories/{menuCategoryId}:
+    delete: 
+      tags:
+        - Restaurant
+      summary: Delete menu Category
+      description: Delete menu Category
+      operationId: deleteMenuCategory
+      parameters:
+        - name: restaurantId
+          required: true
+          in: path
+          description: Restaurant Id.
+          example: "123"
+          schema:
+            type: string
+        - name: menuCategoryId
+          required: true
+          in: path
+          description: Menu Category Id.
+          example: "123"
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful operation
+        "500":
+          description: Error     
   /restaurants/{restaurantId}/files:
     post: 
       tags:
@@ -1975,6 +2091,31 @@ components:
           type: string
           example: https://aws.proximety.io/s3/image1.jpg
           description: Image URL.
+    MenuCategories:
+      type: object
+      properties:
+        menuCategories:
+            items:
+              $ref: '#/components/schemas/MenuCategory'
+    MenuCategory:
+      type: object
+      properties:
+        menuCategoryId:
+          type: string
+          description: The dish category Id.
+          example: 123
+        menuCategoryName:
+          type: string
+          description: The name  dish category.
+          example: Biriyani
+        menuCategoryImageUrl:
+          type: string
+          example: https://aws.proximety.io/s3/image1.jpg
+          description: Image URL.
+        restaurantId:
+          type: string
+          example: "123"
+          description: Restaurant Id.
     DishType:
       type: object
       properties:
@@ -2067,10 +2208,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/CuisineStyleEnum'
-        dishCategories:
-          type: array
-          items:
-            $ref: '#/components/schemas/DishCategoryEnum'
           description: Dish categories the restaurant sells
         openingTime:
           type: string
@@ -2110,7 +2247,10 @@ components:
           description: Number of ratings.
         restaurantOpen:
           type: boolean
-          description: Indivated whether restaurant is open or closed.
+          description: Indivated whether restaurant is open or closed
+        pureVeg:
+          type: boolean
+          description: Indivated whether restaurant is pure veg or not.
         bankAccount:
           $ref: '#/components/schemas/BankAccount'
         dishes:
@@ -2143,8 +2283,8 @@ components:
           description: Dish name.
         dishType:
           $ref: '#/components/schemas/DishTypeEnum'
-        dishCategory:
-          $ref: '#/components/schemas/DishCategoryEnum'
+        menuCategory:
+          $ref: '#/components/schemas/MenuCategory'
         cuisineType:
           $ref: '#/components/schemas/CuisineTypeEnum'
         cuisineStyle:
@@ -2435,6 +2575,22 @@ components:
            $ref: '#/components/schemas/OfferDaysEnum'
         status:
           $ref: '#/components/schemas/OfferStatusEnum'
+        numberOfOrders:
+          type: number
+          example: 15
+          description: Number Of orders used this offer
+        grossSales:
+          type: number
+          example: 15
+          description: Gross sales used this offer
+        discountGiven:
+          type: number
+          example: 15
+          description: Totaldiscount given
+        effectiveDiscount:
+          type: number
+          example: 15
+          description: Total Percentage of discount given
     OfferStatusEnum:
       type: string
       enum:
@@ -2535,10 +2691,13 @@ components:
     Tariff:
       type: object
       properties:
-        amount:
+        totalAmount:
           type: number
           example: 500  
           description: Order total.
+        convenienceFee:
+          type: number
+          example: 10  
         tax:
           type: number
           example: 100  
@@ -2797,10 +2956,13 @@ components:
         dishId:
           type: string
           description: Dish Id filter.
+        offerId:
+          type: string
+          description: Offer Id filter.
         status:
           $ref: '#/components/schemas/OrderStatusEnum'
         timeSlab:
-          $ref: '#/components/schemas/OrderTimeSlabEnum'
+          $ref: '#/components/schemas/TimeSlabEnum'
         statusPoll:
           type: boolean
           description: For status polling.
@@ -2834,6 +2996,9 @@ components:
           type: string
           description: Restaurant/Dish name filter. Supports wildcard search also.
           example: "bir"
+        pureVeg:
+          type: boolean
+          description: Indivated whether restaurant is pure veg or not.
         includeDishes:
           type: boolean
           description: To include dishes. Support only for specific use cases.
@@ -2896,7 +3061,7 @@ components:
       type: string
       enum: 
             - RATING_FOUR_PLUS
-    OrderTimeSlabEnum:
+    TimeSlabEnum:
       type: string
       enum: 
             - TODAY
@@ -2975,11 +3140,6 @@ components:
       enum:
         - FIRST_FLOOR
         - SECOND_FLOOR
-    TimeSlabEnum:
-          type: string
-          enum:
-            - PAST_SEVEN_DAYS
-            - PAST_THIRTY_DAYS
     RefreshTokenRequest:
       type: object
       required:
@@ -3072,6 +3232,30 @@ components:
           description: The password of the food court trying to log into the system.
           format: password
           example: password
+    PastPayout:
+      type: object
+      properties:
+        payments:
+            type: array
+            items:
+              $ref: '#/components/schemas/PastPayoutPayment'
+            description: Orders in past payout of a restaurant.
+    PastPayoutPayment:
+      type: object
+      description: Past payout payment of a restaurants.
+      properties:
+        date:
+          type: string
+          example: '2021-10-20 10:10'
+        utrId:
+          type: string
+          example: 'UTR1234'
+        netReceivables:
+         type: number
+         example: 100
+        account:
+         type: string
+         example: 'ABC'
     Payout:
       type: object
       description: Payout of a restaurants.
@@ -3093,7 +3277,6 @@ components:
         account:
           type: string
           example: 'xxx123'
-
     Transactions:
       type: object
       description: Transactions of a restaurant.
@@ -3107,6 +3290,12 @@ components:
       type: object
       description: Deduction in a transaction.
       properties:
+       total:
+         type: number
+         example: 123
+       tax:
+         type: number
+         example: 123
        commision:
          type: number
          example: 123
