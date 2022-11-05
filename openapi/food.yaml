@@ -1259,7 +1259,6 @@ paths:
       description: Returns orders
       operationId: getOrders
       requestBody:
-        description: Cart information.  
         content:
           application/json:
             schema:
@@ -1271,6 +1270,27 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Orders'
+        "500":
+          description: Error
+  /foodcourt/orders/bundles/_query:
+    post: 
+      tags:
+        - Order
+      summary: Return order bundles
+      description: Return order bundles
+      operationId: getOrderBundles
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetOrdersRequest'
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderBundles'
         "500":
           description: Error
   /foodcourt/orders/{orderId}:
@@ -2769,6 +2789,24 @@ components:
           items:
             $ref: '#/components/schemas/OrderStage'
           description: Sequence of steps through which order has gone.
+    OrderBundles:
+      type: object
+      properties:
+        orderBundles:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderBundle'
+          description: List of order bundles.
+    OrderBundle:
+      type: object
+      properties:
+        bundleId:
+          type: string
+        orders:
+          type: array
+          items:
+            $ref: '#/components/schemas/Order'
+          description: List of orders.
     OrdersCount:
       type: object
       properties: 
