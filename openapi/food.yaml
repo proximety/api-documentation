@@ -320,9 +320,6 @@ paths:
                           "cuisineStyles": [
                               "INDIAN"
                           ],
-                          "dishCategories": [
-                              "BIRIYANI"
-                          ],
                           "openingTime": "10:00",
                           "closingTime": "20:00",
                           "bankAccount": {
@@ -348,7 +345,10 @@ paths:
                                       "restaurantId": "BEC4BD5D-AF1D-4265-9656-9707BAC5E82B",
                                       "dishName": "test",
                                       "dishType": "MAIN_COURSE",
-                                      "dishCategory": "BIRIYANI",
+                                      "menuCategory": {
+                                          "menuCategoryId":"f94ce675-c2f5-4778-9398-08866b50e2f2",
+                                          "menuCategoryName":"Biriyani"
+                                      },
                                       "cuisineType": "VEG",
                                       "cuisineStyle": "INDIAN",
                                       "price": 200.0,
@@ -1206,7 +1206,9 @@ paths:
                                       "restaurantId": "123",
                                       "dishName": "Chicken Biriyani",
                                       "dishType": "MAIN_COURSE",
-                                      "dishCategory": "BIRIYANI",
+                                      "menuCategory": {
+                                          "menuCategoryId":"f94ce675-c2f5-4778-9398-08866b50e2f2"
+                                      },
                                       "cuisineType": "VEG",
                                       "cuisineStyle": "INDIAN",
                                       "price": 125.5,
@@ -1831,9 +1833,9 @@ paths:
     post: 
       tags:
         - Restaurant
-      summary: Create dish Category
-      description: Create dish Category
-      operationId: createDishCategory
+      summary: Create menu Category
+      description: Create menu Category
+      operationId: createMenuCategory
       parameters:
         - name: restaurantId
           required: true
@@ -1843,7 +1845,7 @@ paths:
           schema:
             type: string
       requestBody:
-        description: DishCategory information. 
+        description: MenuCategory information. 
         content:
           application/json:
             schema:
@@ -1860,9 +1862,9 @@ paths:
     get: 
       tags:
         - Restaurant
-      summary: Get dish Categories
-      description: Get dish Categories
-      operationId: getDishCategories
+      summary: Get menu Categories
+      description: Get menu Categories
+      operationId: getMenuCategories
       parameters:
         - name: restaurantId
           required: true
@@ -2573,6 +2575,22 @@ components:
            $ref: '#/components/schemas/OfferDaysEnum'
         status:
           $ref: '#/components/schemas/OfferStatusEnum'
+        numberOfOrders:
+          type: number
+          example: 15
+          description: Number Of orders used this offer
+        grossSales:
+          type: number
+          example: 15
+          description: Gross sales used this offer
+        discountGiven:
+          type: number
+          example: 15
+          description: Totaldiscount given
+        effectiveDiscount:
+          type: number
+          example: 15
+          description: Total Percentage of discount given
     OfferStatusEnum:
       type: string
       enum:
