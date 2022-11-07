@@ -1115,7 +1115,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Cart'
+              $ref: '#/components/schemas/CartRequest'
             example:
               {
                 "items": [
@@ -1153,7 +1153,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Cart'
+              $ref: '#/components/schemas/CartRequest'
       responses:
         "200":
           description: Successful operation
@@ -1180,7 +1180,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Cart'
+              $ref: '#/components/schemas/CartRequest'
       responses:
         "200":
           description: Successful operation
@@ -2695,7 +2695,7 @@ components:
           type: string
           example: https://aws.proximety.io/s3/image1.jpg
           description: Image URL.
-    Cart:
+    CartRequest:
       type: object
       properties:
         userId:
