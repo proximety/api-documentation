@@ -1120,15 +1120,7 @@ paths:
               {
                 "items": [
                   {
-                    "dishId": "123",
-                    "addOnIds": [
-                      "123",
-                      "456"
-                    ],
-                    "dishVariantIds": [
-                      "123",
-                      "456"
-                    ]
+                    "dishId": "123"
                   }
                 ]
               }
@@ -1138,7 +1130,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Offers'
+                $ref: '#/components/schemas/Coupons'
         "500":
           description: Error
   /foodcourt/orders/tariff:
@@ -1494,7 +1486,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Offers'
+                $ref: '#/components/schemas/RestaurantOffers'
         "500":
           description: Error
     post:
@@ -1536,7 +1528,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Offers'
+                $ref: '#/components/schemas/RestaurantOffers'
         "500":
           description: Error
   /restaurants/{restaurantId}/offers/{offerId}:
@@ -2560,14 +2552,29 @@ components:
        type: string
        enum:
         - COMBO_IMAGE
-    Offers:
+    Coupons:
       type: object
       properties:
         offers:
           type: array
           items:
-            $ref: '#/components/schemas/Offer'
+            $ref: '#/components/schemas/Coupon'
           description: List of offers.
+    Coupon:
+      type: object
+      properties:
+        offer:
+          $ref: '#/components/schemas/Offer'
+        message:
+          type: string
+          description: Brief description about the customer perspective status of coupon.
+        isApplicable:
+          type: boolean
+          description: Indicates this coupon is applicable or not
+        saving:
+          type: number
+          example: 150
+          description: Amount can be saved
     Offer:
       type: object
       properties:
@@ -2610,16 +2617,17 @@ components:
           $ref: '#/components/schemas/OfferStatusEnum'
         restaurantName:
           type: string
-        message:
-          type: string
-          description: Brief description about the customer perspective status of coupon.
-        isApplicable:
-          type: boolean
-          description: Indicates this coupon is applicable or not
-        saving:
-          type: number
-          example: 150
-          description: Amount can be saved
+    RestaurantOffers:
+      type: object
+      properties:
+        offers:
+          type: array
+          items:
+            $ref: '#/components/schemas/RestaurantOffer'
+          description: List of offers.
+    RestaurantOffer:
+      type: object
+      properties:
         numberOfOrders:
           type: number
           example: 15
