@@ -338,7 +338,8 @@ paths:
                      "fssaiCertificateUrl": "https://aws.proximety.io/s3/image1.jpg",
                       "rating": 0.0,
                       "numberOfRatings": 0,
-                      "restaurantOpen": false,
+                      "isOpen": false,
+                      "isOnline": false,
                       "dishes": [
                                   {
                                       "dishId": "01e36d88-338e-44cf-a3cd-f18474f56d79",
@@ -349,7 +350,7 @@ paths:
                                           "menuCategoryId":"f94ce675-c2f5-4778-9398-08866b50e2f2",
                                           "menuCategoryName":"Biriyani"
                                       },
-                                      "cuisineType": "VEG",
+                                      "vegNonVeg": "VEG",
                                       "cuisineStyle": "INDIAN",
                                       "price": 200.0,
                                       "description": "vegetables panner ",
@@ -581,7 +582,7 @@ paths:
                   "menuCategory": {
                       "menuCategoryId":"f94ce675-c2f5-4778-9398-08866b50e2f2"
                   },
-                  "cuisineType": "VEG",
+                  "vegNonVeg": "VEG",
                   "cuisineStyle": "INDIAN",
                   "price": 125.5,
                   "description": "British style nadan biriyani",
@@ -646,7 +647,7 @@ paths:
                 "menuCategory": {
                   "menuCategoryId":"f94ce675-c2f5-4778-9398-08866b50e2f2"
                 },
-                "cuisineType": "VEG",
+                "vegNonVeg": "VEG",
                 "cuisineStyle": "INDIAN",
                 "price": 125.5,
                 "description": "British style nadan biriyani",
@@ -684,7 +685,7 @@ paths:
                                 "addOnId": "4d64f6fe-a89f-4e31-a41f-02e6afa7cd3a",
                                 "addOnName": "Almond Milk",
                                 "price": 30.0,
-                                "cuisineType": null,
+                                "vegNonVeg": null,
                                 "inStock": true
                             }
                         ],
@@ -775,7 +776,7 @@ paths:
                   {
                     "addOnName": "Almond Milk",
                     "price": 30,
-                    "cuisineType": "VEG",
+                    "vegNonVeg": "VEG",
                     "inStock": true
                   }
                 ]
@@ -1209,7 +1210,7 @@ paths:
                                       "menuCategory": {
                                           "menuCategoryId":"f94ce675-c2f5-4778-9398-08866b50e2f2"
                                       },
-                                      "cuisineType": "VEG",
+                                      "vegNonVeg": "VEG",
                                       "cuisineStyle": "INDIAN",
                                       "price": 125.5,
                                       "description": "British style nadan biriyani",
@@ -1224,7 +1225,7 @@ paths:
                                         "addOnId": "123",
                                         "addOnName": "Almond Milk",
                                         "price": 30,
-                                        "cuisineType": "VEG",
+                                        "vegNonVeg": "VEG",
                                         "inStock": true
                                       }
                                     ],
@@ -1651,12 +1652,12 @@ paths:
           example: "123"
           schema:
             type: string
-        - name: cuisineType
+        - name: vegNonVeg
           required: false
           in: query
           description: Cuisine Type
           schema:
-            $ref: '#/components/schemas/CuisineTypeEnum'
+            $ref: '#/components/schemas/VegNonVegEnum'
       responses:
         "200":
           description: Successful operation
@@ -2265,9 +2266,12 @@ components:
           type: number
           example: 99
           description: Number of ratings.
-        restaurantOpen:
+        isOpen:
           type: boolean
           description: Indivated whether restaurant is open or closed
+        isOnline:
+          type: boolean
+          description: Indivated whether restaurant is online or offline
         pureVeg:
           type: boolean
           description: Indivated whether restaurant is pure veg or not.
@@ -2305,8 +2309,8 @@ components:
           $ref: '#/components/schemas/DishTypeEnum'
         menuCategory:
           $ref: '#/components/schemas/MenuCategory'
-        cuisineType:
-          $ref: '#/components/schemas/CuisineTypeEnum'
+        vegNonVeg:
+          $ref: '#/components/schemas/VegNonVegEnum'
         cuisineStyle:
           $ref: '#/components/schemas/CuisineStyleEnum'
         price:
@@ -2398,8 +2402,8 @@ components:
           type: number
           example: 30
           description: Price for the customization.
-        cuisineType:
-          $ref: '#/components/schemas/CuisineTypeEnum'
+        vegNonVeg:
+          $ref: '#/components/schemas/VegNonVegEnum'
         inStock:
           type: boolean
           description: Indicates whether add on is in stock.
@@ -2494,8 +2498,11 @@ components:
         bestSeller:
           type: boolean
           description: Indicates whether the combo is a best seller.
-        cuisineType:
-          $ref: '#/components/schemas/CuisineTypeEnum'
+        vegNonVeg:
+          $ref: '#/components/schemas/VegNonVegEnum'
+        isAvailable:
+          type: boolean
+          description: Indicates if combo is available or not.
         comboCategories:
           type: array
           items:
@@ -2511,6 +2518,12 @@ components:
           type: string
           example: Biriyanio
           description: Combo category name
+        restaurantId:
+          type: string
+          example: "123"
+        restaurantName:
+          type: string
+          example: KFC
         required:
           type: boolean
           description: Indicates if it's a required combo category.
@@ -2541,8 +2554,8 @@ components:
           type: number
           example: 125.5
           description: Dish price.
-        cuisineType:
-          $ref: '#/components/schemas/CuisineTypeEnum'
+        vegNonVeg:
+          $ref: '#/components/schemas/VegNonVegEnum'
     ComboFileCategoryEnum:
        type: string
        enum:
@@ -2595,6 +2608,18 @@ components:
            $ref: '#/components/schemas/OfferDaysEnum'
         status:
           $ref: '#/components/schemas/OfferStatusEnum'
+        restaurantName:
+          type: string
+        message:
+          type: string
+          description: Brief description about the customer perspective status of coupon.
+        isApplicable:
+          type: boolean
+          description: Indicates this coupon is applicable or not
+        saving:
+          type: number
+          example: 150
+          description: Amount can be saved
         numberOfOrders:
           type: number
           example: 15
@@ -2662,7 +2687,7 @@ components:
           type: number
           example: 3.5
           description: Rating.
-        message:
+        review:
           type: string
           example: awesome food 
           description: Message.
@@ -2745,6 +2770,10 @@ components:
           type: string
           example: "123"  
           description: Order Id.
+        restaurantName:
+          type: string
+        floor:
+          $ref: "#/components/schemas/FloorDetails"
         displayId:
           type: number
           example: 1  
@@ -2757,7 +2786,7 @@ components:
           type: string  
           example: '2021-10-20 11:00'
           description: Order date.
-        otp: 
+        otpForDelivery: 
           type: integer
           example: 5678
           description: OTP. Present only after order is moved to ORDER_READY status.
@@ -3025,11 +3054,11 @@ components:
               - DESC
         dishCategory:
           $ref: '#/components/schemas/DishCategoryEnum'
-        popularRestaurants:
+        promotedRestaurants:
           type: boolean
           default: false
-        cuisineType:
-          $ref: '#/components/schemas/CuisineTypeEnum'
+        vegNonVeg:
+          $ref: '#/components/schemas/VegNonVegEnum'
         searchKeyword:
           type: string
           description: Restaurant/Dish name filter. Supports wildcard search also.
@@ -3051,8 +3080,8 @@ components:
           type: string
           description: Restaurant Id.
           example: "123"
-        cuisineType:
-          $ref: '#/components/schemas/CuisineTypeEnum'
+        vegNonVeg:
+          $ref: '#/components/schemas/VegNonVegEnum'
         addOnGroupId:
           type: string
           description: Filter to return dishes based on add on group Id.
@@ -3075,7 +3104,7 @@ components:
     GetCombosRequest:
       type: object
       properties:
-        popularCombos:
+        promotedCombos:
           type: boolean
           default: false
     Menu:
@@ -3160,7 +3189,7 @@ components:
         - MAIN_COURSE
         - BEVARAGE
         - STARTER
-    CuisineTypeEnum:
+    VegNonVegEnum:
       type: string
       enum:
         - VEG
@@ -3172,12 +3201,6 @@ components:
         - INDIAN
         - CHINESE
         - ARABIC
-    FloorInfoEnum:
-      type: string
-      description: Dynamic list. Obtained from globaldata API.
-      enum:
-        - FIRST_FLOOR
-        - SECOND_FLOOR
     RefreshTokenRequest:
       type: object
       required:
