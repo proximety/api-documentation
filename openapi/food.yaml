@@ -1115,15 +1115,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Cart'
-            example:
-              {
-                "items": [
-                  {
-                    "dishId": "123"
-                  }
-                ]
-              }
+              $ref: '#/components/schemas/CartRequest'
       responses:
         "200":
           description: Successful operation
@@ -1133,26 +1125,53 @@ paths:
                 $ref: '#/components/schemas/Coupons'
         "500":
           description: Error
-  /foodcourt/orders/tariff:
+  /foodcourt/cart:
     post: 
       tags:
         - Order
-      summary: Return order tariff
-      description: Return order tariff
-      operationId: getOrderTariff
+      summary: Save cart
+      description: Save cart
+      operationId: saveCart
+      parameters:
+        - name: userId
+          required: true
+          in: query
+          example: "123"
+          schema:
+            type: string
       requestBody:
         description: Cart information.  
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Cart'
+              $ref: '#/components/schemas/CartRequest'
       responses:
         "200":
           description: Successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Tariff'
+                $ref: '#/components/schemas/CartDetails'
+    get:
+      tags:
+        - Order
+      summary: Get cart
+      description: Get cart
+      operationId: getCart
+      parameters:
+        - name: userId
+          required: true
+          in: query
+          example: "123"
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CartDetails'
   /foodcourt/orders:
     post: 
       tags:
@@ -1172,7 +1191,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Cart'
+              $ref: '#/components/schemas/CartRequest'
       responses:
         "200":
           description: Successful operation
@@ -2628,6 +2647,8 @@ components:
     RestaurantOffer:
       type: object
       properties:
+        restaurantO:
+          $ref: '#/components/schemas/Offer'
         numberOfOrders:
           type: number
           example: 15
@@ -2703,7 +2724,7 @@ components:
           type: string
           example: https://aws.proximety.io/s3/image1.jpg
           description: Image URL.
-    Cart:
+    CartRequest:
       type: object
       properties:
         userId:
@@ -2741,6 +2762,31 @@ components:
           example: ["123", "456"]
           items:
             type: string
+    CartDetails:
+      type: object
+      properties:
+        bundleId:
+          type: string
+          example: '123'
+        userId:
+          type: string
+          example: '123'
+          description: User Id.
+        lastUpdatedTime:
+          type: string
+          example: '2022-11-07 17:12'
+        cartItems:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderItem'
+          description: List of items.
+        appliedOffers:
+          type: array
+          items:
+            $ref: '#/components/schemas/RestaurantOffer'
+          description: List of items.
+        tariff:
+          $ref: '#/components/schemas/Tariff'
     Tariff:
       type: object
       properties:
