@@ -618,6 +618,29 @@ paths:
         "500":
           description: Error
   /dishes/{dishId}:
+    get: 
+      tags:
+        - Dishes
+      summary: Get dish
+      description: Get dish.
+      operationId: getDish
+      parameters:
+        - name: dishId
+          required: true
+          in: path
+          description: Dish Id.
+          example: "123"
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Dish'
+        "500":
+          description: Error
     put: 
       tags:
         - Dishes
