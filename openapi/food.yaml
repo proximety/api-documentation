@@ -1130,6 +1130,13 @@ paths:
       summary: Returns list of coupons appliacble for an order
       description: Returns list of coupons appliacble for an order
       operationId: getApplicableCoupons
+      parameters:
+        - name: userId
+          required: true
+          in: query
+          example: "123"
+          schema:
+            type: string
       requestBody:
         description: Cart information. 
         content:
