@@ -2375,6 +2375,10 @@ components:
           type: string
           example: https://aws.proximety.io/s3/image1.jpg
           description: Image URL.
+        dishCategories:
+          type: array
+          items:
+            $ref: '#/components/schemas/DishCategory'
         addOnGroups:
           type: array
           items:
