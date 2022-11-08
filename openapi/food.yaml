@@ -345,7 +345,6 @@ paths:
                                       "dishId": "01e36d88-338e-44cf-a3cd-f18474f56d79",
                                       "restaurantId": "BEC4BD5D-AF1D-4265-9656-9707BAC5E82B",
                                       "dishName": "test",
-                                      "dishType": "MAIN_COURSE",
                                       "menuCategory": {
                                           "menuCategoryId":"f94ce675-c2f5-4778-9398-08866b50e2f2",
                                           "menuCategoryName":"Biriyani"
@@ -578,7 +577,6 @@ paths:
                 {
                   "restaurantId": "b30a6100-1e2d-43a7-b301-bd0fda7571c2",
                   "dishName": "CHICKOO",
-                  "dishType": "STARTER",
                   "menuCategory": {
                       "menuCategoryId":"f94ce675-c2f5-4778-9398-08866b50e2f2"
                   },
@@ -666,7 +664,6 @@ paths:
                 "dishId": "a7d8e5c3-bc24-4904-a193-62002fdb48fb",
                 "restaurantId": "b30a6100-1e2d-43a7-b301-bd0fda7571c2",
                 "dishName": "CHICKOO",
-                "dishType": "STARTER",
                 "menuCategory": {
                   "menuCategoryId":"f94ce675-c2f5-4778-9398-08866b50e2f2"
                 },
@@ -1240,7 +1237,6 @@ paths:
                                       "dishId": "123",
                                       "restaurantId": "123",
                                       "dishName": "Chicken Biriyani",
-                                      "dishType": "MAIN_COURSE",
                                       "menuCategory": {
                                           "menuCategoryId":"f94ce675-c2f5-4778-9398-08866b50e2f2"
                                       },
@@ -2125,10 +2121,6 @@ components:
             type: array
             items:
               $ref: '#/components/schemas/DishCategory'
-        dishTypes:
-            type: array
-            items:
-              $ref: '#/components/schemas/DishType'
         cuisineStyles:
             type: array
             items:
@@ -2171,11 +2163,6 @@ components:
           type: string
           example: "123"
           description: Restaurant Id.
-    DishType:
-      type: object
-      properties:
-        dishType:
-          $ref: '#/components/schemas/DishTypeEnum'
     CuisineStyle:  
       type: object
       properties:
@@ -2339,8 +2326,6 @@ components:
           type: string
           example: Chicken Biriyani
           description: Dish name.
-        dishType:
-          $ref: '#/components/schemas/DishTypeEnum'
         menuCategory:
           $ref: '#/components/schemas/MenuCategory'
         vegNonVeg:
@@ -3167,8 +3152,6 @@ components:
           type: string
           description: Filter to return dishes based on add on group Id.
           example: "123"
-        dishType:
-          $ref: '#/components/schemas/DishTypeEnum'
         keyword:
           type: string
           description: Dish name filter. Supports wildcard search.
@@ -3199,8 +3182,8 @@ components:
     DishGrouping:
       type: object
       properties:
-        groupName:
-          $ref: '#/components/schemas/DishTypeEnum'
+        menuCategory:
+          $ref: '#/components/schemas/MenuCategory'
         dishes:
           type: array
           items:
@@ -3263,13 +3246,6 @@ components:
         - BIRIYANI
         - COFFE
         - PIZZA
-    DishTypeEnum:
-      type: string
-      description: Dynamic list. Obtained from globaldata API.
-      enum:
-        - MAIN_COURSE
-        - BEVARAGE
-        - STARTER
     VegNonVegEnum:
       type: string
       enum:
