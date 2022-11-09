@@ -2015,6 +2015,13 @@ paths:
           example: "123"
           schema:
             type: string
+        - name: forceDelete
+          required: false
+          in: query
+          description: Delete menu category.
+          example: "123"
+          schema:
+            type: boolean
       responses:
         "200":
           description: Successful operation
