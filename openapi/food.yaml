@@ -3616,7 +3616,7 @@ components:
           example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
         restaurantId:
           type: string
-          description: The internal system identifier for the food court.
+          description: The internal system identifier for food court.
           example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
         accessToken:
           type: string
