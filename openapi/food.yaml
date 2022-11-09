@@ -2710,10 +2710,11 @@ components:
           example: "abcdf"
           description: Coupon for the offer.
         runningTime:
-           type: string
-           example: 20:15 
+           $ref: '#/components/schemas/OfferTimeEnum'
         runningDays:
-           $ref: '#/components/schemas/OfferDaysEnum'
+           type: array
+           items:
+             $ref: '#/components/schemas/OfferDayEnum'
         status:
           $ref: '#/components/schemas/OfferStatusEnum'
         restaurantName:
@@ -2758,7 +2759,14 @@ components:
       enum:
           - ALL_USERS
           - NEW_USERS
-    OfferDaysEnum:
+    OfferTimeEnum:
+      type: string
+      enum:
+         - MORNING
+         - NOON
+         - EVENING
+         - NIGHT
+    OfferDayEnum:
       type: string
       enum:
          - MONDAY
