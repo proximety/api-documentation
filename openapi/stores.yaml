@@ -1160,6 +1160,10 @@ components:
             type: string
             description: The UPI id associated with the store.
             example: xyz@okhdfcbank
+        includeOnlyParkingRedeemable:
+          type: boolean 
+          description: Attribute to filter stores based on parking fee redemption availability.
+          example: false
         storeCategories:
           type: array
           items:
@@ -1240,6 +1244,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/PhoneNumber'
+        canRedeemParkingFees:
+          type: boolean
+          description: True indicates that parking fees can be redeemed on shopping at the store, false indicates otherwise.
+          example: true
         primaryEmail: 
           type: string
           description: The primary email id for the store.
