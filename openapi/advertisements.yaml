@@ -994,7 +994,7 @@ paths:
     get: 
       tags:
         - Promoted Content
-      summary: Get promoted banners
+      summary: Get promoted banners for stores
       description: Retrieves the list of promoted banners.
       parameters:
         - name: Authorization
@@ -1028,7 +1028,7 @@ paths:
     put: 
       tags:
         - Promoted Content
-      summary: Update promoted banners
+      summary: Update promoted banners for stores
       description: Updates the banners that needs to be displayed in the promoted content section.
       parameters:
         - name: Authorization
@@ -1082,7 +1082,7 @@ paths:
     get: 
       tags:
         - Promoted Content
-      summary: Get promoted offers
+      summary: Get promoted offers for stores
       description: Retrieves the list of promoted offers.
       parameters:
         - name: Authorization
@@ -1116,7 +1116,7 @@ paths:
     put: 
       tags:
         - Promoted Content
-      summary: Update promoted offers
+      summary: Update promoted offers for stores
       description: Updates the offers that needs to be displayed in the promoted content section.
       parameters:
         - name: Authorization
@@ -1170,7 +1170,7 @@ paths:
     get: 
       tags:
         - Promoted Content
-      summary: Get promoted banners
+      summary: Get promoted banners for restaurants
       description: Retrieves the list of promoted banners.
       parameters:
         - name: Authorization
@@ -1204,7 +1204,7 @@ paths:
     put: 
       tags:
         - Promoted Content
-      summary: Update promoted banners
+      summary: Update promoted banners for restaurants
       description: Updates the banners that needs to be displayed in the promoted content section.
       parameters:
         - name: Authorization
@@ -1258,7 +1258,7 @@ paths:
     get: 
       tags:
         - Promoted Content
-      summary: Get promoted offers
+      summary: Get promoted offers for restaurants
       description: Retrieves the list of promoted offers.
       parameters:
         - name: Authorization
@@ -1292,7 +1292,7 @@ paths:
     put: 
       tags:
         - Promoted Content
-      summary: Update promoted offers
+      summary: Update promoted offers for restaurants
       description: Updates the offers that needs to be displayed in the promoted content section.
       parameters:
         - name: Authorization
@@ -1713,6 +1713,30 @@ components:
           example: DETAILS_PAGE
           enum:
             - DETAILS_PAGE
+            - STORE_HOME
+            - RESTAURANT_HOME
+            - MENU_CATEGORY
+            - DISH_DETAILS
+            - MOVIE_DETAILS
+            - FOOD_COMBO_DETAILS
+        proposedLandingPageObject:
+          type: object
+          description: Additional details about the proposed landing page for the banner. Applicable only when the selected proposed landing page is MENU_CATEGORY or DISH_DETAILS.
+          properties:
+            type:
+              type: string
+              description: The object type for the landing page.
+              enum:
+              - MENU_CATEGORY
+              - DISH
+            objectId: 
+              type: string
+              description: The internal system identifier for the object tied to the landing page.
+              example: ejudns8.8981ndkka83.318989912==
+            name:
+              type: string
+              description: The name for the proposed landing page object
+              example: Biriyani
         category: 
           type: string
           description: The category against which the banner was created.
@@ -1775,6 +1799,11 @@ components:
                   "ownerType": "STORE"
                 },
                 "proposedLandingPage": "DETAILS_PAGE",
+                "proposedLandingPageObject":{
+                  "type":"MENU_CATEGORY",
+                  "name":"BIRIYANI",
+                  "objectId":"73187djhhjhad883010923890813"
+                },
                 "category": "APPARELS",
                 "status": "PENDING_APPROVAL",
                 "couponCode": "XDgh123",
@@ -1804,6 +1833,30 @@ components:
           example: DETAILS_PAGE
           enum:
             - DETAILS_PAGE
+            - STORE_HOME
+            - RESTAURANT_HOME
+            - MENU_CATEGORY
+            - DISH_DETAILS
+            - MOVIE_DETAILS
+            - FOOD_COMBO_DETAILS
+        proposedLandingPageObject:
+          type: object
+          description: Additional details about the proposed landing page for the banner
+          properties:
+            type:
+              type: string
+              description: The object type for the landing page.
+              enum:
+              - MENU_CATEGORY
+              - DISH
+            objectId: 
+              type: string
+              description: The internal system identifier for the object tied to the landing page.
+              example: ejudns8.8981ndkka83.318989912==
+            name:
+              type: string
+              description: The name for the proposed landing page object
+              example: Biriyani 
         category: 
           type: string
           description: The category against which the banner is to be created.
@@ -1851,6 +1904,10 @@ components:
                   "ownerType": "STORE"
                 },
                 "proposedLandingPage": "DETAILS_PAGE",
+                "proposedLandingPageObject":{
+                  "type":"MENU_CATEGORY",
+                  "objectId":"73187djhhjhad883010923890813"
+                },
                 "category": "APPARELS",
                 "couponCode": "XDgh123",
                 "startDate": "2022-05-17",
@@ -2156,6 +2213,8 @@ components:
           enum:
             - STORE
             - RESTAURANT
+            - MOVIE
+            - FOOD_COMBO
         name:
           type: string
           description: The name of the owning store/restaurant.
