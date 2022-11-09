@@ -835,6 +835,29 @@ paths:
         "500":
           description: Error
   /add-on-groups/{addOnGroupId}:
+    get: 
+      tags:
+        - Add-on Groups
+      summary: Get add on group
+      description: Get add on group.
+      operationId: getAddOnGroup
+      parameters:
+        - name: addOnGroupId
+          required: true
+          in: path
+          description: Add on group id.
+          example: "123"
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddOnGroup'
+        "500":
+          description: Error
     put: 
       tags:
         - Add-on Groups
@@ -1824,6 +1847,36 @@ paths:
                 $ref: '#/components/schemas/Analytics'
         "500":
           description: Error
+  /restaurants/{restaurantId}/analytics-orders/_query:
+    post:
+      tags:
+        - Analytics
+      summary: Get orders of analytics of a restaurant
+      description: Get orders analytics of a restaurant
+      operationId: getOrdersOfAnalyitcs
+      parameters:
+        - name: restaurantId
+          required: true
+          in: path
+          description: Restaurant Id.
+          example: "123"
+          schema:
+            type: string
+      requestBody:
+        description: Orders of Analytics request. 
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TimeSlabRequest'
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnalyticsOrders'
+        "500":
+          description: Error
   /restaurants/{restaurantId}/status:
     patch: 
       tags:
@@ -2412,6 +2465,16 @@ components:
         inStock:
           type: boolean
           description: Indicates whether add on group is in stock.
+        mappedDishes:
+          type: array
+          items:
+            $ref: '#/components/schemas/Dish'
+          example:
+           {
+             "dishId":"123",
+             "dishName": "Biriyani"
+           }
+          description: List of add ons.
         addOns:
           type: array
           items:
@@ -3483,6 +3546,33 @@ components:
         ordersDelivered:
           type: number
           example: 23
+    AnalyticsOrders:
+      type: object
+      description: Orders for Analytics of a restaurant.
+      properties:
+        analyticsOrders:
+          type: array
+          items: 
+            $ref: '#/components/schemas/AnalyticsOrder'
+    AnalyticsOrder:
+      type: object
+      description: Order info for Analytics of a restaurant.
+      properties:
+        orderPlacedTime:
+          type: string
+          example: '2021-10-20'
+        orderId:
+          type: string
+          example: '123'
+        amount:
+          type: number
+          example: 300
+        deduction:
+          type: number
+          example: 300
+        amountPaidByProximety:
+          type: number
+          example: 300
     GlobalException:
       type: object
       description: An exception thrown by the system.
