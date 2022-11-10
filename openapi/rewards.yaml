@@ -1,0 +1,743 @@
+openapi: '3.0.2'
+info:
+  title: Vouchers Service
+  version: '1.0'
+  description: Provides a set of API operations that can be performed related to rewards.
+  license:
+    name: Proximety
+    url: www.proximety.io
+servers:
+  - url: https://dev.proximety.io/api
+  - url: https://staging.proximety.io/api
+  - url: https://www.proximety.io/api
+
+paths:
+  /point_rule:
+    post: 
+      tags:
+        - LoyaltyPointRuleResource
+      summary: Create Point rule At Admin Side.
+      operationId: CreatePointRule
+      parameters:
+      requestBody:
+       description:  
+       content:
+          application/json:
+           
+            schema:
+                $ref: '#/components/schemas/PointRuleRequestDTO'
+      responses:
+        "200":
+          description: Returns the Response related To Saved Rule
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PointRuleResponseDTO'
+        "400":
+          description: Bad request
+        "403":
+          description: Unauthorized access
+  /point_rule/{ruleId}:
+    get: 
+      tags:
+        - LoyaltyPointRuleResource
+      summary: Returns Details of particular created rule.
+      operationId: getParticularRuleData
+      parameters:
+        - name: ruleId
+          in: path
+          description: Used as an identifier for the rule whose data needs to be fetched.
+          required: true
+          example: c6d68934-b59d-4863-b5e7-05dba9d90e39 
+          schema:
+            type: string
+      
+      responses:
+        "200":
+          description: Returns the filtered list of Vouchers
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PointRuleResponseDTO'
+        "400":
+          description: Bad request
+        "403":
+          description: Unauthorized access
+    put: 
+      tags:
+        - LoyaltyPointRuleResource
+      summary: Update Details of particular created rule.
+      operationId: updateParticularRule
+      parameters:
+        - name: ruleId
+          in: path
+          description: Used as an identifier for the rule whose data needs to be updated.
+          required: true
+          example: c6d68934-b59d-4863-b5e7-05dba9d90e39 
+          schema:
+            type: string
+      requestBody:
+       description: Paramters for updating rule. 
+       content:
+          application/json:
+           
+            schema:
+                $ref: '#/components/schemas/PointRuleRequestDTO'
+      responses:
+        "200":
+          description: Returns the updated rule.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PointRuleResponseDTO'
+        "400":
+          description: Bad request
+        "403":
+          description: Unauthorized access
+    delete: 
+      tags:
+        - LoyaltyPointRuleResource
+      summary: Delete Details of particular created rule.
+      operationId: deleteParticluarRule
+      parameters:
+        - name: ruleId
+          in: path
+          description: Used as an identifier for the rule whose data needs to be deleted.
+          required: true
+          schema:
+            type: string
+      
+      responses:
+        "200":
+          description: Deleted The rule Successfully.
+          
+        "400":
+          description: Bad request
+        "403":
+          description: Unauthorized access
+  /point_rule/points_rules_search:
+    post: 
+      tags:
+        - LoyaltyPointRuleResource
+      summary: Returns List of Admin created Point rules .
+      operationId: getListOfCreatedPointRules
+      parameters:
+      requestBody:
+       description: Filters for listing the rules created by the admin. 
+       content:
+          application/json:
+           
+            schema:
+                $ref: '#/components/schemas/PointRuleSerachRequestDTO'
+      
+      responses:
+        "200":
+          description: Returns the filtered list of Rules
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PointRuleListResponse'
+        "400":
+          description: Bad request
+        "403":
+          description: Unauthorized access  
+  /customer/vouchers/{customerId}/customer_voucher_search:
+    get: 
+      tags:
+        - CustomerVoucherResource
+      summary: Returns List of Vouchers Applicable to customers .
+      operationId: getCusomerVouchersList
+      parameters:
+        - name: customerid
+          in: path
+          description: Used as an identifier for the Customer whose Vouchers are fetched.
+          required: true
+          schema:
+            type: string
+    
+      responses:
+        "200":
+          description: Returns the filtered list of Vouchers
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerVoucherListResponse'
+        "400":
+          description: Bad request
+        "403":
+          description: Unauthorized access
+  /customer/vouchers/{customerId}/customer_rewards_metadata:
+    get: 
+      tags:
+        - CustomerVoucherResource
+      summary: Returns Details of Customer related Rewards MetaData.
+      operationId: getCusomerVouchersListMetadata
+      parameters:
+        - name: customerid
+          in: path
+          description: Used as an identifier for the Customer whose rewards metadata is fetched.
+          required: true
+          schema:
+            type: string
+      
+    
+      responses:
+        "200":
+          description: Returns the filtered list of Vouchers
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerRewardPointsMetadataDTO'
+        "400":
+          description: Bad request
+        "403":
+          description: Unauthorized access
+  /customer/vouchers/add_reward_points:
+    post: 
+      tags:
+        - CustomerVoucherResource
+      summary: API to add points to customer reward points after successful payment.
+      operationId: add customer rewad points
+      parameters:
+       
+      requestBody:
+       description: Payments Details made. 
+       content:
+          application/json:
+            schema:
+                $ref: '#/components/schemas/PaymentDetails'
+      responses:
+        "200":
+          description: Updated Customers Metadata
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerRewardPointsMetadataDTO'
+        "400":
+          description: Bad request
+        "403":
+          description: Unauthorized access
+  /customer/vouchers/{voucherId}/redeem/{customerId}:
+    put: 
+      tags:
+        - CustomerVoucherResource
+      summary: API to redeem customer voucher.
+      operationId: 
+      parameters:
+        - name: voucherId
+          in: path
+          description: Used as an identifier for the Voucher whose Vouchers are to be redeemed.
+          required: true
+          schema:
+            type: string
+        - name: customerid
+          in: path
+          description: Used as an identifier for the Customer whose Vouchers are are to be redeemed.
+          required: true
+          schema:
+            type: string
+      
+    
+      responses:
+        "200":
+          description: Returns the filtered list of Vouchers
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerVoucherResponseDTO'
+        "400":
+          description: Bad request
+        "403":
+          description: Unauthorized access
+  /admin/vouchers/vouchers_search:
+    post: 
+      tags:
+        - AdminVoucherResource
+      summary: Returns Details of all Vouchers created for the mall.
+      operationId: getVouchers
+      parameters:
+      requestBody:
+       description: Filters for listing the vouchers created by the admin. 
+       content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminVoucherSearchRequest'
+       required: true
+      responses:
+        "200":
+          description: Returns the filtered list of Vouchers
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VoucherListResponse'
+        "400":
+          description: Bad request
+        "403":
+          description: Unauthorized access
+  /admin/vouchers:         
+    post: 
+      tags:
+        - AdminVoucherResource
+      summary: Create a new Voucher at Admin Side.
+      operationId: createNewVoucher
+      parameters:
+      requestBody:
+        description: The Voucher Details to be added.
+        content:
+         application/json:
+            schema:
+              $ref: '#/components/schemas/AdminVoucherRequestDTO'
+      responses:
+        "201":
+          description: Voucher Created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminVoucherResponseDTO'
+        "400":
+          description: Bad request
+        "403":
+          description: Unauthorized access
+  /admin/vouchers/{voucherId}:
+    get: 
+      tags:
+        - AdminVoucherResource
+      summary: Get Voucher Details that's created.
+      operationId: getVoucherDetails
+      parameters:
+  
+        - name: voucherId
+          in: path
+          description: Used as an identifier for the voucher whose Vouchers are fetched.
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Voucher Details Successfully Retrieved.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminVoucherResponseDTO'
+        "400":
+          description: Bad request
+        "403":
+          description: Unauthorized access
+    put: 
+      tags:
+        - AdminVoucherResource
+      summary: Update Created Voucher Details.
+      operationId: updateEvent
+      
+      parameters:
+        
+        - name: voucherId
+          in: path
+          description: Used as an identifier for the voucher whose details are updated.
+          required: true
+          schema:
+            type: string
+      
+      requestBody:
+       description: The Voucher Details to be Updated. 
+       content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminVoucherRequestDTO'
+       required: true
+      responses:
+        "204":
+          description: Voucher Details Successfully Updated.
+        "400":
+          description: Bad request
+        "403":
+          description: Unauthorized access
+  
+    delete: 
+      tags:
+        - AdminVoucherResource
+      summary: Delete a particluar Voucher.
+      operationId: deleteVoucher
+      parameters:
+  
+        - name: voucherId
+          in: path
+          description: Used as an identifier for the voucher whose details are deleted.
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Delete Voucher.
+        "400":
+          description: Bad request
+        "403":
+          description: Unauthorized access
+
+
+
+
+  
+components:
+  schemas:
+    VoucherListResponse:
+      type: array
+      items:
+       $ref: '#/components/schemas/AdminVoucherResponseDTO'
+    AdminVoucherResponseDTO:
+      type: object
+      properties:
+       voucherId:
+          type: string
+          description: The internal system identifier for the Voucher.
+          example: 5cfbaaf0-3c7b-4eb4-a3ae-ac74887e9014
+       mallId:
+          type: string
+          description: The internal system identifier for the Mall.
+          example: 5cfbaaf0-3c7b-4eb4-a3ae-ac74887e9014
+       title:
+          type: string
+          description: title for the voucher.
+          example: 30% Off
+       store:
+          type: object
+          description: Have Info related to Store Details.
+          $ref: '#/components/schemas/Store'
+       category:
+          type: object
+          description: Enum for Category.
+          enum:
+           - Shopping
+           - Movies
+       startDate:
+          type: string
+          description: The start date for the voucher.
+          example: 05/15/2022
+       endDate:
+          type: string
+          description: The end date for the voucher.
+          example: 05/15/2022
+       overview:
+          type: string
+          description: provides general overview of the voucher.
+          example: The voucher is valid for 6 months from the date of its issuance.
+       coinsNeeded:
+          type: integer
+          description: The coins needed in total to redeem the voucher.
+          example: 500
+       status:
+          type: array
+          description: A  list of Voucher Statuses. 
+          enum:
+              - PAST
+              - NOW RUNNING
+              - UPCOMING
+    CustomerVoucherListResponse:
+      type: array
+      items:
+       $ref: '#/components/schemas/CustomerVoucherResponseDTO'
+    CustomerVoucherResponseDTO:
+      type: object
+      properties:
+       customerId:
+          type: string
+          description: The internal system identifier for the Customer.
+          example: 5cfbaaf0-3c7b-4eb4-a3ae-ac74887e9014
+       voucherIssueId:
+          type: string
+          description: The internal system identifier for the VoucherIssued to customer.
+          example: 5cfbaaf0-3c7b-4eb4-a3ae-ac74887e9014
+       customerVoucherStatus:
+          type: object
+          description: Status of Voucher issued to customer.
+          enum:
+              - NOT_REDEEMED
+              - REDEEMED
+              - APPLIED
+              - EXPIRED
+       voucherCode:
+          type: string
+          description: 6 length alpha numeric String.
+          example: ee12jdskdfjhalss==
+       title:
+          type: string
+          description: title for the voucher.
+          example: 30% Off
+       voucher:
+          type: object
+          description: Have Info related to Store Details.
+          $ref: '#/components/schemas/Voucher'
+       isVoucherRedeemable:
+          type: boolean
+          description: Boolean value Indicating if Voucher is redeemable.
+          
+       additionalCoinsNeededToRedeem:
+          type: integer
+          description: Additional coins needed to redeem voucher.
+          example: 100
+       validForDays:
+          type: integer
+          description: Specifies how many days are left before voucher expires.
+          example: 20
+      
+    AdminVoucherRequestDTO:
+      type: object
+      properties:
+    
+       title:
+          type: string
+          description: title for the voucher.
+          example: 30% Off
+       storeId:
+          type: string
+          description: Have Info related to Store Details.
+          example: 0xD557BD156A424268B1450266609C29B2
+       category:
+          type: object
+          description: Enum for Category.
+          enum:
+           - Shopping
+           - Movies
+       startDate:
+          type: string
+          description: The start date for the voucher.
+          example: 05/15/2022
+       endDate:
+          type: string
+          description: The end date for the voucher.
+          example: 05/15/2022
+       overview:
+          type: string
+          description: provides general overview of the voucher.
+          example: The voucher is valid for 6 months from the date of its issuance.
+       coinsNeeded:
+          type: integer
+          description: The coins needed in total to redeem the voucher.
+          example: 500
+
+    PointRuleRequestDTO:
+      type: object
+      properties:
+    
+       ruleName:
+          type: string
+          description: Name for the rule.
+          example: Point Rule 1
+       startDate:
+          type: string
+          description: The start date for the Rule.
+          example: 05/15/2022
+       endDate:
+          type: string
+          description: The end date for the Rule.
+          example: 05/15/2022
+       coinValue:
+          type: integer
+          description: Value for 1 coin.
+          example: 500
+       isDefault:
+          type: integer
+          description: Signifies whether a rule is default or not.
+          example: true
+       storeIds:
+          type: array
+          items:
+           type: string
+    PointRuleSerachRequestDTO:
+      type: object
+      properties:
+    
+       startDate:
+          type: string
+          description: The start date for the rule.
+          example: 05/15/2022
+       endDate:
+          type: string
+          description: The end date for the rule.
+          example: 05/15/2022
+       pointRuleStatuses:
+          type: array
+          
+       page:
+          type: integer
+          description: page number for points list.
+          example: 2
+       size:
+          type: integer
+          description: size of  points list shown.
+          example: 10
+    
+    PointRuleListResponse:
+      type: array
+      items:
+       $ref: '#/components/schemas/PointRuleResponseDTO'
+          
+    PointRuleResponseDTO:
+      type: object
+      properties:
+       ruleId:
+          type: string
+          description: The internal system identifier for the Rule.
+          example: 5cfbaaf0-3c7b-4eb4-a3ae-ac74887e9014
+       mallId:
+          type: string
+          description: The internal system identifier for the mall.
+          example: 5cfbaaf0-3c7b-4eb4-a3ae-ac74887e9014
+       ruleName:
+          type: string
+          description: Name for the rule.
+          example: 20% off
+       startDate:
+          type: string
+          description: The start date for the rule.
+          example: 05/15/2022
+       endDate:
+          type: string
+          description: The end date for the rule.
+          example: 05/15/2022
+       coinValue:
+          type: integer
+          description: Value for 1 coin.
+          example: 500
+       storeInfo:
+          type: string
+          description: Signifies whether a rule is applied to all stores or selective stores.
+          example: true
+       stores:
+          type: array
+          items:
+           $ref: '#/components/schemas/Store'
+       status:
+          type: object
+          description: Signifies rule status.
+          enum:
+              - ACTIVE
+              - INACTIVE
+              
+    AdminVoucherSearchRequest:  
+      type: object
+      properties:   
+        
+       startDate:
+          type: string
+          description: The date at which Voucher starts.
+          example: 05/15/2022
+       endDate:
+          type: string
+          description: The date at which Voucher ends.
+          example: 05/15/2022
+       voucherStatuses:
+          type: string
+          description: Indicates current voucher status
+          enum:
+              - PAST
+              - NOW RUNNING
+              - UPCOMING
+       page:
+         type: string
+         description: Specifies the page no. for which vouchers needs to be shown.
+
+       offset:
+         type: string
+         description: Specifies the no of vouchers to be shown in a page.
+   
+    Store:
+      type: object
+      properties:
+        UUId:
+         type: string
+         description: :Used as an Identifier for a Store
+         example: 5cfbaaf0-3c7b-4eb4-a3ae-ac74887e9014
+        name:
+          type: string
+          description: :Signifies name of the store
+          example: Allenso Watches
+        brandLogoUrl:
+          type: string
+          description: Url for Store
+    PaymentDetails:
+      type: object
+      properties:
+        paymentId:
+         type: string
+         description: :Used as an Identifier for a Payment
+         example: 5cfbaaf0-3c7b-4eb4-a3ae-ac74887e9014
+        mallId:
+         type: string
+         description: :Used as an Identifier for a mall
+         example: 5cfbaaf0-3c7b-4eb4-a3ae-ac74887e9014
+        customerId:
+         type: string
+         description: :Used as an Identifier for a customer
+         example: 5cfbaaf0-3c7b-4eb4-a3ae-ac74887e9014
+        storeId:
+         type: string
+         description: :Used as an Identifier for a store
+         example: 5cfbaaf0-3c7b-4eb4-a3ae-ac74887e9014
+        amount:
+         type: number
+         description: Amount paid at store
+         example: 100.56
+    CustomerRewardPointsMetadataDTO:
+      type: object
+      properties:
+        customerId:
+         type: string
+         description: :Used as an Identifier for a Customer
+         example: 5cfbaaf0-3c7b-4eb4-a3ae-ac74887e9014
+        mallid:
+          type: string
+          description: Used as an Identifier for a mall
+          example: 5cfbaaf0-3c7b-4eb4-a3ae-ac74887e9014
+        pointsCollected:
+          type: integer
+          description: Total Points Collected using rewards
+
+        noOfActiveVouchers:
+          type: integer
+          description: Count of Vouchers that is active to be redeemed
+    Voucher:
+      type: object
+      properties:
+        id:
+         type: integer
+         description: Internal Identifier for a Voucher
+         example: 1
+        voucherId:
+          type: string
+          description: Unique Identifier for a Voucher
+          example: 5cfbaaf0-3c7b-4eb4-a3ae-ac74887e9014
+        mallId:
+          type: string
+          description: Unique Identifier for a mall
+          example: 5cfbaaf0-3c7b-4eb4-a3ae-ac74887e9014
+        title:
+          type: string
+          description: Title for a Voucher
+          example: 20% off
+        storeId:
+          type: string
+          description: Unique Identifier for a Store
+          example: 5cfbaaf0-3c7b-4eb4-a3ae-ac74887e9014
+        categoryId:
+          type: string
+          description: Unique Identifier for a Category
+          example: 2
+        startDate:
+          type: string
+          description: The start date for the voucher.
+          example: 05/15/2022
+        endDate:
+          type: string
+          description: The end date for the voucher.
+          example: 05/15/2022
+        overview:
+          type: string
+          description: provides general overview of the voucher.
+          example: The voucher is valid for 6 months from the date of its issuance.
+        coinsNeeded:
+          type: integer
+          description: The coins needed in total to redeem the voucher.
+          example: 500
+          
+   

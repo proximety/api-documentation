@@ -13,41 +13,7 @@ servers:
   - url: https://app.proximety.io/api
 tags:
 - name: Payment
-paths:
-  /transactions/auth:
-    post: 
-      tags:
-        - Auth Token
-      summary: Authorization token
-      description: Get paytm sso token
-      operationId: getOAuthToken
-      requestBody:
-        description: The details based on which an OAuth token is to be generated for a PayTM user.
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PaytmAuthRequest'
-        required: true
-      responses:
-        "200":
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PaytmAuthResponse'
-        "400":
-          description: Bad request          
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/GlobalException"
-              example: 
-                {
-                  "status": 400,
-                  "type": "BAD_REQUEST",
-                  "title": "Invalid request.",
-                  "detail": "Invalid request. Try again.",
-                }
+paths:  
   /transactions:
     post: 
       tags:
@@ -81,69 +47,8 @@ paths:
                   "type": "BAD_REQUEST",
                   "title": "Invalid request.",
                   "detail": "Invalid request. Try again.",
-                }
-  /transactions/{transactionId}}:
-    put: 
-      tags:
-        - Update
-      summary: Update a transaction
-      description: Update the amount of a transaction
-      operationId: updateTransaction
-      requestBody:
-        description: The details of the transaction to be updated
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UpdateTransactionRequest'
-        required: true
-      responses:
-        "200":          
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TransactionResponse'
-        "400":
-          description: Bad request          
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/GlobalException"
-              example: 
-                {
-                  "status": 400,
-                  "type": "BAD_REQUEST",
-                  "title": "Invalid request.",
-                  "detail": "Invalid request. Try again.",
-                }
-  /transactions/{transactionId}/options:
-    get: 
-      tags:
-        - Payment Options
-      summary: Payment Options
-      description: Gets the payment options available for the transaction
-      operationId: fetchPaymentOptions
-      responses:
-        "200":          
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PaymentOptionsResponse'
-        "400":
-          description: Bad request          
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/GlobalException"
-              example: 
-                {
-                  "status": 400,
-                  "type": "BAD_REQUEST",
-                  "title": "Invalid request.",
-                  "detail": "Invalid request. Try again.",
-                }                
-  /transactions/{transactionId}/status:
+                }           
+  /transactions/status:
     get: 
       tags:
         - Status
@@ -177,10 +82,10 @@ paths:
                   "title": "Invalid request.",
                   "detail": "Invalid request. Try again.",
                 }
-  /transactions/{transactionId}:
+  /transactions/update:
     post: 
       tags:
-        - Save
+        - Update
       summary: Save the transaction details. This should ideally be the callback API.
       description: Save the transaction details.
       operationId: saveTransaction
@@ -213,21 +118,7 @@ paths:
                   "detail": "Invalid request. Try again.",
                 }
 components:
-  schemas:
-    PaytmAuthRequest:
-      type: object
-      required:
-        - deviceId
-        - code
-      properties:
-        code:
-          type: string
-          description: The authorization code received from in Custom UI SDK.
-          example: "999e3877-97c1-XXXX-b19d-6c8787983300"
-        deviceId:
-          type: string
-          description: Unique Device Id of the user's phone.
-          example: "8c4afbfab1ae0bd4"
+  schemas:    
     InitiateTransactionRequest:    
       type: object
       required:
@@ -240,7 +131,7 @@ components:
           type: string
           description: Internal system identifier for order.
           example: aa73819jd
-        customerId: 
+        clientId: 
           type: string
           description: Internal system identifier of the customer for whom the order is placed.
           example: cc73819jd
@@ -268,20 +159,10 @@ components:
           type: object
           description: "Object of Simplified Payment Offers. Either paymentOffersApplied or simplifiedPaymentOffers."
           $ref: '#/components/schemas/PaymentOfferDTO'
-    UpdateTransactionRequest:
-      type: object
-      required:
-        - txnToken
-        - txnAmount
-      properties:
-        txnToken: 
-          type: string
-          description: This is the unique transaction token received in the response of Initiate Transaction API. It is valid for 15 minutes.
-          example: f0bed899539742309eebd8XXXX7edcf61588842333227
-        txnAmount:
-          type: string
-          description: Total transaction amount in rupees upto two decimal places.
-          example: "600.35"
+        splitSettlementInfo:
+          type: object
+          description: "Split payment details"
+          $ref: '#/components/schemas/SplitSettlementDTO'
     SaveTransactionRequest:
       type: object
       required:
@@ -319,22 +200,7 @@ components:
           example: FOOD
           enum:
             - MOVIE
-            - FOOD
-    PaytmAuthResponse:
-      type: object
-      properties:
-        accessToken:
-          type: string
-          description: Received SSO token of the user.
-          example: "eyJlbmMiOiJBMjU2R0NNIiwiYWxnIjoiZGlyIn0..xxxxxxxxxxx.9iHTtWbCZ0I6qbn2sUnyz5siw1fqbmtEnFMFE7nSIX-yrwCkiGfAC6QmPr9q-tw8LMPOh5-3UXRbpeVZEupQd3wNyaArWybRX2HAxJDRD8mxJ_wxzJM6GZ1ov4O3EIsx2Y_Zr0aHCd3VbnTjRUnlVdxXJPFG8QZs0b_2TVdoAX3_QjZS8_dwcmIWoH8ebDzOIs7MJacETfMtyFGAo8Xc0LjznToUWvTsTbIXQoF1yB0.1fZFAYJVsY61BTv2htLcXQ8800"
-        tokenType:
-          type: string
-          description: Token type
-          example: "BEARER"
-        expiresIn:
-          type: string
-          description: Expiry timer of the SSO token
-          example: "1594011297000"
+            - FOOD    
     InitiateTransactionResponse:
       type: object
       properties:
@@ -364,24 +230,7 @@ components:
           description: True when ssoToken is provided in request and it is valid.
         extraParamsMap:
           type: object
-          description: Map for any extra information (in case of error).
-    TransactionResponse:
-      type: object
-      properties:
-        responseTimestamp:
-          type: string
-          description: EPOCH timestamp of the time at which response is being sent.
-          example: "1588402269"
-        signature:
-          type: string
-          description: You should validate the parameter values by verifying the signature comes in the response. It ensures that parameter values not tempered.        
-        resultInfo: 
-          type: object
-          description: This parameter gives the information about the result of the API response.
-          $ref: '#/components/schemas/ResultInfo'
-        extraParamsMap:
-          type: object
-          description: Map for any extra information (in case of error).
+          description: Map for any extra information (in case of error).    
     TransactionStatusRequest:
       type: object
       required:
@@ -451,59 +300,7 @@ components:
           description: Original order value before offer was applied. Only for SimplifiedPaymentOffers (Bank Offers).
         paymentPromoCheckoutData:
           type: string
-          description: Only for SimplifiedPaymentOffers (Bank Offers).
-    PaymentOptionsResponse:
-      type: object
-      properties:
-        responseTimestamp:
-          type: string
-          description: EPOCH timestamp of the time at which response is being sent.
-          example: "1588402269"
-        requestId:
-          type: string
-          description: Unique reference ID
-        resultInfo:
-          type: object
-          description: This parameter gives the information about the result of the API response.
-          $ref: '#/components/schemas/ResultInfo'
-        walletOnly:
-          type: boolean
-          description: This flag indicates the availability of wallet payment mode only.          
-        zeroCostEmi:
-          type: boolean
-          description: This flag indicates the availability of zero cost EMI.          
-        pcfEnabled:
-          type: boolean
-          description: This flag indicates the availability of PCF.
-        nativeJsonRequestSupported:
-          type: boolean
-          description: This flag indicates the JSON API request supported for the custom checkout.
-        activeMerchant:
-          type: boolean
-          description: This flag indicates whether the merchant is active or blocked.
-        oneClickMaxAmount:
-          type: string
-          description: Maximum amount allowed for one-click payment.
-          example: "2000.00"
-        onTheFlyKYCRequired:
-          type: boolean
-          description: A boolean flag which indicates whether min-kyc is required before the txn.
-        paymentFlow:
-          type: string
-          description: Payment flow applied on merchant.
-          example: "ADDANDPAY"
-        merchantPayOption:
-          type: object
-          description: Consists of the payment modes that are available on the merchant. Additionally, it consists of a list of saved cards saved against a customer.
-          $ref: '#/components/schemas/PayOptionDTO'
-        addMoneyPayOption:
-          type: object
-          description: Consists of the payOption object that are applicable for add money transaction. This will be applicable if the wallet balance is insufficient.
-          $ref: '#/components/schemas/PayOptionDTO'
-        merchantLimitInfo:
-          type: object
-          description: Merchant limit info.
-          $ref: '#/components/schemas/MerchantLimitInfoDTO'
+          description: Only for SimplifiedPaymentOffers (Bank Offers).    
     PaymentOfferDTO:
       type: object
       description: Simplified Payment Offers.
@@ -569,306 +366,11 @@ components:
           description: Id created for child mid
         amount:
           type: string
-          description: This parameter contains the amount to be charged to the customer and can have two places of decimal.
+          description: Share of child vendor in the split by amount base.
           example: "100.00"
-    PayOptionDTO:
-      type: object
-      description: Payment options available for the merchant.
-      properties:
-        paymentModes: 
-          type: array
-          description: Array of different payment modes.
-          $ref: '#/components/schemas/PaymentMethodDTO'
-        savedInstruments:
-          type: array
-          description: Array of saved card and other user saved instruments.
-          $ref: '#/components/schemas/SavedInstrumentDTO'
-        activeSubscriptions: 
-          type: array
-          description: List of Active Subscriptions.
-          $ref: '#/components/schemas/AciveSubscriptionDTO'
-    PaymentMethodDTO:
-      type: object
-      description: Payment options available for the merchant.
-      properties:
-        paymentMode: 
+        percentage:
           type: string
-          description: Mode of Payment.
-          example: BALANCE , UPI , CREDIT_CARD , DEBIT_CARD , NET_BANKING , EMI
-        displayName:
-          type: string
-          description: Payment Modes' name. Note that these names should be used as display names.
-          example:  Paytm Balance, Paytm Payments Bank, Bhim Upi, Credit Card, Debit Card, Net Banking, Emi.
-        isDisabled: 
-          type: object
-          description: This flag indicates the status of this payment mode.
-          $ref: '#/components/schemas/StatusInfoDTO'
-        payChannelOptions:
-          type: array
-          description: Payment Mode Channel array
-          $ref: '#/components/schemas/PayChannelBaseDTO'
-        feeAmount:
-          type: string
-          description: Post Convenience fee.
-        taxAmount:
-          type: string
-          description: Any tax amount present in PCF.
-        totalTransactionAmount:
-          type: string
-          description: Total amount in case merchant is a PCF merchant and PCF is applicable.
-        priority:
-          type: string
-          description: Signifies order of display.
-          example: "1"
-        isHybridDisabled:
-          type: boolean
-          description: Indicates whether hybird payment is allowed or not for this payment method.
-    PayChannelBaseDTO:
-      type: array
-      description: Status Info
-      properties:
-        isDisabled: 
-          type: object
-          description: This flag indicates the status of this payment channel.
-          $ref: '#/components/schemas/StatusInfoDTO'
-        hasLowSuccess: 
-          type: object
-          description: This flag indicates the status of success rate.
-          $ref: '#/components/schemas/StatusInfoDTO'
-        iconUrl: 
-          type: string
-          description: Icon Url of the channel.
-        minAmount:
-          type: string
-          description: Minimum amount for EMI plan.
-        maxAmount:
-          type: string
-          description: Maximum amount for EMI plan.
-        emiType:
-          type: string
-          description: Type of EMI.
-          example: DEBIT_CARD, CREDIT_CARD
-        isHybridDisabled:
-          type: boolean
-          description: Indicates whether hybird payment is allowed or not for this payChannel.
-        channelCode:
-          type: string
-          description: PayChannel's short code
-          example: ANDB
-        channelName:
-          type: string
-          description: PayChannel's name
-          example: Andhra Bank
-        balanceInfo: 
-          type: object
-          description: Basic details of Paytm wallet.
-          $ref: '#/components/schemas/BalanceInfoDTO'    
-    StatusInfoDTO:
-      type: object
-      description: Status Info
-      properties:
-        status: 
-          type: string
-          description: Payment channel status.
-          example: "false"
-        msg:
-          type: string
-          description: Disable status message.
-    BalanceInfoDTO:
-      type: object
-      description: Basic details of Paytm wallet.
-      properties:
-        subWalletDetails:
-          type: array
-          description: Basic details of Paytm sub wallet.
-          $ref: '#/components/schemas/SubWalletInfoDTO'
-        payerAccountExists:
-          type: boolean
-          description: Status of Paytm wallet.
-        accountBalance:
-          type: string
-          description: Total balance of Paytm wallet
-          example: "100.00"
-    SubWalletInfoDTO:
-      type: object
-      description: Basic details of Paytm sub wallet.
-      properties:
-        displayName:
-          type: string
-          description: Paytm sub wallet name.
-          example: Paytm wallet
-        balance:
-          type: string
-          description: Paytm sub wallet balance.
-          example: "100.00"
-        imageUrl:
-          type: string
-          description: Paytm sub wallet icon.
-    SavedInstrumentDTO:
-      type: object
-      description: Details about saved card or other user saved payment instrument.
-      properties:
-        iconUrl: 
-          type: string
-          description: Saved instruments icon.
-          example: https://staticgw-stage1.paytm.in/25.1.0/
-        oneClickSupported:
-          type: boolean
-          description: Status of One-Click payment on this save instruments.          
-        cardDetails: 
-          type: object
-          description: This flag indicates the status of this payment mode.
-          $ref: '#/components/schemas/CardDetailsDTO'
-        paymentOfferDetails:
-          type: object
-          description: Bank offer details.
-          $ref: '#/components/schemas/PayOfferDetailsDTO'
-        issuingBank:
-          type: string
-          description: Issuing bank name.
-          example: JPMC
-        isEmiAvailable:
-          type: boolean
-          description: Whether emi is available or not          
-        authModes:
-          type: array
-          description: Contains list of authentication modes available on that card. Possible values are otp, pin.
-          example: ["otp"]
-        displayName:
-          type: string
-          description: Saved instrument names.
-          example: "JPMorgan Chase Bank Credit Card"
-        priority:
-          type: string
-          description: Indicates the priority to be given by front-end in displaying this card.
-          example: "1"
-        isHybridDisabled:
-          type: boolean
-          description: This instruments support the hybrid transaction or not.
-        channelCode:
-          type: string
-          description: Saved instrument channel short code.
-          example: "VISA"
-        channelName:
-          type: string
-          description: Saved instrument channel name.
-          example: "VISA Inc"
-    CardDetailsDTO:
-      type: object
-      description: Saved instrument details.
-      properties:
-        cardId: 
-          type: string
-          description: Saved instrument id.
-          example: 201707291077050XXXXXX47678ef1041b96e6bcac3489
-        cardType: 
-          type: string
-          description: Saved instrument type.
-          example: CREDIT_CARD , DEBIT_CARD , UPI
-        expiryDate:
-          type: string
-          description: Saved instrument expiry date.
-          example: "022030"
-        firstSixDigit:
-          type: string
-          description: Saved card first six digits.
-          example: "022030"
-        lastFourDigit:
-          type: string
-          description: Saved card last four digits.
-          example: "022030"
-        status:
-          type: string
-          description: Saved instrument status.
-          example: "022030"
-        cvvLength:
-          type: string
-          description: Saved card CVV length.
-          example: "022030"
-        cvvRequired:
-          type: boolean
-          description: Indicates whether cvv is required.
-    PayOfferDetailsDTO:
-      type: object
-      description: Bank offer details
-      properties:
-        promocodeApplied: 
-          type: string
-          description: Bank offer code.
-          example: BANKOFFERSPTTEST11
-        promocodeText:
-          type: string
-          description: Message for this bank offer.
-          example: Promocode applied successfully.
-        instantDiscount:
-          type: string
-          description: Instant discount for this Bank offer.
-          example: "10.00"
-        cashbackAmount:
-          type: string
-          description: Cashback discount for this Bank offer.
-          example: "10.00"
-        payMethod:
-          type: string
-          description: Payment mode.
-          example: CREDIT_CARD , DEBIT_CARD , NET_BANKING
-        promoVisibility:
-          type: boolean
-          description: Status of this offer.
-        responseCode:
-          type: string
-          description: Response code for this offer.
-    AciveSubscriptionDTO:
-      type: object
-      description: Active Subscription
-      properties:
-        accountNumber: 
-          type: string
-          description: Account Number.
-        accountHolderName:
-          type: string
-          description: Account holder name.
-        bankIFSC:
-          type: string
-          description: Bank IFSC code.
-        bankName:
-          type: string
-          description: Bank name.
-        savedCardId:
-          type: string
-          description: Save instrument id.
-        subscriptionId:
-          type: string
-          description: Subscription id.
-        paymentMode:
-          type: string
-          description: Payment mode.
-    MerchantLimitInfoDTO:
-      type: object
-      description: Merchant limit info.
-      properties:
-        merchantRemainingLimits:
-          type: array
-          description: Merchant Remaining Limits.
-          $ref: '#/components/schemas/MerchantRemainingLimitsDTO'
-        excludedPaymodes:
-          type: array
-          description: Excluded Paymodes.
-          example: ["UPI","NET_BANKING","GIFT_VOUCHER"]
-        message:
-          type: string
-          description: Message for this limits.
-    MerchantRemainingLimitsDTO:
-      type: object
-      description: Merchant Remaining Limit.
-      properties:
-        limitType:
-          type: string
-          description: Limit type. Possible values are DAILY, WEEKLY, MONTHLY
-        amount:
-          type: string
-          description: Limit amount value.
-          example: "10.00"
+          description: Share of child vendor in the split by percentage base.
     GlobalException:
       type: object
       description: An exception thrown by the system.
