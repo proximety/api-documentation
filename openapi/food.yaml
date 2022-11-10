@@ -1249,67 +1249,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Orders'
-              example:
-                          {
-                            "orders": [
-                              {
-                                "orderId": "123",
-                                "orderPlacedTime": "2021-10-20 10:00",
-                                "expectedDeliveryTime": "2021-10-20 11:00",
-                                "otp": 5678,
-                                "preparationTime": 30,
-                                "restaurantId": "123",
-                                "appliedOfferId": "123",
-                                "amount": 100,
-                                "orderItems": [
-                                  {
-                                    "dish": {
-                                      "dishId": "123",
-                                      "restaurantId": "123",
-                                      "dishName": "Chicken Biriyani",
-                                      "menuCategory": {
-                                          "menuCategoryId":"f94ce675-c2f5-4778-9398-08866b50e2f2"
-                                      },
-                                      "vegNonVeg": "VEG",
-                                      "cuisineStyle": "INDIAN",
-                                      "price": 125.5,
-                                      "description": "British style nadan biriyani",
-                                      "bestSeller": true,
-                                      "inStock": true,
-                                      "rating": 3.5,
-                                      "numberOfRatings": 17,
-                                      "dishImageUrl": "https://aws.proximety.io/s3/image1.jpg",
-                                    },
-                                    "addedCustomizations": [
-                                      {
-                                        "addOnId": "123",
-                                        "addOnName": "Almond Milk",
-                                        "price": 30,
-                                        "vegNonVeg": "VEG",
-                                        "inStock": true
-                                      }
-                                    ],
-                                    "addedVariants": [
-                                      {
-                                        "dishVariantId": "123",
-                                        "variantName": "Half Biriyani",
-                                        "price": 100,
-                                        "inStock": true
-                                      }
-                                    ]
-                                  }
-                                ],
-                                "orderWorkflow": [
-                                  {
-                                    "sequenceId": 1,
-                                    "orderStatus": "ORDER_RECEIVED",
-                                    "stepStartTime": "3:10",
-                                    "stepEndTime": "3:15"
-                                  }
-                                ]
-                              }
-                            ]
-                          }
+
         "500":
           description: Error
   /foodcourt/orders/_query:
@@ -1528,8 +1468,6 @@ paths:
                   "restaurantId": "123",
                   "appliedOfferId": "123",
                   "amount": 100,
-                  "orderItems": null,
-                  "orderWorkflow": null
                 }
         "500":
           description: Error
@@ -2381,6 +2319,19 @@ components:
           items:
             $ref: '#/components/schemas/Dish'
           description: List of dishes. Included only in specific cases.
+    RestaurantInfo:
+      type: object
+      properties:
+        restaurantId:
+          type: string
+          example: "123"
+          description: Restaurant Id.
+        restaurantName:
+          type: string
+          example: Paragon
+          description: Restaurant name.
+        floor:
+          $ref: "#/components/schemas/FloorDetails"
     Dishes:
       type: object
       properties:
@@ -2883,18 +2834,24 @@ components:
         lastUpdatedTime:
           type: string
           example: '2022-11-07 17:12'
-        cartItems:
+        cartItemsByRestaurant:
           type: array
           items:
-            $ref: '#/components/schemas/OrderItem'
-          description: List of items.
-        appliedOffers:
-          type: array
-          items:
-            $ref: '#/components/schemas/RestaurantOffer'
-          description: List of items.
+            $ref: '#/components/schemas/CartItemResponse'
         tariff:
           $ref: '#/components/schemas/Tariff'
+    CartItemResponse:
+      type: object
+      properties:
+        restaurantInfo:
+          $ref: '#/components/schemas/RestaurantInfo'
+        dishes:
+          type: array
+          items:
+            $ref: '#/components/schemas/SelectedItem'
+        appliedOfferId:
+          type: string
+          example: '123'
     Tariff:
       type: object
       properties:
@@ -2932,10 +2889,8 @@ components:
           type: string
           example: "123"  
           description: Order Id.
-        restaurantName:
-          type: string
-        floor:
-          $ref: "#/components/schemas/FloorDetails"
+        restaurantInfo:
+          $ref: "#/components/schemas/RestaurantInfo"
         displayId:
           type: number
           example: 1  
@@ -2973,7 +2928,7 @@ components:
         orderItems:
           type: array
           items:
-            $ref: '#/components/schemas/OrderItem' 
+            $ref: '#/components/schemas/SelectedItem' 
           description: List of dishes selected by the user from the restaurant.
         orderWorkflow:
           type: array
@@ -3013,7 +2968,7 @@ components:
         count:
           type: number
           example: 3
-    OrderItem:
+    SelectedItem:
       type: object
       properties: 
         dish:
