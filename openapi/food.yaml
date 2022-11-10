@@ -2196,6 +2196,17 @@ components:
             type: array
             items:
               $ref: '#/components/schemas/FloorDetails'
+        defaultffers:
+            type: array
+            items:
+              $ref: '#/components/schemas/Offer'
+            example:
+              [
+                  {
+                    "discountPercentage": 15,
+                    "maxCap": 150
+                  }
+              ]
     DishCategory:
       type: object
       properties:
