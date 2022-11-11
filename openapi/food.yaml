@@ -1521,6 +1521,7 @@ paths:
                 "maxCap": 150,
                 "userType": "ALL_USERS",
                 "campaignStartDate": "2022-10-10 10:10",
+                "campaignEndDate": "2022-10-15 10:10",
                 "items": [
                     "7ab8028c-b799-4f48-890c-c222",
                     "7c650655-229e-46ab-a211-777f2222"
@@ -2671,6 +2672,9 @@ components:
         campaignStartDate:
           description: Start date.
           example: '20/10/2020'
+        campaignEndDate:
+          description: End date.
+          example: '25/10/2020'
         items:
           type: array
           example: ["123", "456"]
@@ -3488,6 +3492,9 @@ components:
       type: object
       description: Order in a transaction.
       properties:
+        displayId:  
+          type: number
+          example: 123
         orderId:  
           type: number
           example: 123
