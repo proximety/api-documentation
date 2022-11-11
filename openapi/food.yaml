@@ -1526,7 +1526,9 @@ paths:
                     "7c650655-229e-46ab-a211-777f2222"
                 ],
                 "couponCode": "2222222",
-                "runningDays": "FRIDAY"
+                "runningDays": "FRIDAY",
+                "runningTime": "NOON",
+                "minimumOrderValue": 200
             }
       responses:
         "200":
@@ -2688,6 +2690,10 @@ components:
           $ref: '#/components/schemas/OfferStatusEnum'
         restaurantName:
           type: string
+        minimumOrderValue:
+          type: number
+          example: 150
+          description: Minimum order value for offer.
     RestaurantOffers:
       type: object
       properties:
@@ -2699,7 +2705,7 @@ components:
     RestaurantOffer:
       type: object
       properties:
-        restaurantO:
+        restaurantOffer:
           $ref: '#/components/schemas/Offer'
         numberOfOrders:
           type: number
