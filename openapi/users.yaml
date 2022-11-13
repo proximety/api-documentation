@@ -340,6 +340,7 @@ paths:
                           "middleName": "M",
                           "lastName": "Sully"
                         },
+                        "referralCode":"DREAM100",
                         "contactInfo": {
                           "primaryEmail": "abc@xyz.com"
                         },
@@ -1208,6 +1209,10 @@ components:
         name:
           type: object
           $ref: '#/components/schemas/Name'
+        referralCode:
+          type: string
+          description: The referral code tied to the customer
+          example: DREAM100
         contactInfo:
           type: object
           $ref: '#/components/schemas/ContactInfo'
