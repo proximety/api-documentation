@@ -2100,6 +2100,10 @@ components:
                     "ownerDetails": {
                       "ownerId": "88d899132",
                       "ownerType": "STORE",
+                      "location": {
+                        "id": 1,
+                        "name": "First floor"
+                    },
                       "name": "Adidas",
                       "brandImageUrl": "https://s3.ap-south-1.amazonaws.com/proximety.io/profile-pictures-dev/d5b37874-6c6f-43cf-ad3c-f306cb2d360a.png"
                     },
