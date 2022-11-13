@@ -287,117 +287,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Restaurants'
-              example: 
-                {
-                  "restaurants": [
-                      {
-                          "restaurantId": "d4b9f800-2f01-40ea-9407-66abdec65a2d",
-                          "restaurantName": "Paragon",
-                          "ownerName": "Mohan",
-                          "priorityPhoneNumber": null,
-                          "restaurantPhoneNumberPrimary": {
-                              "countryCode": "+91",
-                              "phoneNumber": 9898989898
-                          },
-                          "restaurantPhoneNumberSecondary": {
-                              "countryCode": "+91",
-                              "phoneNumber": 9898989898
-                          },
-                          "ownerPhoneNumberPrimary": {
-                              "countryCode": "+91",
-                              "phoneNumber": 9898989898
-                          },
-                          "ownerPhoneNumberSecondary": {
-                              "countryCode": "+91",
-                              "phoneNumber": 9898989898
-                          },
-                          "email": "a@b.com",
-                          "floor": {
-                              "id": 1,
-                              "name": "First floor"
-                          },
-                          "averageCostPerPerson": 150.0,
-                          "cuisineStyles": [
-                              "INDIAN"
-                          ],
-                          "openingTime": "10:00",
-                          "closingTime": "20:00",
-                          "bankAccount": {
-                              "bankAccountId": "3cad46a7-70d5-424a-a670-f6d0ff6ea4b7",
-                              "accountName": "Savings account",
-                              "accountNumber": "321321321",
-                              "bankName": "SBI",
-                              "ifscCode": "SBIN13",
-                              "upiId": "paragon@upi"
-                          },
-                           "restaurantImageUrl": "https://aws.proximety.io/s3/image1.jpg",
-                     "restaurantLogoUrl": "https://aws.proximety.io/s3/image1.jpg",
-                     "menuImageUrl": "https://aws.proximety.io/s3/image1.jpg",
-                     "gstCertificateUrl": "https://aws.proximety.io/s3/image1.jpg",
-                     "panFileUrl": "https://aws.proximety.io/s3/image1.jpg",
-                     "fssaiCertificateUrl": "https://aws.proximety.io/s3/image1.jpg",
-                      "rating": 0.0,
-                      "numberOfRatings": 0,
-                      "isOpen": false,
-                      "isOnline": false,
-                      "dishes": [
-                                  {
-                                      "dishId": "01e36d88-338e-44cf-a3cd-f18474f56d79",
-                                      "restaurantId": "BEC4BD5D-AF1D-4265-9656-9707BAC5E82B",
-                                      "dishName": "test",
-                                      "menuCategory": {
-                                          "menuCategoryId":"f94ce675-c2f5-4778-9398-08866b50e2f2",
-                                          "menuCategoryName":"Biriyani"
-                                      },
-                                      "vegNonVeg": "VEG",
-                                      "cuisineStyle": "INDIAN",
-                                      "price": 200.0,
-                                      "description": "vegetables panner ",
-                                      "rating": 0.0,
-                                      "numberOfRatings": 0,
-                                      "dishImageUrl": "https://s3.ap-south-1.amazonaws.com/proximety.io/food-court-files-dev/2a40dc8b-2551-4ab7-8eda-e3f034d94684.jpeg",
-                                      "dishVariantGroups": [
-                                          {
-                                              "dishVariantGroupId": "0a392058-4a74-4c12-b6f6-269c02670588",
-                                              "variantGroupName": "c",
-                                              "dishVariants": [
-                                                  {
-                                                      "dishVariantId": "4170b126-5ccc-4f27-a0ab-e4633e9fc13a",
-                                                      "variantName": "c",
-                                                      "price": 2.0
-                                                  }
-                                              ]
-                                          }
-                                      ],
-                                      "addOnGroups": null,
-                                      "inStock": true,
-                                      "bestSeller": false
-                                  }
-                            ],
-                      }
-                  ],
-                      "pageInfo": {
-                        "pageable": {
-                            "sort": {
-                                "empty": false,
-                                "sorted": true,
-                                "unsorted": false
-                            },
-                            "offset": 0,
-                            "pageSize": 2147483647,
-                            "pageNumber": 0,
-                            "paged": true,
-                            "unpaged": false
-                        },
-                        "number": 0,
-                        "numberOfElements": 17,
-                        "size": 2147483647,
-                        "totalElements": 17,
-                        "totalPages": 1,
-                        "first": true,
-                        "last": true
-                    }
-              }
         "500":
           description: Error   
   /restaurants/{restaurantId}:
@@ -1471,6 +1360,26 @@ paths:
                 }
         "500":
           description: Error
+  /restaurants/{restaurantId}/offers/generate-otp:
+    get:
+      tags:
+        - Offer
+      summary: Generate offer otp
+      description: Generate offer otp
+      operationId: generateOfferOTP
+      parameters:
+        - name: restaurantId
+          in: path
+          required: true
+          description: Restaurant Id.
+          example: "123"
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful operation
+        "500":
+          description: Error
   /restaurants/{restaurantId}/offers:
     get:
       tags:
@@ -1509,28 +1418,18 @@ paths:
           example: "123"
           schema:
             type: string
+        - name: otp
+          in: query
+          required: true
+          example: "1234"
+          schema:
+            type: string
       requestBody:
         description: cart. 
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/Offer'
-            example:
-              {
-                "discountPercentage": 15,
-                "maxCap": 150,
-                "userType": "ALL_USERS",
-                "campaignStartDate": "2022-10-10 10:10",
-                "campaignEndDate": "2022-10-15 10:10",
-                "items": [
-                    "7ab8028c-b799-4f48-890c-c222",
-                    "7c650655-229e-46ab-a211-777f2222"
-                ],
-                "couponCode": "2222222",
-                "runningDays": "FRIDAY",
-                "runningTime": "NOON",
-                "minimumOrderValue": 200
-            }
       responses:
         "200":
           description: Successful operation
@@ -2317,6 +2216,10 @@ components:
           description: Indivated whether restaurant is pure veg or not.
         bankAccount:
           $ref: '#/components/schemas/BankAccount'
+        gstSlab:
+          $ref: '#/components/schemas/GSTSlabEnum'
+        paytmVendorId:
+          type: string
         dishes:
           type: array
           items:
@@ -2335,6 +2238,8 @@ components:
           description: Restaurant name.
         floor:
           $ref: "#/components/schemas/FloorDetails"
+        paytmVendorId:
+          type: string
     Dishes:
       type: object
       properties:
@@ -3323,6 +3228,12 @@ components:
         - INDIAN
         - CHINESE
         - ARABIC
+    GSTSlabEnum:
+      type: string
+      enum:
+        - FIVE_PERCENT
+        - TWELVE_PERCENT
+        - EIGHTEEN_PERCENT
     RefreshTokenRequest:
       type: object
       required:
