@@ -57,7 +57,7 @@ paths:
       description: Creates a new restaurant partner app user.
       operationId: createUser 
       requestBody:
-        description: The user details for restaurant user registration. 
+        description: The user details for restaurant user registration. The default password for the created user is 'password'. 
         content:
           application/json:
             schema:
