@@ -12,7 +12,7 @@ servers:
   - url: https://app-patch.proximety.io/api
   - url: https://app.proximety.io/api
 paths:
-  /restaurants/{restaurantId}/users:
+  /restaurants/{restaurantId}/managers:
     get: 
       tags:
         - User Management
