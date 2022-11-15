@@ -3434,6 +3434,13 @@ components:
           type: string
           description: The unique username for the user.
           example: paragonjackheadless
+        role: 
+          type: string
+          description: The user role for the restaurant user.
+          example: RESTAURANT_MANAGER
+          enum:
+            - RESTAURANT_MANAGER
+            - RESTAURANT_SALES_PERSON
     RestaurantUser:
       type: object
       description: The response body from creating a new partner app user for restaurant.
@@ -3455,6 +3462,13 @@ components:
           type: string
           description: The unique username for the user.
           example: paragonjackheadless
+        role: 
+          type: string
+          description: The user role for the restaurant user.
+          example: RESTAURANT_MANAGER
+          enum:
+            - RESTAURANT_MANAGER
+            - RESTAURANT_SALES_PERSON
     PasswordResetRequest:
       type: object
       description: The password reset request.
