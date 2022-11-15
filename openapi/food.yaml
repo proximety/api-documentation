@@ -117,6 +117,62 @@ paths:
                   "title": "Invalid username/password",
                   "detail": "The username or password you specified is incorrect.",
                 }
+  /restaurant-managers/{managerId}: 
+    put:
+      tags:
+        - User Management
+      summary: Update manager
+      description: Updates the details for a restaurant manager.
+      parameters:
+        - name: managerId
+          required: true
+          in: path
+          description: Manager Id
+          example: "123"
+          schema:
+            type: string
+      requestBody:
+        description: The restaurant manager details 
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRegistrationRequest'
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestaurantUser'
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GlobalException"
+              example: 
+                {
+                  "status": 404,
+                  "type": "NOT_FOUND",
+                  "title": "Restaurant manager not found",
+                  "detail": "No manager found for the specified manager id.",
+                }
+    delete: 
+      tags:
+        - User Management
+      summary: Delete manager
+      description: Deletes the specified manager user from the platform.
+      parameters:
+        - name: managerId
+          required: true
+          in: path
+          description: Manager Id
+          example: "123"
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful operation
   /restaurants/auth/refresh:
     post: 
       tags:
