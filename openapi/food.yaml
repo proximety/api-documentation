@@ -356,7 +356,7 @@ paths:
                 "floor": {
                     "id": 1
                 },
-                "cuisineStyles": [
+                "cuisineTypes": [
                   "INDIAN"
                 ],
                 "openingTime": "10:00",
@@ -485,7 +485,7 @@ paths:
                   "floor": {
                       "id": 1
                   },
-                  "cuisineStyles": [
+                  "cuisineTypes": [
                     "INDIAN"
                   ],
                   "openingTime": "10:00",
@@ -556,7 +556,7 @@ paths:
                  "averageCostPerPerson": "150",
                   "closingTime": "20:00",
                   "openingTime": "10:00",
-                  "cuisineStyles": ["CHINESE"]
+                  "cuisineTypes": ["CHINESE"]
               }
       responses:
         "200":
@@ -597,7 +597,7 @@ paths:
                       "menuCategoryId":"f94ce675-c2f5-4778-9398-08866b50e2f2"
                   },
                   "vegNonVeg": "VEG",
-                  "cuisineStyle": "INDIAN",
+                  "cuisineType": "INDIAN",
                   "price": 125.5,
                   "description": "British style nadan biriyani",
                   "bestSeller": true,
@@ -684,7 +684,7 @@ paths:
                   "menuCategoryId":"f94ce675-c2f5-4778-9398-08866b50e2f2"
                 },
                 "vegNonVeg": "VEG",
-                "cuisineStyle": "INDIAN",
+                "cuisineType": "INDIAN",
                 "price": 125.5,
                 "description": "British style nadan biriyani",
                 "rating": 0.0,
@@ -1694,6 +1694,36 @@ paths:
                 $ref: '#/components/schemas/Menu'
         "500":
           description: Error      
+  /restaurants/{restaurantId}/expanded-payout/_query:
+    post:
+      tags:
+        - Analytics
+      summary: Get expanded-payout of a restaurant
+      description: Get expanded-payout of a restaurant
+      operationId: getExpandedPayout
+      parameters:
+        - name: restaurantId
+          required: true
+          in: path
+          description: Restaurant Id.
+          example: "123"
+          schema:
+            type: string
+      requestBody:
+        description: Payout request. 
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TimeSlabRequest'
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExpandedPayouts'
+        "500":
+          description: Error
   /restaurants/{restaurantId}/payout/_query:
     post:
       tags:
@@ -2155,10 +2185,10 @@ components:
             type: array
             items:
               $ref: '#/components/schemas/DishCategory'
-        cuisineStyles:
+        cuisineTypes:
             type: array
             items:
-              $ref: '#/components/schemas/CuisineStyle'
+              $ref: '#/components/schemas/cuisineType'
         floorInfo:
             type: array
             items:
@@ -2208,11 +2238,11 @@ components:
           type: string
           example: "123"
           description: Restaurant Id.
-    CuisineStyle:  
+    cuisineType:  
       type: object
       properties:
-        cuisineStyle:
-          $ref: '#/components/schemas/CuisineStyleEnum'
+        cuisineType:
+          $ref: '#/components/schemas/cuisineTypeEnum'
     FloorDetails:
       type: object
       description: The details of a floor in a shopping mall.
@@ -2291,10 +2321,10 @@ components:
           type: number
           example: 100
           description: Average cost per person.
-        cuisineStyles:
+        cuisineTypes:
           type: array
           items:
-            $ref: '#/components/schemas/CuisineStyleEnum'
+            $ref: '#/components/schemas/cuisineTypeEnum'
           description: Dish categories the restaurant sells
         openingTime:
           type: string
@@ -2394,8 +2424,8 @@ components:
           $ref: '#/components/schemas/MenuCategory'
         vegNonVeg:
           $ref: '#/components/schemas/VegNonVegEnum'
-        cuisineStyle:
-          $ref: '#/components/schemas/CuisineStyleEnum'
+        cuisineType:
+          $ref: '#/components/schemas/cuisineTypeEnum'
         price:
           type: number
           example: 125.5
@@ -3348,7 +3378,7 @@ components:
       enum:
         - VEG
         - NON_VEG
-    CuisineStyleEnum:
+    cuisineTypeEnum:
       type: string
       description: Dynamic list. Obtained from globaldata API.
       enum:
@@ -3530,6 +3560,27 @@ components:
         account:
          type: string
          example: 'ABC'
+    ExpandedPayouts:
+      type: object
+      description: Expanded Payouts of a restaurants.
+      properties:
+        titles:
+          type: array
+          items:
+            type: string
+        expandedPayouts:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExpandedPayout'
+    ExpandedPayout:
+      type: object
+      description: Expanded Payout of a restaurants.
+      properties:
+        date:
+          type: string
+          example: '2021-10-20 10:10'
+        payout:
+          $ref: '#/components/schemas/Payout'
     Payout:
       type: object
       description: Payout of a restaurants.
@@ -3635,6 +3686,10 @@ components:
       type: object
       description: Orders for Analytics of a restaurant.
       properties:
+        titles:
+          type: array
+          items:
+            type: string
         analyticsOrders:
           type: array
           items: 
