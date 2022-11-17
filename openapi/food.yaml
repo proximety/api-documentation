@@ -1522,6 +1522,13 @@ paths:
           example: "123"
           schema:
             type: string
+        - name: otp
+          in: query
+          required: true
+          description: Otp.
+          example: "123456"
+          schema:
+            type: string
       responses:
         "200":
           description: Successful operation
