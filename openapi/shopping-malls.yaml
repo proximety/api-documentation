@@ -14,6 +14,41 @@ servers:
 # - name: User
 # - name: Issue Ticket
 paths:
+  /shopping-malls/users/{userId}:
+    get: 
+      tags:
+        - User management
+      summary: Get user details
+      parameters:
+        - name: userId
+          in: path
+          required: true 
+          example: Mall manager id
+          schema:
+           type: string
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/schemas/MallManager'
+              example: {
+                        "id": "168f16e0-18b7-4d8c-9c7f-486b901ce52a",
+                        "name": {
+                            "firstName": "Prince",
+                            "middleName": null,
+                            "lastName": "Demo",
+                            "fullName": "Prince Demo"
+                        },
+                        "mall": {
+                            "id": "3e43b088-6bf3-1014-84f7-005bb96615d0",
+                            "name": "HiLite Mall, Kozhikode",
+                            "areaCode": "KZD",
+                            "mallImageUrl": "https://newprojects.99acres.com/projects/hilite_builders/hilite_mall/images/0j5a9bly_large.jpg"
+                        },
+                        "email": "testsuperadmin1@proximety.io"
+                    }
   /shopping-malls/auth/login:
     post:
       tags:
@@ -138,6 +173,32 @@ paths:
 
 components:
   schemas:
+    MallManager:
+      type: object
+      properties:
+        id:
+          type: string
+        email:
+          type: string
+          example: test@xyz.com
+        name:
+          $ref: '#/components/schemas/PersonName'
+    PersonName:
+      type: object
+      properties:
+        firstName:
+          type: string
+          description: Jack
+        middleName:
+          type: string
+          description: David
+        lastName:
+          type: string
+          description: Brown
+        fullName:
+          type: string
+          description: Jack Brown
+        
     ParkingLotDetails:
      type: object
      description: The details of the parking lots for a mall.
