@@ -3533,6 +3533,7 @@ components:
       required:
         - username
         - password
+        - deviceToken
       properties:
         username:
           type: string
@@ -3543,6 +3544,10 @@ components:
           description: The password of the food court trying to log into the system.
           format: password
           example: password
+        deviceToken:
+          type: string
+          description: Unique identifier of a device for sending notifications
+          example: hksdjfuoiweruojladsnkwr
     PastPayout:
       type: object
       properties:
