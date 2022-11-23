@@ -1791,6 +1791,37 @@ paths:
                 $ref: '#/components/schemas/Transactions'
         "500":
           description: Error
+  /restaurants/{restaurantId}/expanded-past-payout/_query:
+    post:
+      tags:
+        - Analytics
+      summary: Get expanded-past-payout of a restaurant
+      description: Get expanded-past-payout of a restaurant
+      operationId: getExpandedPastPayout
+      parameters:
+        - name: restaurantId
+          required: true
+          in: path
+          description: Restaurant Id.
+          example: "123"
+          schema:
+            type: string
+      requestBody:
+        description: Payout request. 
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TimeSlabRequest'
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExpandedPastPayouts'
+        "500":
+          description: Error
+  
   /restaurants/{restaurantId}/past-payout/_query:
     post:
       tags:
@@ -3572,6 +3603,18 @@ components:
         account:
          type: string
          example: 'ABC'
+    ExpandedPastPayouts:
+      type: object
+      description: Expanded Payouts of a restaurants.
+      properties:
+        titles:
+          type: array
+          items:
+            type: string
+        expandedPayouts:
+          type: array
+          items:
+            $ref: '#/components/schemas/PastPayoutPayment'
     ExpandedPayouts:
       type: object
       description: Expanded Payouts of a restaurants.
