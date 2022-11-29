@@ -1252,6 +1252,11 @@ paths:
           description: User Id.
           schema:
             format: uuid
+        - name: orderType
+          required: true
+          in: query
+          schema:
+              $ref: '#/components/schemas/OrderTypeEnum'
       requestBody:
         description: Cart information.  
         content:
@@ -2999,6 +3004,11 @@ components:
           type: string
           example: "123"  
           description: Order Id.
+        bundleId:
+          type: string
+          example: "123"  
+        orderType:
+          $ref: '#/components/schemas/OrderTypeEnum'
         restaurantInfo:
           $ref: "#/components/schemas/RestaurantInfo"
         displayId:
@@ -3373,6 +3383,11 @@ components:
             - ORDER_DELIVERED
             - ORDER_REJECTED
             - REFUND_INITIATED
+    OrderTypeEnum:
+      type: string
+      enum:
+            - DINE_IN
+            - TAKE_AWAY
     OfflineReasonEnum:
       type: string
       enum:
