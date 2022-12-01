@@ -1,0 +1,139 @@
+openapi: '3.0.2'
+info:
+  title: Notification Service
+  version: '1.0'
+  description: Provides a set of API operations for sending notifications.
+  license:
+    name: Proximety
+    url: www.proximety.io
+servers:
+  - url: https://app-dev.proximety.io/api
+  - url: https://app-staging.proximety.io/api
+  - url: https://app-patch.proximety.io/api
+  - url: https://app.proximety.io/api
+paths:
+  /notification/token:
+    post: 
+      tags:
+        - Notification
+      summary: Send notification to single user
+      description: Send notification to a user with given deviceToken
+      operationId: sendTokenNotification 
+      requestBody:
+        description: Details of the notification
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/tokenNotification'
+        required: true
+      responses:
+        "200":
+          description: Successful operation
+        "400":
+          description: Bad request
+  /notification/topic:
+    post: 
+      tags:
+        - Notification
+      summary: Send notification to multiple users
+      description: Send notification to all users subscribed to given
+      operationId: sendTokenNotification 
+      requestBody:
+        description: Details of the notification
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/topicNotification'
+        required: true
+      responses:
+        "200":
+          description: Successful operation
+        "400":
+          description: Bad request
+  /notification/subscribe:
+    post: 
+      tags:
+        - Notification
+      summary: Subscribe to a topic
+      description: Subscribes user to the given topic
+      operationId: subscribeToTopic
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/subscribe'
+        required: true
+      responses:
+        "200":
+          description: Successful operation      
+        "400":
+          description: Bad request
+          
+components:
+  schemas:
+    tokenNotification:
+      type: object
+      required:
+        - deviceToken
+        - title
+        - message
+      properties:
+        deviceToken:
+            type: string
+            description: Device token of the user.
+            example: "hjsdyieuwjsksd-sugsduyfgjksfsdsf"
+        title:
+            type: string
+            description: Notification title.
+            example: "Hello"
+        message:
+            type: string
+            description: Notification message.
+            example: "Testing"
+        imageUrl:
+            type: string
+            description: Notification image url.
+            example: "Testing"
+        data:
+            type: object
+            description: Additional data to be sent in notification. Can have any non null key-value pairs
+    topicNotification:
+      type: object
+      required:
+        - topic
+        - title
+        - message
+      properties:
+        topic:
+            type: string
+            description: Topic subscribed.
+            example: "partner-notify"
+        title:
+            type: string
+            description: Notification title.
+            example: "Hello"
+        message:
+            type: string
+            description: Notification message.
+            example: "Testing"
+        imageUrl:
+            type: string
+            description: Notification image url.
+            example: "Testing"
+        data:
+            type: object
+            description: Additional data to be sent in notification. Can have any non null key-value pairs
+    subscribe:
+      type: object
+      required:
+        - deviceToken
+      properties:
+        deviceToken:
+            type: string
+            description: Device token of the user.
+            example: "hjsdyieuwjsksd-sugsduyfgjksfsdsf"
+        topic:
+            type: string
+            description: Topic to be subscribed. If no topic is passed, then default topic is "notifyAll"
+            example: "Hello"
+    
