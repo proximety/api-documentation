@@ -3073,6 +3073,8 @@ components:
           items:
             $ref: '#/components/schemas/Order'
           description: List of orders.
+        tariff:
+          $ref: '#/components/schemas/Tariff'
     OrdersCount:
       type: object
       properties: 
@@ -3097,6 +3099,9 @@ components:
           type: integer  
           example: 1
           description: Quantity.
+        price:
+          type: number  
+          example: 100
         addedCustomizations:
           type: array
           items: 
