@@ -1391,6 +1391,30 @@ paths:
                 $ref: '#/components/schemas/Order'
         "500":
           description: Error 
+  /foodcourt/orders/{orderId}/payment-details:
+    get: 
+      tags:
+        - Order
+      summary: Get order payment-details
+      description: Get order payment-details.
+      operationId: getOrderPaymentDetails
+      parameters:
+        - name: orderId
+          in: path
+          required: true
+          description: Order Id.
+          example: "123"
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderDetailsResponse'
+        "500":
+          description: Error
   /dishes/{dishId}/reviews:
     get: 
       tags:
@@ -2997,6 +3021,63 @@ components:
           items:
             $ref: '#/components/schemas/Order'
           description: List of orders.
+    OrderDetailsResponse:
+      type: object
+      properties:
+        orderId:
+          type: string
+          example: "123"  
+          description: Order Id.
+        customerId:
+          type: string
+          example: "123"  
+          description: Customer Id.
+        txnAmount:
+            type: number
+            example: 100
+            description: Order total price.
+        orders:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderDetail' 
+    OrderDetail:
+      type: object
+      properties:
+        orderId:
+          type: string
+          example: "123"  
+          description: Order Id.
+        restaurantVendorId:
+          type: string
+          example: "123"  
+          description: Customer Id.
+        totalAmount:
+            type: number
+            example: 100
+            description: Order total price.
+        splitDetails:
+           $ref: '#/components/schemas/AmountSplitDetails' 
+    AmountSplitDetails:
+      type: object
+      properties:
+        commisionMargin:
+            type: number
+            example: 100
+        commisionHighrate:
+            type: number
+            example: 100
+        commisionLowrate:
+            type: number
+            example: 100
+        taxRate:
+            type: number
+            example: 100
+        taxOnCommitionRate:
+            type: number
+            example: 100
+        convinienceFeeRate:
+            type: number
+            example: 100
     Order:
       type: object
       properties:
