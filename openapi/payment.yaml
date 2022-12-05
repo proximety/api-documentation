@@ -48,8 +48,8 @@ paths:
                   "title": "Invalid request.",
                   "detail": "Invalid request. Try again.",
                 }           
-  /transactions/status:
-    get: 
+  /transactions/status/_query:
+    post: 
       tags:
         - Status
       summary: Status of a transaction
@@ -117,6 +117,39 @@ paths:
                   "title": "Invalid request.",
                   "detail": "Invalid request. Try again.",
                 }
+  /transactions/transactions-by-order/_query:
+    post: 
+      tags:
+        - Transactions-by-Order
+      summary: Get the transaction by order details. 
+      description: get the transaction by order details.
+      operationId: getTransactionsByOrder
+      requestBody:
+        description: List of order ids.
+        content:
+          application/json:
+            schema:
+              type: array
+              example: ["123", "456"]
+              items:
+                 type: string
+        required: true
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                default:
+                  description: successful operation
+        "400":
+          description: Bad request          
+          content:
+            application/json:
+              schema:
+               type: array
+               items:
+                 $ref: "#/components/schemas/TransactionsByOrder"
 components:
   schemas:    
     InitiateTransactionRequest:    
@@ -353,7 +386,8 @@ components:
         splitInfo:
           type: array
           description: List for child vendor merchant mid's and their split info.
-          $ref: '#/components/schemas/SplitInfoDTO'
+          items:
+           $ref: '#/components/schemas/SplitInfoDTO'
     SplitInfoDTO:
       type: object
       description: Split info details.
@@ -371,6 +405,50 @@ components:
         percentage:
           type: string
           description: Share of child vendor in the split by percentage base.
+    TransactionsByOrder:
+      type: object
+      description: Transactions by order details.
+      properties:
+        bundleId:
+          type: string
+          description: Bundle id for the order.
+          example: "123"
+        amount:
+          type: number
+          description: Total transactiona amount.
+          example: 400
+        ordersInfo:
+         type: array
+         items:
+           $ref: '#/components/schemas/OrderInfo'
+    OrderInfo:
+      type: object
+      description: order info
+      properties:
+        orderId:
+          type: string
+          description: Order id for the order.
+          example: "123"
+        tax:
+          type: number
+          description: Tax of the order amount.
+          example: 400
+        commision:
+          type: number
+          description: Commision for the order.
+          example: 400
+        convinienceFee:
+          type: number
+          description: Convinience Fee for the order.
+          example: 400
+        taxOnCommision:
+          type: number
+          description: Tax On Commision for the order.
+          example: 40
+        amountPaid:
+          type: number
+          description: Amount paid  by constomer for order.
+          example: 400
     GlobalException:
       type: object
       description: An exception thrown by the system.
