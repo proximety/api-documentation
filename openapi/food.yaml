@@ -1071,7 +1071,22 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PromotedCombos'
+                $ref: '#/components/schemas/Combos'
+              example:
+               {
+                "combos": [
+                  {
+                    "comboId": "123",
+                    "comboName": "Celebration Combo",
+                    "comboImageUrl": "https://aws.proximety.io/s3/image1.jpg",
+                    "comboDescription": "1 biriyani + 1 drink",
+                    "price": 500,
+                    "bestSeller": true,
+                    "vegNonVeg": "VEG",
+                    "isAvailable": true
+                  }
+                ]
+              }
         "500":
           description: Error 
     post: 
@@ -1086,6 +1101,15 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/PromotedCombos'
+            example:
+               {
+                "combos": [
+                  {
+                    "comboId": "123",
+                    "rank": 1,
+                  }
+                ]
+              }
       responses:
         "200":
           description: Successful operation
@@ -1093,6 +1117,21 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PromotedCombos'
+              example:
+               {
+                "combos": [
+                  {
+                    "comboId": "123",
+                    "comboName": "Celebration Combo",
+                    "comboImageUrl": "https://aws.proximety.io/s3/image1.jpg",
+                    "comboDescription": "1 biriyani + 1 drink",
+                    "price": 500,
+                    "bestSeller": true,
+                    "vegNonVeg": "VEG",
+                    "isAvailable": true
+                  }
+                ]
+              }
         "500":
           description: Error
   /combos/{comboId}/files:
@@ -1995,6 +2034,23 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/PromotedRestaurants'
+            example:
+              {
+                "restaurants": [
+                    {
+                        "restaurantId": "3fe3bd21-448e-43b1-9c27-638fef87ea6c",
+                        "rank": 2
+                    },
+                    {
+                        "restaurantId": "9bb407c1-af9b-4d24-9484-26917c1f5fdd",
+                        "rank": 1
+                    },
+                    {
+                        "restaurantId": "bec4bd5d-af1d-4265-9656-9707bac5e82b",
+                        "rank": 3
+                    }
+                ]
+            }
       responses:
         "200":
           description: Successful operation
@@ -2353,6 +2409,16 @@ components:
           type: number
           example: 1
           description: Restaurant rank.
+        rating:
+          type: number
+          example: 4.1
+          description: Restaurant user rating.
+        floor:
+          $ref: "#/components/schemas/FloorDetails"
+        restaurantImageUrl:
+          type: string
+          example: https://aws.proximety.io/s3/image1.jpg
+          description: Image URL.
     Restaurant:
       type: object
       properties:
@@ -2650,14 +2716,6 @@ components:
           type: string
           example: "123"
           description: Combo Id.
-        comboName:
-          type: string
-          example: Special Combo
-          description: Combo name.
-        rank:
-          type: number
-          example: 1
-          description: Combo rank.
     Combos:
       type: object
       properties:
