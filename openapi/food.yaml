@@ -971,12 +971,6 @@ paths:
       summary: Returns list of combos.
       description: Returns list of combos for the user.
       operationId: getCombos
-      requestBody:
-        description: Restaurant information. 
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/GetCombosRequest'
       responses:
         "200":
           description: Successful operation
@@ -3435,9 +3429,6 @@ components:
               - DESC
         dishCategory:
           $ref: '#/components/schemas/DishCategoryEnum'
-        promotedRestaurants:
-          type: boolean
-          default: false
         vegNonVeg:
           $ref: '#/components/schemas/VegNonVegEnum'
         searchKeyword:
@@ -3484,12 +3475,6 @@ components:
          $ref: '#/components/schemas/DishCategoryEnum'
         menuCategory:
           $ref: '#/components/schemas/MenuCategory'
-    GetCombosRequest:
-      type: object
-      properties:
-        promotedCombos:
-          type: boolean
-          default: false
     Menu:
       type: object
       properties:
