@@ -401,6 +401,12 @@ paths:
           example: 20
           schema:
             type: number
+        - name: userId
+          required: false
+          in: query
+          description: User Id. Pass it when includeDishes node is set.
+          schema:
+            type: string
       requestBody:
         description: Restaurant information. 
         content:
