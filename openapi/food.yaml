@@ -1550,7 +1550,7 @@ paths:
         "500":
           description: Error
   /restaurants/{restaurantId}/offers/generate-otp:
-    get:
+    post:
       tags:
         - Offer
       summary: Generate offer otp
