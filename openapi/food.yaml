@@ -2361,6 +2361,10 @@ components:
           type: string
           example: "123"
           description: Restaurant Id.
+        position:
+          type: number
+          description: Position of the menmu category
+          example: 1
     cuisineType:  
       type: object
       properties:
