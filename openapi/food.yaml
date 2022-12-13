@@ -2061,7 +2061,7 @@ paths:
         "500":
           description: Error
   /restaurants/{restaurantId}/menu-categories:        
-    post: 
+    put: 
       tags:
         - Restaurant
       summary: Create menu Category
@@ -2080,7 +2080,9 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/MenuCategory'
+              type: array
+              items:
+                $ref: '#/components/schemas/MenuCategory'
       responses:
         "200":
           description: Successful operation
