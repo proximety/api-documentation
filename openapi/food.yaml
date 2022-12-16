@@ -3246,7 +3246,7 @@ components:
           type: integer  
           example: 1
           description: Quantity.
-        price:
+        sellingPrice:
           type: number  
           example: 100
         addedCustomizations:
@@ -3521,11 +3521,12 @@ components:
       type: string
       enum:
             - ORDER_RECEIVED
-            - CONFIRMED_AND_PREPARING_ORDER
-            - ORDER_READY
-            - ORDER_DELIVERED
-            - ORDER_REJECTED
+            - ACCEPTED_AND_PREPARING
+            - READY
+            - DELIVERED
+            - REJECTED
             - REFUND_INITIATED
+            - REFUNDED
     OrderTypeEnum:
       type: string
       enum:
