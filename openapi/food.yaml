@@ -2089,9 +2089,9 @@ paths:
           content:
             application/json:
               schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/MenuCategory'
+               type: array
+               items:
+                 $ref: '#/components/schemas/MenuCategory'
         "500":
           description: Error
     get: 
