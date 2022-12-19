@@ -1754,6 +1754,12 @@ paths:
           example: "123"
           schema:
             type: string
+        - name: userId
+          required: false
+          in: query
+          description: User Id
+          schema:
+            type: string
         - name: vegNonVeg
           required: false
           in: query
