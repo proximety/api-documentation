@@ -3501,7 +3501,7 @@ components:
       type: object
       properties:
         menuCategory:
-          $ref: '#/components/schemas/MenuCategory'
+          $ref: '#/components/schemas/DishCategoryEnum'
         dishes:
           type: array
           items:
