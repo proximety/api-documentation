@@ -602,3 +602,6 @@ components:
           type: string
           description: The URL of the QR code image associated with the ticket booking.
           example: https://dev.proximety.io/images/21423.jpg
+        rewardPointsEarned:
+          type: number
+          example: 1200
