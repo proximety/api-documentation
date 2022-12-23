@@ -3455,9 +3455,6 @@ components:
           type: string
           description: Restaurant/Dish name filter. Supports wildcard search also.
           example: "bir"
-        pureVeg:
-          type: boolean
-          description: Indivated whether restaurant is pure veg or not.
         includeDishes:
           type: boolean
           description: To include dishes. Support only for specific use cases.
@@ -3516,6 +3513,7 @@ components:
       type: string
       enum: 
             - RATING_FOUR_PLUS
+            - PURE_VEG
     TimeSlabEnum:
       type: string
       enum: 
