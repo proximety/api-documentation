@@ -3056,7 +3056,7 @@ components:
       properties:
         restaurantInfo:
           $ref: '#/components/schemas/RestaurantInfo'
-        dishes:
+        cartItems:
           type: array
           items:
             $ref: '#/components/schemas/SelectedItem'
@@ -3264,6 +3264,8 @@ components:
           type: array
           items: 
             $ref: '#/components/schemas/DishVariantGroup'
+        comboId:
+          type: string  
     OrderStage:
       type: object
       properties:
