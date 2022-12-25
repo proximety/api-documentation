@@ -18,12 +18,9 @@ paths:
         - LoyaltyPointRuleResource
       summary: Create Point rule At Admin Side.
       operationId: CreatePointRule
-      parameters:
       requestBody:
-       description:  
        content:
           application/json:
-           
             schema:
                 $ref: '#/components/schemas/PointRuleRequestDTO'
       responses:
@@ -121,12 +118,9 @@ paths:
         - LoyaltyPointRuleResource
       summary: Returns List of Admin created Point rules .
       operationId: getListOfCreatedPointRules
-      parameters:
       requestBody:
-       description: Filters for listing the rules created by the admin. 
        content:
           application/json:
-           
             schema:
                 $ref: '#/components/schemas/PointRuleSerachRequestDTO'
       
@@ -148,7 +142,7 @@ paths:
       summary: Returns List of Vouchers Applicable to customers .
       operationId: getCusomerVouchersList
       parameters:
-        - name: customerid
+        - name: customerId
           in: path
           description: Used as an identifier for the Customer whose Vouchers are fetched.
           required: true
@@ -173,7 +167,7 @@ paths:
       summary: Returns Details of Customer related Rewards MetaData.
       operationId: getCusomerVouchersListMetadata
       parameters:
-        - name: customerid
+        - name: customerId
           in: path
           description: Used as an identifier for the Customer whose rewards metadata is fetched.
           required: true
@@ -198,8 +192,6 @@ paths:
         - CustomerVoucherResource
       summary: API to add points to customer reward points after successful payment.
       operationId: add customer rewad points
-      parameters:
-       
       requestBody:
        description: Payments Details made. 
        content:
@@ -222,7 +214,7 @@ paths:
       tags:
         - CustomerVoucherResource
       summary: API to redeem customer voucher.
-      operationId: 
+      operationId: redeenVoucher
       parameters:
         - name: voucherId
           in: path
@@ -230,7 +222,7 @@ paths:
           required: true
           schema:
             type: string
-        - name: customerid
+        - name: customerId
           in: path
           description: Used as an identifier for the Customer whose Vouchers are are to be redeemed.
           required: true
@@ -255,7 +247,6 @@ paths:
         - AdminVoucherResource
       summary: Returns Details of all Vouchers created for the mall.
       operationId: getVouchers
-      parameters:
       requestBody:
        description: Filters for listing the vouchers created by the admin. 
        content:
@@ -280,7 +271,6 @@ paths:
         - AdminVoucherResource
       summary: Create a new Voucher at Admin Side.
       operationId: createNewVoucher
-      parameters:
       requestBody:
         description: The Voucher Details to be added.
         content:
@@ -399,10 +389,8 @@ components:
           type: string
           description: title for the voucher.
           example: 30% Off
-       store:
-          type: object
-          description: Have Info related to Store Details.
-          $ref: '#/components/schemas/Store'
+       storeId:
+          type: string
        category:
           type: object
           description: Enum for Category.
@@ -428,10 +416,11 @@ components:
        status:
           type: array
           description: A  list of Voucher Statuses. 
-          enum:
-              - PAST
-              - NOW RUNNING
-              - UPCOMING
+          items:
+            enum:
+                - PAST
+                - NOW RUNNING
+                - UPCOMING
     CustomerVoucherListResponse:
       type: array
       items:
@@ -557,7 +546,10 @@ components:
           example: 05/15/2022
        pointRuleStatuses:
           type: array
-          
+          items:
+           enum:
+              - ACTIVE
+              - INACTIVE
        page:
           type: integer
           description: page number for points list.
@@ -739,5 +731,3 @@ components:
           type: integer
           description: The coins needed in total to redeem the voucher.
           example: 500
-          
-   
