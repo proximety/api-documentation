@@ -3032,6 +3032,8 @@ components:
           example: ["123", "456"]
           items:
             type: string
+        comboId:
+          type: string
     CartDetails:
       type: object
       properties:
