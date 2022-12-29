@@ -401,6 +401,12 @@ paths:
           example: 20
           schema:
             type: number
+        - name: userId
+          required: false
+          in: query
+          description: User Id. Pass it when includeDishes node is set.
+          schema:
+            type: string
       requestBody:
         description: Restaurant information. 
         content:
@@ -971,12 +977,6 @@ paths:
       summary: Returns list of combos.
       description: Returns list of combos for the user.
       operationId: getCombos
-      requestBody:
-        description: Restaurant information. 
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/GetCombosRequest'
       responses:
         "200":
           description: Successful operation
@@ -1071,7 +1071,22 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PromotedCombos'
+                $ref: '#/components/schemas/Combos'
+              example:
+               {
+                "combos": [
+                  {
+                    "comboId": "123",
+                    "comboName": "Celebration Combo",
+                    "comboImageUrl": "https://aws.proximety.io/s3/image1.jpg",
+                    "comboDescription": "1 biriyani + 1 drink",
+                    "price": 500,
+                    "bestSeller": true,
+                    "vegNonVeg": "VEG",
+                    "isAvailable": true
+                  }
+                ]
+              }
         "500":
           description: Error 
     post: 
@@ -1086,6 +1101,15 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/PromotedCombos'
+            example:
+               {
+                "combos": [
+                  {
+                    "comboId": "123",
+                    "rank": 1,
+                  }
+                ]
+              }
       responses:
         "200":
           description: Successful operation
@@ -1093,6 +1117,21 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PromotedCombos'
+              example:
+               {
+                "combos": [
+                  {
+                    "comboId": "123",
+                    "comboName": "Celebration Combo",
+                    "comboImageUrl": "https://aws.proximety.io/s3/image1.jpg",
+                    "comboDescription": "1 biriyani + 1 drink",
+                    "price": 500,
+                    "bestSeller": true,
+                    "vegNonVeg": "VEG",
+                    "isAvailable": true
+                  }
+                ]
+              }
         "500":
           description: Error
   /combos/{comboId}/files:
@@ -1252,6 +1291,12 @@ paths:
           description: User Id.
           schema:
             format: uuid
+        - name: bundleId
+          required: true
+          in: query
+          description: Bundle Id.
+          schema:
+            format: uuid
         - name: orderType
           required: true
           in: query
@@ -1391,6 +1436,30 @@ paths:
                 $ref: '#/components/schemas/Order'
         "500":
           description: Error 
+  /foodcourt/orders/{orderId}/payment-details:
+    get: 
+      tags:
+        - Order
+      summary: Get order payment-details
+      description: Get order payment-details.
+      operationId: getOrderPaymentDetails
+      parameters:
+        - name: orderId
+          in: path
+          required: true
+          description: Order Id.
+          example: "123"
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderDetailsResponse'
+        "500":
+          description: Error
   /dishes/{dishId}/reviews:
     get: 
       tags:
@@ -1493,7 +1562,7 @@ paths:
         "500":
           description: Error
   /restaurants/{restaurantId}/offers/generate-otp:
-    get:
+    post:
       tags:
         - Offer
       summary: Generate offer otp
@@ -1689,6 +1758,12 @@ paths:
           in: path
           description: Restaurant Id.
           example: "123"
+          schema:
+            type: string
+        - name: userId
+          required: false
+          in: query
+          description: User Id
           schema:
             type: string
         - name: vegNonVeg
@@ -1971,6 +2046,23 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/PromotedRestaurants'
+            example:
+              {
+                "restaurants": [
+                    {
+                        "restaurantId": "3fe3bd21-448e-43b1-9c27-638fef87ea6c",
+                        "rank": 2
+                    },
+                    {
+                        "restaurantId": "9bb407c1-af9b-4d24-9484-26917c1f5fdd",
+                        "rank": 1
+                    },
+                    {
+                        "restaurantId": "bec4bd5d-af1d-4265-9656-9707bac5e82b",
+                        "rank": 3
+                    }
+                ]
+            }
       responses:
         "200":
           description: Successful operation
@@ -1981,7 +2073,7 @@ paths:
         "500":
           description: Error
   /restaurants/{restaurantId}/menu-categories:        
-    post: 
+    put: 
       tags:
         - Restaurant
       summary: Create menu Category
@@ -2000,14 +2092,18 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/MenuCategory'
+              type: array
+              items:
+                $ref: '#/components/schemas/MenuCategory'
       responses:
         "200":
           description: Successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/MenuCategory'
+               type: array
+               items:
+                 $ref: '#/components/schemas/MenuCategory'
         "500":
           description: Error
     get: 
@@ -2281,6 +2377,10 @@ components:
           type: string
           example: "123"
           description: Restaurant Id.
+        position:
+          type: number
+          description: Position of the menmu category
+          example: 1
     cuisineType:  
       type: object
       properties:
@@ -2329,6 +2429,16 @@ components:
           type: number
           example: 1
           description: Restaurant rank.
+        rating:
+          type: number
+          example: 4.1
+          description: Restaurant user rating.
+        floor:
+          $ref: "#/components/schemas/FloorDetails"
+        restaurantImageUrl:
+          type: string
+          example: https://aws.proximety.io/s3/image1.jpg
+          description: Image URL.
     Restaurant:
       type: object
       properties:
@@ -2626,14 +2736,6 @@ components:
           type: string
           example: "123"
           description: Combo Id.
-        comboName:
-          type: string
-          example: Special Combo
-          description: Combo name.
-        rank:
-          type: number
-          example: 1
-          description: Combo rank.
     Combos:
       type: object
       properties:
@@ -2905,17 +3007,22 @@ components:
           type: string
           example: '123'
           description: User Id.
-        items:
+        regularItems:
           type: array
           items:
-            $ref: '#/components/schemas/CartItem'
+            $ref: '#/components/schemas/CartRegularItem'
+          description: List of items.
+        comboItems:
+          type: array
+          items:
+            $ref: '#/components/schemas/CartComboItem'
           description: List of items.
         appliedOfferIds:
           type: array
           example: ["123", "456"]
           items:
             type: string
-    CartItem:
+    CartRegularItem:
       type: object
       properties:
         dishId:
@@ -2936,6 +3043,19 @@ components:
           example: ["123", "456"]
           items:
             type: string
+    CartComboItem:
+      type: object
+      properties:
+        comboId:
+          type: string
+          example: "123"  
+          description: Dish Id.
+        quantity:
+          type: number
+          example: 5 
+          description: Quantity.
+        items:
+          $ref: '#/components/schemas/CartRegularItem'
     CartDetails:
       type: object
       properties:
@@ -2952,15 +3072,34 @@ components:
         cartItemsByRestaurant:
           type: array
           items:
-            $ref: '#/components/schemas/CartItemResponse'
+            $ref: '#/components/schemas/CartItemByRestaurant'
+        cartItemsByCombo:
+          type: array
+          items:
+            $ref: '#/components/schemas/CartItemByCombo'
         tariff:
           $ref: '#/components/schemas/Tariff'
-    CartItemResponse:
+    CartItemByRestaurant:
       type: object
       properties:
         restaurantInfo:
           $ref: '#/components/schemas/RestaurantInfo'
-        dishes:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/SelectedItem'
+        appliedOfferId:
+          type: string
+          example: '123'
+    CartItemByCombo:
+      type: object
+      properties:
+        comboId:
+          type: string
+        quantity:
+          type: number
+          example: 5
+        items:
           type: array
           items:
             $ref: '#/components/schemas/SelectedItem'
@@ -2997,6 +3136,63 @@ components:
           items:
             $ref: '#/components/schemas/Order'
           description: List of orders.
+    OrderDetailsResponse:
+      type: object
+      properties:
+        orderId:
+          type: string
+          example: "123"  
+          description: Order Id.
+        customerId:
+          type: string
+          example: "123"  
+          description: Customer Id.
+        txnAmount:
+            type: number
+            example: 100
+            description: Order total price.
+        orders:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderDetail' 
+    OrderDetail:
+      type: object
+      properties:
+        orderId:
+          type: string
+          example: "123"  
+          description: Order Id.
+        restaurantVendorId:
+          type: string
+          example: "123"  
+          description: Customer Id.
+        totalAmount:
+            type: number
+            example: 100
+            description: Order total price.
+        splitDetails:
+           $ref: '#/components/schemas/AmountSplitDetails' 
+    AmountSplitDetails:
+      type: object
+      properties:
+        commisionMargin:
+            type: number
+            example: 100
+        commisionHighrate:
+            type: number
+            example: 100
+        commisionLowrate:
+            type: number
+            example: 100
+        taxRate:
+            type: number
+            example: 100
+        taxOnCommitionRate:
+            type: number
+            example: 100
+        convinienceFeeRate:
+            type: number
+            example: 100
     Order:
       type: object
       properties:
@@ -3068,11 +3264,16 @@ components:
       properties:
         bundleId:
           type: string
+        rewardPointsEarned:
+          type: number
+          example: 80
         orders:
           type: array
           items:
             $ref: '#/components/schemas/Order'
           description: List of orders.
+        tariff:
+          $ref: '#/components/schemas/Tariff'
     OrdersCount:
       type: object
       properties: 
@@ -3097,6 +3298,9 @@ components:
           type: integer  
           example: 1
           description: Quantity.
+        sellingPrice:
+          type: number  
+          example: 100
         addedCustomizations:
           type: array
           items: 
@@ -3106,6 +3310,8 @@ components:
           type: array
           items: 
             $ref: '#/components/schemas/DishVariantGroup'
+        comboId:
+          type: string  
     OrderStage:
       type: object
       properties:
@@ -3291,18 +3497,12 @@ components:
               - DESC
         dishCategory:
           $ref: '#/components/schemas/DishCategoryEnum'
-        promotedRestaurants:
-          type: boolean
-          default: false
         vegNonVeg:
           $ref: '#/components/schemas/VegNonVegEnum'
         searchKeyword:
           type: string
           description: Restaurant/Dish name filter. Supports wildcard search also.
           example: "bir"
-        pureVeg:
-          type: boolean
-          description: Indivated whether restaurant is pure veg or not.
         includeDishes:
           type: boolean
           description: To include dishes. Support only for specific use cases.
@@ -3340,12 +3540,6 @@ components:
          $ref: '#/components/schemas/DishCategoryEnum'
         menuCategory:
           $ref: '#/components/schemas/MenuCategory'
-    GetCombosRequest:
-      type: object
-      properties:
-        promotedCombos:
-          type: boolean
-          default: false
     Menu:
       type: object
       properties:
@@ -3367,6 +3561,7 @@ components:
       type: string
       enum: 
             - RATING_FOUR_PLUS
+            - PURE_VEG
     TimeSlabEnum:
       type: string
       enum: 
@@ -3378,11 +3573,12 @@ components:
       type: string
       enum:
             - ORDER_RECEIVED
-            - CONFIRMED_AND_PREPARING_ORDER
-            - ORDER_READY
-            - ORDER_DELIVERED
-            - ORDER_REJECTED
+            - ACCEPTED_AND_PREPARING
+            - READY
+            - DELIVERED
+            - REJECTED
             - REFUND_INITIATED
+            - REFUNDED
     OrderTypeEnum:
       type: string
       enum:

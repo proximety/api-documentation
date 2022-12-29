@@ -891,7 +891,23 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Alert'       
+                  $ref: '#/components/schemas/Alert'    
+  /users/{userId}/reward-points:
+    get: 
+      tags:
+        - Rewards
+      summary: Get rewards summary
+      description: Retrieves a summary of the various reward points earned by the user.
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RewardSummary'
+
   # /users/{userId}/issue-tickets:
   #   post:
   #     tags:
@@ -935,6 +951,46 @@ paths:
       #     description: Unauthorized access   
 components:
   schemas:
+    RewardSummary: 
+      type: object
+      description: Reward summary
+      properties:
+        totalActivePoints: 
+          type: number
+          example: 1200
+        rewardSummary: 
+          type: array
+          description: Reward summary
+          items:
+            $ref: '#/components/schemas/RewardSummaryItem'
+      example: {
+                "totalActivePoints": 8590,
+                "rewardSummary": [
+                    {
+                        "category": "FOOD",
+                        "points": 631
+                    },
+                    {
+                        "category": "MOVIE",
+                        "points": 732
+                    },
+                    {
+                        "category": "SHOPPING",
+                        "points": 738
+                    }
+                ]
+            }
+    RewardSummaryItem: 
+      type: object
+      properties:
+        category: 
+         type: string
+         description: The category of reward summary
+         enum:
+           - FOOD 
+           - MOVIE 
+           - SHOPPING
+         example: MOVIE
     StorePurchaseResponse:
       type: object
       description: The detaisl regarding a customers store purchases.
