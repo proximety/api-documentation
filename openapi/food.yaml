@@ -1291,6 +1291,12 @@ paths:
           description: User Id.
           schema:
             format: uuid
+        - name: bundleId
+          required: true
+          in: query
+          description: Bundle Id.
+          schema:
+            format: uuid
         - name: orderType
           required: true
           in: query
@@ -3001,17 +3007,22 @@ components:
           type: string
           example: '123'
           description: User Id.
-        items:
+        regularItems:
           type: array
           items:
-            $ref: '#/components/schemas/CartItem'
+            $ref: '#/components/schemas/CartRegularItem'
+          description: List of items.
+        comboItems:
+          type: array
+          items:
+            $ref: '#/components/schemas/CartComboItem'
           description: List of items.
         appliedOfferIds:
           type: array
           example: ["123", "456"]
           items:
             type: string
-    CartItem:
+    CartRegularItem:
       type: object
       properties:
         dishId:
@@ -3032,8 +3043,19 @@ components:
           example: ["123", "456"]
           items:
             type: string
+    CartComboItem:
+      type: object
+      properties:
         comboId:
           type: string
+          example: "123"  
+          description: Dish Id.
+        quantity:
+          type: number
+          example: 5 
+          description: Quantity.
+        items:
+          $ref: '#/components/schemas/CartRegularItem'
     CartDetails:
       type: object
       properties:
@@ -3050,15 +3072,34 @@ components:
         cartItemsByRestaurant:
           type: array
           items:
-            $ref: '#/components/schemas/CartItemResponse'
+            $ref: '#/components/schemas/CartItemByRestaurant'
+        cartItemsByCombo:
+          type: array
+          items:
+            $ref: '#/components/schemas/CartItemByCombo'
         tariff:
           $ref: '#/components/schemas/Tariff'
-    CartItemResponse:
+    CartItemByRestaurant:
       type: object
       properties:
         restaurantInfo:
           $ref: '#/components/schemas/RestaurantInfo'
-        cartItems:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/SelectedItem'
+        appliedOfferId:
+          type: string
+          example: '123'
+    CartItemByCombo:
+      type: object
+      properties:
+        comboId:
+          type: string
+        quantity:
+          type: number
+          example: 5
+        items:
           type: array
           items:
             $ref: '#/components/schemas/SelectedItem'
@@ -3223,6 +3264,9 @@ components:
       properties:
         bundleId:
           type: string
+        rewardPointsEarned:
+          type: number
+          example: 80
         orders:
           type: array
           items:
