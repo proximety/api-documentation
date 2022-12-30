@@ -406,6 +406,14 @@ components:
         hasPremiumExperience:
           type: boolean
           description: Is premium experience available for the movie.
+        minTicket:
+          type: integer
+          description: Minimum number of tickets that can be booked.
+          example: 1
+        maxTicket:
+          type: integer
+          description: Maximum number of tickets that can be booked.
+          example: 7
     OrderDetails:
       type: object
       properties:
