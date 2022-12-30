@@ -253,6 +253,10 @@ components:
           enum:
             - BLOCKED
             - CONFIRMED
+        userId:
+          type: string
+          description: Unique id of the user.
+          example: gdty6sjdkkj8sadue2
         seatIds: 
           type: array
           items:
