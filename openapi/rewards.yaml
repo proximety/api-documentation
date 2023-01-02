@@ -468,6 +468,10 @@ components:
           type: integer
           description: Specifies how many days are left before voucher expires.
           example: 20
+       brandLogoUrl:
+          type: string
+          description: Image to be shown on the voucher.
+          example: https://s3.ap-south-1.amazonaws.com/proximety.io/store-images-dev/94c353f3-9f06-43a7-b1ed-4aa3b8d0f2b9.png
       
     AdminVoucherRequestDTO:
       type: object
