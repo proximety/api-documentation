@@ -1686,15 +1686,6 @@ components:
           items: 
             type: string
             example: ACCESS_TOKEN_INVALID
-    BannerDetailsMap:
-      type: object
-      properties:
-        position: 
-          type: number
-          description: Position of the banner
-          example: 1
-        banner:
-         $ref: "#/components/schemas/BannerDetails" 
     BannerDetails:
       type: object
       description: The details of an ad banner.
@@ -1992,10 +1983,6 @@ components:
                 type: string
                 description: The internal system identifier for the banner.
                 example: 37813679djj
-              position: 
-                type: number
-                description: position order of the banner
-                example: 1
     PromotedBanners:
       type: object 
       description: The list of promoted banners. (Max size - 5)
@@ -2004,7 +1991,9 @@ components:
           type: array
           description: The list of promoted banners.
           items:
-            $ref: "#/components/schemas/BannerDetailsMap" 
+            type: object
+            description: The promoted Banner
+            $ref: "#/components/schemas/BannerDetails" 
     PromotedOffers:
       type: object 
       description: The list of promoted offers. (Max size - 10)
