@@ -1,757 +1,4038 @@
 openapi: '3.0.2'
 info:
-  title: Vouchers Service
+  title: Food Service
   version: '1.0'
-  description: Provides a set of API operations that can be performed related to rewards.
+  description: Provides a set of API operations to order food from restaurants.
   license:
     name: Proximety
     url: www.proximety.io
 servers:
-  - url: https://dev.proximety.io/api
-  - url: https://staging.proximety.io/api
-  - url: https://www.proximety.io/api
-
+  - url: https://app-dev.proximety.io/api
+  - url: https://app-staging.proximety.io/api
+  - url: https://app-patch.proximety.io/api
+  - url: https://app.proximety.io/api
 paths:
-  /point_rule:
-    post: 
-      tags:
-        - LoyaltyPointRuleResource
-      summary: Create Point rule At Admin Side.
-      operationId: CreatePointRule
-      requestBody:
-       content:
-          application/json:
-            schema:
-                $ref: '#/components/schemas/PointRuleRequestDTO'
-      responses:
-        "200":
-          description: Returns the Response related To Saved Rule
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PointRuleResponseDTO'
-        "400":
-          description: Bad request
-        "403":
-          description: Unauthorized access
-  /point_rule/{ruleId}:
+  /restaurants/{restaurantId}/managers:
     get: 
       tags:
-        - LoyaltyPointRuleResource
-      summary: Returns Details of particular created rule.
-      operationId: getParticularRuleData
+        - User Management
+      summary: List restaurant users
+      description: Retrieves the list of partner app users for the restaurant
+      operationId: getUsers 
       parameters:
-        - name: ruleId
-          in: path
-          description: Used as an identifier for the rule whose data needs to be fetched.
+        - name: restaurantId
           required: true
-          example: c6d68934-b59d-4863-b5e7-05dba9d90e39 
+          in: path
+          description: Restaurant Id
+          example: "123"
           schema:
             type: string
-      
       responses:
         "200":
-          description: Returns the filtered list of Vouchers
+          description: Successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PointRuleResponseDTO'
+                type: array
+                items:
+                  $ref: '#/components/schemas/RestaurantUser'
         "400":
           description: Bad request
-        "403":
-          description: Unauthorized access
-    put: 
-      tags:
-        - LoyaltyPointRuleResource
-      summary: Update Details of particular created rule.
-      operationId: updateParticularRule
-      parameters:
-        - name: ruleId
-          in: path
-          description: Used as an identifier for the rule whose data needs to be updated.
-          required: true
-          example: c6d68934-b59d-4863-b5e7-05dba9d90e39 
-          schema:
-            type: string
-      requestBody:
-       description: Paramters for updating rule. 
-       content:
-          application/json:
-           
-            schema:
-                $ref: '#/components/schemas/PointRuleRequestDTO'
-      responses:
-        "200":
-          description: Returns the updated rule.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PointRuleResponseDTO'
-        "400":
-          description: Bad request
-        "403":
-          description: Unauthorized access
-    delete: 
-      tags:
-        - LoyaltyPointRuleResource
-      summary: Delete Details of particular created rule.
-      operationId: deleteParticluarRule
-      parameters:
-        - name: ruleId
-          in: path
-          description: Used as an identifier for the rule whose data needs to be deleted.
-          required: true
-          schema:
-            type: string
-      
-      responses:
-        "200":
-          description: Deleted The rule Successfully.
-          
-        "400":
-          description: Bad request
-        "403":
-          description: Unauthorized access
-  /point_rule/points_rules_search:
+                $ref: "#/components/schemas/GlobalException"
+              example: 
+                {
+                  "status": 400,
+                  "type": "BAD_REQUEST",
+                  "title": "Username not available",
+                  "detail": "The specified username is not available.",
+                }
+  /restaurants/auth/register:
     post: 
       tags:
-        - LoyaltyPointRuleResource
-      summary: Returns List of Admin created Point rules .
-      operationId: getListOfCreatedPointRules
+        - User Management
+      summary: Register new user
+      description: Creates a new restaurant partner app user.
+      operationId: createUser 
       requestBody:
-       content:
-          application/json:
-            schema:
-                $ref: '#/components/schemas/PointRuleSerachRequestDTO'
-      
-      responses:
-        "200":
-          description: Returns the filtered list of Rules
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PointRuleListResponse'
-        "400":
-          description: Bad request
-        "403":
-          description: Unauthorized access  
-  /customer/vouchers/{customerId}/customer_voucher_search:
-    get: 
-      tags:
-        - CustomerVoucherResource
-      summary: Returns List of Vouchers Applicable to customers .
-      operationId: getCusomerVouchersList
-      parameters:
-        - name: customerId
-          in: path
-          description: Used as an identifier for the Customer whose Vouchers are fetched.
-          required: true
-          schema:
-            type: string
-    
-      responses:
-        "200":
-          description: Returns the filtered list of Vouchers
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CustomerVoucherListResponse'
-        "400":
-          description: Bad request
-        "403":
-          description: Unauthorized access
-  /customer/vouchers/{customerId}/customer_rewards_metadata:
-    get: 
-      tags:
-        - CustomerVoucherResource
-      summary: Returns Details of Customer related Rewards MetaData.
-      operationId: getCusomerVouchersListMetadata
-      parameters:
-        - name: customerId
-          in: path
-          description: Used as an identifier for the Customer whose rewards metadata is fetched.
-          required: true
-          schema:
-            type: string
-      
-    
-      responses:
-        "200":
-          description: Returns the filtered list of Vouchers
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CustomerRewardPointsMetadataDTO'
-        "400":
-          description: Bad request
-        "403":
-          description: Unauthorized access
-  /customer/vouchers/add_reward_points:
-    post: 
-      tags:
-        - CustomerVoucherResource
-      summary: API to add points to customer reward points after successful payment.
-      operationId: add customer rewad points
-      requestBody:
-       description: Payments Details made. 
-       content:
-          application/json:
-            schema:
-                $ref: '#/components/schemas/PaymentDetails'
-      responses:
-        "200":
-          description: Updated Customers Metadata
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CustomerRewardPointsMetadataDTO'
-        "400":
-          description: Bad request
-        "403":
-          description: Unauthorized access
-  /customer/vouchers/{voucherId}/redeem/{customerId}:
-    put: 
-      tags:
-        - CustomerVoucherResource
-      summary: API to redeem customer voucher.
-      operationId: redeenVoucher
-      parameters:
-        - name: voucherId
-          in: path
-          description: Used as an identifier for the Voucher whose Vouchers are to be redeemed.
-          required: true
-          schema:
-            type: string
-        - name: customerId
-          in: path
-          description: Used as an identifier for the Customer whose Vouchers are are to be redeemed.
-          required: true
-          schema:
-            type: string
-      
-    
-      responses:
-        "200":
-          description: Returns the filtered list of Vouchers
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CustomerVoucherResponseDTO'
-        "400":
-          description: Bad request
-        "403":
-          description: Unauthorized access
-  /admin/vouchers/vouchers_search:
-    post: 
-      tags:
-        - AdminVoucherResource
-      summary: Returns Details of all Vouchers created for the mall.
-      operationId: getVouchers
-      requestBody:
-       description: Filters for listing the vouchers created by the admin. 
-       content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AdminVoucherSearchRequest'
-       required: true
-      responses:
-        "200":
-          description: Returns the filtered list of Vouchers
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AdminVoucherListResponseDTO'
-        "400":
-          description: Bad request
-        "403":
-          description: Unauthorized access
-  /admin/vouchers:         
-    post: 
-      tags:
-        - AdminVoucherResource
-      summary: Create a new Voucher at Admin Side.
-      operationId: createNewVoucher
-      requestBody:
-        description: The Voucher Details to be added.
+        description: The user details for restaurant user registration. The default password for the created user is 'password'. 
         content:
-         application/json:
+          application/json:
             schema:
-              $ref: '#/components/schemas/AdminVoucherRequestDTO'
+              $ref: '#/components/schemas/UserRegistrationRequest'
+        required: true
       responses:
-        "201":
-          description: Voucher Created successfully
+        "200":
+          description: Successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AdminVoucherResponseDTO'
+                $ref: '#/components/schemas/RestaurantUser'
         "400":
           description: Bad request
-        "403":
-          description: Unauthorized access
-  /admin/vouchers/{voucherId}:
-    get: 
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GlobalException"
+              example: 
+                {
+                  "status": 400,
+                  "type": "BAD_REQUEST",
+                  "title": "Username not available",
+                  "detail": "The specified username is not available.",
+                }
+  /restaurants/auth/login:
+    post: 
       tags:
-        - AdminVoucherResource
-      summary: Get Voucher Details that's created.
-      operationId: getVoucherDetails
+        - User Management
+      summary: User login
+      description: Logs in the specified user and returns the User Management token which can then be used for all subsequent API requests.
+      operationId: loginFoodCourt
+      requestBody:
+        description: The login details for restaurant user.. 
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+        required: true
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GlobalException"
+              example: 
+                {
+                  "status": 400,
+                  "type": "BAD_REQUEST",
+                  "title": "Invalid username/password",
+                  "detail": "The username or password you specified is incorrect.",
+                }
+  /restaurant-managers/{managerId}: 
+    put:
+      tags:
+        - User Management
+      summary: Update manager
+      description: Updates the details for a restaurant manager.
       parameters:
-  
-        - name: voucherId
-          in: path
-          description: Used as an identifier for the voucher whose Vouchers are fetched.
+        - name: managerId
           required: true
+          in: path
+          description: Manager Id
+          example: "123"
+          schema:
+            type: string
+      requestBody:
+        description: The restaurant manager details 
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRegistrationRequest'
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestaurantUser'
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GlobalException"
+              example: 
+                {
+                  "status": 404,
+                  "type": "NOT_FOUND",
+                  "title": "Restaurant manager not found",
+                  "detail": "No manager found for the specified manager id.",
+                }
+    delete: 
+      tags:
+        - User Management
+      summary: Delete manager
+      description: Deletes the specified manager user from the platform.
+      parameters:
+        - name: managerId
+          required: true
+          in: path
+          description: Manager Id
+          example: "123"
           schema:
             type: string
       responses:
         "200":
-          description: Voucher Details Successfully Retrieved.
+          description: Successful operation
+  /restaurants/auth/refresh:
+    post: 
+      tags:
+      - User Management
+      summary: Refresh Auth Token
+      description: Generates a new User Management token based on the provided refresh token. When the access token expires, this API should be invoked with the refresh token to generate a new access token. If the refresh token has also expired, then the login API needs to be invoked to generate new access and refresh tokens.
+      operationId: refreshToken
+      requestBody:
+        description: The details of the refresh token to be used to generate a new User Management token. 
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RefreshTokenRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AdminVoucherResponseDTO'
+                $ref: '#/components/schemas/LoginResponse'
         "400":
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GlobalException"
+              example: 
+                {
+                  "status": 400,
+                  "type": "BAD_REQUEST",
+                  "title": "Bad request",
+                  "detail": "Please specify a valid refresh token and try again.",
+                }
         "403":
-          description: Unauthorized access
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GlobalException"
+              example: 
+                {
+                  "status": 403,
+                  "type": "FORBIDDEN",
+                  "title": "Refresh token expired",
+                  "detail": "The refresh token you have specified has expired. Please login and try again.",
+                  "tags":["REFRESH_TOKEN_EXPIRED"]
+                }
+  /restaurants/auth/reset-password:
+    post: 
+      tags:
+        - User Management
+      summary: Reset password
+      description: Resets the password for the specified user and sends a mail with the new password to the user's registered email id.
+      operationId: resetPassword 
+      requestBody:
+        description: The password reset request.
+        content:
+          application/json:
+            schema: 
+               $ref: '#/components/schemas/PasswordResetRequest'
+        required: true
+      responses:
+        "202":
+          description: Accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PasswordResetResponse'
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GlobalException"
+              example: 
+                {
+                  "status": 400,
+                  "type": "BAD_REQUEST",
+                  "title": "Failed to send password reset email",
+                  "detail": "Failed to send password reset email. A password reset email was already sent for the specified user. Please refer to the email for password reset instructions.",
+                }
+  /restaurants/auth/password: 
     put: 
       tags:
-        - AdminVoucherResource
-      summary: Update Created Voucher Details.
-      operationId: updateEvent
-      
-      parameters:
-        
-        - name: voucherId
-          in: path
-          description: Used as an identifier for the voucher whose details are updated.
-          required: true
-          schema:
-            type: string
-      
+        - User Management
+      summary: Update password
+      description: Updates the password for the specified user.
+      operationId: updatePassword
       requestBody:
-       description: The Voucher Details to be Updated. 
-       content:
+        description: Request body for updating the password.
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/PasswordUpdateRequest'
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PasswordUpdateResponse'
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GlobalException"
+              example: 
+                {
+                  "status": 403,
+                  "type": "BAD_REQUEST",
+                  "title": "Invalid username/password.",
+                  "detail": "The specified username/password is invalid. Please try again with a valid username/password.",
+                  "tags":[]
+                }
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GlobalException"
+              example: 
+                {
+                  "status": 403,
+                  "type": "FORBIDDEN",
+                  "title": "Token expired.",
+                  "detail": "The specified access token has expired. Please try again with an active access token.",
+                  "tags":[]
+                }
+  /foodcourt/globaldata:
+    get: 
+      tags:
+        - Global data
+      summary: Returns food court global data
+      description: Returns food court global data
+      operationId: getGlobalData
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                 $ref: '#/components/schemas/FoodCourtGlobalData'
+        "500":
+          description: Error  
+  /restaurants:
+    post: 
+      tags:
+        - Restaurant
+      summary: Create restaurant
+      description: Create restaurant.
+      operationId: createRestaurant
+      requestBody:
+        description: Restaurant information. 
+        content:
           application/json:
             schema:
-              $ref: '#/components/schemas/AdminVoucherRequestDTO'
-       required: true
+              $ref: '#/components/schemas/Restaurant'
+            example: 
+              {
+                "restaurantName": "Paragon",
+                "ownerName": "Mohan",
+                "restaurantPhoneNumberPrimary": {
+                  "countryCode": "+91",
+                  "phoneNumber": 9898989898
+                },
+                "restaurantPhoneNumberSecondary": {
+                  "countryCode": "+91",
+                  "phoneNumber": 9898989898
+                },
+                "ownerPhoneNumberPrimary": {
+                  "countryCode": "+91",
+                  "phoneNumber": 9898989898
+                },
+                "ownerPhoneNumberSecondary": {
+                  "countryCode": "+91",
+                  "phoneNumber": 9898989898
+                },
+                "email": "a@b.com",
+                "floor": {
+                    "id": 1
+                },
+                "cuisineTypes": [
+                  "INDIAN"
+                ],
+                "openingTime": "10:00",
+                "closingTime": "20:00",
+                "bankAccount": {
+                  "accountName": "Savings account",
+                  "accountNumber": "321321321",
+                  "bankName": "SBI",
+                  "ifscCode": "SBIN13",
+                  "upiId": "paragon@upi"
+                }
+              }
       responses:
-        "204":
-          description: Voucher Details Successfully Updated.
-        "400":
-          description: Bad request
-        "403":
-          description: Unauthorized access
-  
-    delete: 
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Restaurant'
+        "500":
+          description: Error
+    
+  /restaurants/_query:
+    post: 
       tags:
-        - AdminVoucherResource
-      summary: Delete a particluar Voucher.
-      operationId: deleteVoucher
+        - Restaurant
+      summary: Returns list of restaurants
+      description: Returns list of restaurants.
+      operationId: getRestaurants
       parameters:
-  
-        - name: voucherId
-          in: path
-          description: Used as an identifier for the voucher whose details are deleted.
+        - name: offset
+          required: false
+          in: query
+          description: Pagination offset
+          example: 10
+          schema:
+            type: number
+        - name: pageSize
+          required: false
+          in: query
+          description: Page size
+          example: 20
+          schema:
+            type: number
+        - name: userId
+          required: false
+          in: query
+          description: User Id. Pass it when includeDishes node is set.
+          schema:
+            type: string
+      requestBody:
+        description: Restaurant information. 
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetRestaurantsRequest'
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Restaurants'
+        "500":
+          description: Error   
+  /restaurants/{restaurantId}:
+    get: 
+      tags:
+        - Restaurant
+      summary: Get restaurant
+      description: Get restaurant.
+      operationId: getRestaurant
+      parameters:
+        - name: restaurantId
           required: true
+          in: path
+          description: Restaurant Id
+          example: "123"
           schema:
             type: string
       responses:
-        "204":
-          description: Delete Voucher.
-        "400":
-          description: Bad request
-        "403":
-          description: Unauthorized access
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Restaurant'
+        "500":
+          description: Error 
+    put: 
+      tags:
+        - Restaurant
+      summary: Update restaurant
+      description: Update restaurant.
+      operationId: updateRestaurant
+      parameters:
+        - name: restaurantId
+          required: true
+          in: path
+          description: Restaurant Id
+          example: "123"
+          schema:
+            type: string
+      requestBody:
+        description: Restaurant information. 
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Restaurant'
+            example: 
+                {
+                  "restaurantId": "123",
+                  "restaurantName": "Paragon",
+                  "ownerName": "Mohan",
+                  "restaurantPhoneNumberPrimary": {
+                    "countryCode": "+91",
+                    "phoneNumber": 9898989898
+                  },
+                  "restaurantPhoneNumberSecondary": {
+                    "countryCode": "+91",
+                    "phoneNumber": 9898989898
+                  },
+                  "ownerPhoneNumberPrimary": {
+                    "countryCode": "+91",
+                    "phoneNumber": 9898989898
+                  },
+                  "ownerPhoneNumberSecondary": {
+                    "countryCode": "+91",
+                    "phoneNumber": 9898989898
+                  },
+                  "email": "a@b.com",
+                  "floor": {
+                      "id": 1
+                  },
+                  "cuisineTypes": [
+                    "INDIAN"
+                  ],
+                  "openingTime": "10:00",
+                  "closingTime": "20:00",
+                  "bankAccount": {
+                    "accountName": "Savings account",
+                    "accountNumber": "321321321",
+                    "bankName": "SBI",
+                    "ifscCode": "SBIN13",
+                    "upiId": "paragon@upi"
+                  }
+                }
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Restaurant'
+        "500":
+          description: Error
+    delete: 
+      tags:
+        - Restaurant
+      summary: Delete restaurant
+      description: Delete restaurant.
+      operationId: deleteRestaurant
+      parameters:
+        - name: restaurantId
+          required: true
+          in: path
+          description: Restaurant Id
+          example: "123"
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful operation
+        "500":
+          description: Error 
+    patch: 
+      tags:
+        - Restaurant
+      summary: Update restaurant
+      description: Update restaurant.
+      operationId: patchUpdateRestaurant
+      parameters:
+        - name: restaurantId
+          required: true
+          in: path
+          description: Restaurant Id
+          example: "123"
+          schema:
+            type: string
+      requestBody:
+        description: Restaurant information. 
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Restaurant'
+            example:
+              {
+                "restaurantId": "123",
+                "priorityPhoneNumber": {
+                  "countryCode": "+91",
+                  "phoneNumber": 9898989898
+                },
+                 "averageCostPerPerson": "150",
+                  "closingTime": "20:00",
+                  "openingTime": "10:00",
+                  "cuisineTypes": ["CHINESE"]
+              }
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Restaurant'
+        "500":
+          description: Error
+     
+  /restaurants/{restaurantId}/dishes:
+    post: 
+      tags:
+        - Dishes
+      summary: Create dish
+      description: Create dish.
+      operationId: createDish
+      parameters:
+        - name: restaurantId
+          required: true
+          in: path
+          description: Restaurant Id.
+          example: "123"
+          schema:
+            type: string
+      requestBody:
+        description: Dish information. 
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Dish'
+            example:
+                {
+                  "restaurantId": "b30a6100-1e2d-43a7-b301-bd0fda7571c2",
+                  "dishName": "CHICKOO",
+                  "menuCategory": {
+                      "menuCategoryId":"f94ce675-c2f5-4778-9398-08866b50e2f2"
+                  },
+                  "vegNonVeg": "VEG",
+                  "cuisineType": "INDIAN",
+                  "price": 125.5,
+                  "description": "British style nadan biriyani",
+                  "bestSeller": true,
+                  "inStock": true,
+                  "dishImageUrl": "https://aws.proximety.io/s3/image1.jpg",
+                  "addOnGroups": [
+                    {
+                      "addOnGroupId": "3dc0965f-7281-4433-b04b-c228eeccc9b5"
+                    }
+                  ],
+                  "dishVariantGroups": [
+                    {
+                      "variantGroupName": "Quantity",
+                      "dishVariants": [
+                        {
+                          "dishVariantId": "123",
+                          "variantName": "Half Biriyani",
+                          "price": 100,
+                          "inStock": true
+                        }
+                      ]
+                    }
+                  ]
+                }
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Dish'
+        "500":
+          description: Error
+  /dishes/{dishId}:
+    get: 
+      tags:
+        - Dishes
+      summary: Get dish
+      description: Get dish.
+      operationId: getDish
+      parameters:
+        - name: dishId
+          required: true
+          in: path
+          description: Dish Id.
+          example: "123"
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Dish'
+        "500":
+          description: Error
+    put: 
+      tags:
+        - Dishes
+      summary: Update dish
+      description: Update dish.
+      operationId: updateDish
+      parameters:
+        - name: dishId
+          required: true
+          in: path
+          description: Dish Id.
+          example: "123"
+          schema:
+            type: string
+      requestBody:
+        description: Dish information. 
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Dish'
+            example:
+              {
+                "dishId": "a7d8e5c3-bc24-4904-a193-62002fdb48fb",
+                "restaurantId": "b30a6100-1e2d-43a7-b301-bd0fda7571c2",
+                "dishName": "CHICKOO",
+                "menuCategory": {
+                  "menuCategoryId":"f94ce675-c2f5-4778-9398-08866b50e2f2"
+                },
+                "vegNonVeg": "VEG",
+                "cuisineType": "INDIAN",
+                "price": 125.5,
+                "description": "British style nadan biriyani",
+                "rating": 0.0,
+                "numberOfRatings": 0,
+                "dishImageUrl": null,
+                "dishVariantGroups": [
+                    {
+                        "dishVariantGroupId": "5573b176-963e-4dff-84cf-3048aadbe904",
+                        "variantGroupName": "Quantity",
+                        "dishVariants": [
+                            {
+                                "dishVariantId": "123",
+                                "variantName": "Half Biriyani",
+                                "price": 100.0,
+                                "inStock": false
+                            },
+                            {
+                                "variantName": "Full Biriyani",
+                                "price": 100.0,
+                                "inStock": false
+                            }
+                        ]
+                    }
+                ],
+                "addOnGroups": [
+                    {
+                        "addOnGroupId": "46e70a41-7b3c-4295-b088-e25a5441b5cf",
+                        "addOnGroupName": "toppings",
+                        "restaurantId": "b30a6100-1e2d-43a7-b301-bd0fda7571c2",
+                        "minimumValue": 0.0,
+                        "maximumValue": 0.0,
+                        "addOns": [
+                            {
+                                "addOnId": "4d64f6fe-a89f-4e31-a41f-02e6afa7cd3a",
+                                "addOnName": "Almond Milk",
+                                "price": 30.0,
+                                "vegNonVeg": null,
+                                "inStock": true
+                            }
+                        ],
+                        "inStock": true
+                    }
+                ],
+                "inStock": true,
+                "bestSeller": true
+            }
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Dish'
+        "500":
+          description: Error
+    delete: 
+      tags:
+        - Dishes
+      summary: Delete dish
+      description: Delete dish
+      operationId: deleteDish
+      parameters:
+        - name: dishId
+          required: true
+          in: path
+          description: Dish Id.
+          example: "123"
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful operation
+        "500":
+          description: Error
+  /dishes/_query:
+    post: 
+      tags:
+        - Dishes
+      summary: Returns dishes
+      description: Returns dishes in a restaurant.
+      operationId: getDishes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetDishesRequest'
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Dishes'
+        "500":
+          description: Error 
+  /restaurants/{restaurantId}/add-on-groups:
+    post: 
+      tags:
+        - Add-on Groups
+      summary: Create add on group
+      description: Create add on group.
+      operationId: createAddOnGroup
+      parameters:
+        - name: restaurantId
+          required: true
+          in: path
+          description: Restaurant Id.
+          example: "123"
+          schema:
+            type: string
+      requestBody:
+        description: Add on group information. 
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddOnGroup'
+            example:
+              {
+                "addOnGroupName": "toppings",
+                "restaurantId": "123",
+                "minimunValue": 0,
+                "maximumValue": 0,
+                "inStock": true,
+                "addOns": [
+                  {
+                    "addOnName": "Almond Milk",
+                    "price": 30,
+                    "vegNonVeg": "VEG",
+                    "inStock": true
+                  }
+                ]
+              }
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddOnGroup'
+        "500":
+          description: Error
+
+    get: 
+      tags:
+        - Add-on Groups
+      summary: Get add on groups
+      description: Get add on groups
+      operationId: getAddOnGroups
+      parameters:
+        - name: restaurantId
+          required: true
+          in: path
+          description: Restaurant Id.
+          example: "123"
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddOnGroups'
+        "500":
+          description: Error
+  /add-on-groups/{addOnGroupId}:
+    get: 
+      tags:
+        - Add-on Groups
+      summary: Get add on group
+      description: Get add on group.
+      operationId: getAddOnGroup
+      parameters:
+        - name: addOnGroupId
+          required: true
+          in: path
+          description: Add on group id.
+          example: "123"
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddOnGroup'
+        "500":
+          description: Error
+    put: 
+      tags:
+        - Add-on Groups
+      summary: Update add on group
+      description: Update add on group.
+      operationId: updateAddOnGroup
+      parameters:
+        - name: addOnGroupId
+          required: true
+          in: path
+          description: Add on group id.
+          example: "123"
+          schema:
+            type: string
+      requestBody:
+        description: Add on group information. 
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddOnGroup'
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddOnGroup'
+        "500":
+          description: Error
+    delete: 
+      tags:
+        - Add-on Groups
+      summary: Delete add on group
+      description: Delete add on group.
+      operationId: deleteAddOnGroup
+      parameters:
+        - name: addOnGroupId
+          required: true
+          in: path
+          description: Add on group Id.
+          example: "123"
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful operation
+        "500":
+          description: Error
+  /foodcourt/combos:
+    post: 
+      tags:
+        - Combo
+      summary: Create combo
+      description: Create combo
+      operationId: createCombo
+      requestBody:
+        description: Combo info. 
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Combo'
+            example:
+              {
+                "comboName": "Celebration Combo",
+                "comboImageUrl": "https://aws.proximety.io/s3/image1.jpg",
+                "comboDescription": "1 biriyani + 1 drink",
+                "price": 500,
+                "bestSeller": true,
+                "comboCategories": [
+                  {
+                    "comboCategoryName": "Biriyan4",
+                    "items": [
+                      {
+                        "restaurantId": "b30a6100-1e2d-43a7-b301-bd0fda7571c2",
+                        "dishId": "c6fdb497-5e17-49f9-95b4-3a9268af8ef5",
+                        "dishVariantId": "eab4c442-477e-458b-b106-a6d6345738aa"
+                      }
+                    ]
+                  }
+                ]
+              }
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Combo'
+        "500":
+          description: Error
+  /foodcourt/combos/_query:
+    post: 
+      tags:
+        - Combo
+      summary: Returns list of combos.
+      description: Returns list of combos for the user.
+      operationId: getCombos
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Combos'
+        "500":
+          description: Error 
+  /foodcourt/combos/{comboId}:
+    get: 
+      tags:
+        - Combo
+      summary: Get combo
+      description: Get combo
+      operationId: getCombo
+      parameters:
+        - name: comboId
+          required: true
+          in: path
+          description: Combo Id.
+          example: "123"
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Combo'
+        "500":
+          description: Error 
+    put: 
+      tags:
+        - Combo
+      summary: Update combo
+      description: Update combo
+      operationId: updateCombo
+      requestBody:
+        description: Combo info. 
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Combo'
+      parameters:
+        - name: comboId
+          required: true
+          in: path
+          description: Combo Id.
+          example: "123"
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Combo'
+        "500":
+          description: Error 
+    delete: 
+      tags:
+        - Combo
+      summary: Delete combo
+      description: Delete combo
+      operationId: deleteCombo
+      parameters:
+        - name: comboId
+          required: true
+          in: path
+          description: Combo Id.
+          example: "123"
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful operation
+        "500":
+          description: Error
+  /foodcourt/promoted-combos:
+    get: 
+      tags:
+        - Combo
+      summary: Get promoted combos
+      description: Get promoted combos.
+      operationId: getPromotedCombo
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Combos'
+              example:
+               {
+                "combos": [
+                  {
+                    "comboId": "123",
+                    "comboName": "Celebration Combo",
+                    "comboImageUrl": "https://aws.proximety.io/s3/image1.jpg",
+                    "comboDescription": "1 biriyani + 1 drink",
+                    "price": 500,
+                    "bestSeller": true,
+                    "vegNonVeg": "VEG",
+                    "isAvailable": true
+                  }
+                ]
+              }
+        "500":
+          description: Error 
+    post: 
+      tags:
+        - Combo
+      summary: Create promoted combos
+      description: Create promoted combos.
+      operationId: createPromotedCombos
+      requestBody:
+        description: Combo information. 
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PromotedCombos'
+            example:
+               {
+                "combos": [
+                  {
+                    "comboId": "123",
+                    "rank": 1,
+                  }
+                ]
+              }
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PromotedCombos'
+              example:
+               {
+                "combos": [
+                  {
+                    "comboId": "123",
+                    "comboName": "Celebration Combo",
+                    "comboImageUrl": "https://aws.proximety.io/s3/image1.jpg",
+                    "comboDescription": "1 biriyani + 1 drink",
+                    "price": 500,
+                    "bestSeller": true,
+                    "vegNonVeg": "VEG",
+                    "isAvailable": true
+                  }
+                ]
+              }
+        "500":
+          description: Error
+  /combos/{comboId}/files:
+    post: 
+      tags:
+        - File Upload
+      summary: Upload combo files 
+      description: Upload combo files 
+      operationId: uploadComboFile
+      parameters:
+        - name: fileCategory
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/ComboFileCategoryEnum'
+        - name: comboId
+          required: true
+          in: path
+          description: Combo Id.
+          example: "123"
+          schema:
+            type: string
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties: 
+                file:
+                  type: string
+                  format: binary
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Combo'
+        "500":
+          description: Error
+    delete: 
+      tags:
+        - File Upload
+      summary: Delete combo files 
+      description: Delete combo files 
+      operationId: deleteComboFile
+      parameters:
+        - name: fileCategory
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/ComboFileCategoryEnum'
+        - name: comboId
+          required: true
+          in: path
+          description: Combo Id.
+          example: "123"
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Combo'
+        "500":
+          description: Error
+  
+  /foodcourt/order/coupons/_query:
+    post: 
+      tags:
+        - Offer
+      summary: Returns list of coupons appliacble for an order
+      description: Returns list of coupons appliacble for an order
+      operationId: getApplicableCoupons
+      parameters:
+        - name: userId
+          required: true
+          in: query
+          example: "123"
+          schema:
+            type: string
+      requestBody:
+        description: Cart information. 
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CartRequest'
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Coupons'
+        "500":
+          description: Error
+  /foodcourt/cart:
+    post: 
+      tags:
+        - Order
+      summary: Save cart
+      description: Save cart
+      operationId: saveCart
+      parameters:
+        - name: userId
+          required: true
+          in: query
+          example: "123"
+          schema:
+            type: string
+      requestBody:
+        description: Cart information.  
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CartRequest'
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CartDetails'
+    get:
+      tags:
+        - Order
+      summary: Get cart
+      description: Get cart
+      operationId: getCart
+      parameters:
+        - name: userId
+          required: true
+          in: query
+          example: "123"
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CartDetails'
+  /foodcourt/orders:
+    post: 
+      tags:
+        - Order
+      summary: Place orders
+      description: Place orders
+      operationId: placeOrder
+      parameters:
+        - name: userId
+          required: true
+          in: query
+          description: User Id.
+          schema:
+            format: uuid
+        - name: bundleId
+          required: true
+          in: query
+          description: Bundle Id.
+          schema:
+            format: uuid
+        - name: orderType
+          required: true
+          in: query
+          schema:
+              $ref: '#/components/schemas/OrderTypeEnum'
+      requestBody:
+        description: Cart information.  
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CartRequest'
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Orders'
+
+        "500":
+          description: Error
+  /foodcourt/orders/_query:
+    post: 
+      tags:
+        - Order
+      summary: Returns orders
+      description: Returns orders
+      operationId: getOrders
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetOrdersRequest'
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Orders'
+        "500":
+          description: Error
+  /foodcourt/orders/bundles/_query:
+    post: 
+      tags:
+        - Order
+      summary: Return order bundles
+      description: Return order bundles
+      operationId: getOrderBundles
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetOrdersRequest'
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderBundles'
+        "500":
+          description: Error
+  /foodcourt/orders/{orderId}:
+    get: 
+      tags:
+        - Order
+      summary: Get order
+      description: Get order.
+      operationId: getOrder
+      parameters:
+        - name: orderId
+          in: path
+          required: true
+          description: Order Id.
+          example: "123"
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+        "500":
+          description: Error
+  /foodcourt/orders/count/_query:
+    post:
+      tags:
+        - Order
+      summary: Get orderes with count based on status grouping
+      description: Get orderes with count based on status grouping
+      operationId: geteOrdersCount
+      requestBody:
+        description: Cart information.  
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TimeSlabRequest'
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrdersCount'
+        "500":
+          description: Error
+  /foodcourt/orders/{orderId}/status:
+    patch: 
+      tags:
+        - Order
+      summary: Update order status
+      description: Update order status
+      operationId: updateOrderStatus
+      parameters:
+        - name: orderId
+          required: true
+          in: path
+          description: Order Id.
+          example: "123"
+          schema:
+            type: string
+      requestBody:
+        description: Order Status. 
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderStatus'
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+        "500":
+          description: Error 
+  /foodcourt/orders/{orderId}/payment-details:
+    get: 
+      tags:
+        - Order
+      summary: Get order payment-details
+      description: Get order payment-details.
+      operationId: getOrderPaymentDetails
+      parameters:
+        - name: orderId
+          in: path
+          required: true
+          description: Order Id.
+          example: "123"
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderDetailsResponse'
+        "500":
+          description: Error
+  /dishes/{dishId}/reviews:
+    get: 
+      tags:
+        - Review
+      summary: Returns dish reviews
+      description: Returns dish reviews.
+      operationId: getDishReviews
+      parameters:
+        - name: dishId
+          in: path
+          required: true
+          description: Dish Id.
+          example: "123"
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Reviews'
+        "500":
+          description: Error
+    post: 
+      tags:
+        - Review
+      summary: Create dish review
+      description: Create dish review.
+      operationId: createDishReview
+      parameters:
+        - name: dishId
+          in: path
+          required: true
+          description: Dish Id.
+          example: "123"
+          schema:
+            type: string
+      requestBody:
+        description: cart. 
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Review'
+            example:
+              {
+                "userId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+                "rating": 3.5,
+                "message": "awesome food"
+              }
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Review'
+        "500":
+          description: Error
+  /dishes/{dishId}/last-unreviewed-order:
+    get: 
+      tags:
+        - Review
+      summary: Returns last unreviewed order for a user.
+      description: Returns last unreviewed order for a user.
+      operationId: getLastUnreviewedOrder
+      parameters:
+        - name: dishId
+          in: path
+          required: true
+          description: Dish Id.
+          example: "123"
+          schema:
+            type: string
+        - name: userId
+          in: query
+          required: true
+          example: "1234"
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+              example:
+                {
+                  "orderId": "123",
+                  "orderPlacedTime": "2021-10-20 10:00",
+                  "expectedDeliveryTime": "2021-10-20 11:00",
+                  "otp": 5678,
+                  "preparationTime": 30,
+                  "orderStatus": "ORDER_RECEIVED",
+                  "restaurantId": "123",
+                  "appliedOfferId": "123",
+                  "amount": 100,
+                }
+        "500":
+          description: Error
+  /restaurants/{restaurantId}/offers/generate-otp:
+    post:
+      tags:
+        - Offer
+      summary: Generate offer otp
+      description: Generate offer otp
+      operationId: generateOfferOTP
+      parameters:
+        - name: restaurantId
+          in: path
+          required: true
+          description: Restaurant Id.
+          example: "123"
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful operation
+        "500":
+          description: Error
+  /restaurants/{restaurantId}/offers:
+    get:
+      tags:
+        - Offer
+      summary: Get restaurant offers
+      description: Get restaurant offers.
+      operationId: getRestaurantOffers
+      parameters:
+        - name: restaurantId
+          in: path
+          required: true
+          description: Restaurant Id.
+          example: "123"
+          schema:
+            type: string
+        - name: otp
+          in: query
+          required: true
+          description: Otp.
+          example: "123456"
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestaurantOffers'
+        "500":
+          description: Error
+    post:
+      tags:
+        - Offer
+      summary: Create restaurant offer
+      description: Create restaurant offer.
+      operationId: createRestaurantOffer
+      parameters:
+        - name: restaurantId
+          in: path
+          required: true
+          description: Restaurant Id.
+          example: "123"
+          schema:
+            type: string
+        - name: otp
+          in: query
+          required: true
+          example: "1234"
+          schema:
+            type: string
+      requestBody:
+        description: cart. 
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Offer'
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestaurantOffers'
+        "500":
+          description: Error
+  /restaurants/{restaurantId}/offers/{offerId}:
+    put:
+      tags:
+        - Offer
+      summary: Update restaurant offer
+      description: Update restaurant offer.
+      operationId: updateRestaurantOffer
+      parameters:
+        - name: restaurantId
+          in: path
+          required: true
+          description: Restaurant Id.
+          example: "123"
+          schema:
+            type: string
+        - name: offerId
+          required: true
+          in: path
+          description: Offer Id.
+          example: "123"
+          schema:
+            type: string
+      requestBody:
+        description: cart. 
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Offer'
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Offer'
+        "500":
+          description: Error
+    delete:
+      tags:
+        - Offer
+      summary: Delete restaurant offer
+      description: Delete restaurant offer.
+      operationId: deleteRestaurantOffer
+      parameters:
+        - name: restaurantId
+          in: path
+          required: true
+          description: Restaurant Id.
+          example: "123"
+          schema:
+            type: string
+        - name: offerId
+          required: true
+          in: path
+          description: Offer Id.
+          example: "123"
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful operation
+  /restaurants/{restaurantId}/offers/{offerId}/status:
+    patch:
+      tags:
+        - Offer
+      summary: Activate/ end campaign the offer
+      description: Activate/ end campaign the offer
+      operationId: updateActivateStatus
+      parameters:
+        - name: restaurantId
+          required: true
+          in: path
+          description: Restaurant Id.
+          example: "123"
+          schema:
+            type: string
+        - name: offerId
+          required: true
+          in: path
+          description: Offer Id.
+          example: "123"
+          schema:
+            type: string
+      requestBody:
+        description: Offer activation Status. 
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Offer'
+            example: 
+              {
+                "status": "INACTIVE"
+              }
+      responses:
+        "200":
+          description: Successful operation
+        "500":
+          description: Error
+  /restaurants/{restaurantId}/menu:
+    get:
+      tags:
+        - Dishes
+      summary: Returns dish menu
+      description: Returns dishes in a restaurant.
+      operationId: getMenu
+      parameters:
+        - name: restaurantId
+          required: true
+          in: path
+          description: Restaurant Id.
+          example: "123"
+          schema:
+            type: string
+        - name: userId
+          required: false
+          in: query
+          description: User Id
+          schema:
+            type: string
+        - name: vegNonVeg
+          required: false
+          in: query
+          description: Cuisine Type
+          schema:
+            $ref: '#/components/schemas/VegNonVegEnum'
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Menu'
+        "500":
+          description: Error      
+  /restaurants/{restaurantId}/expanded-payout/_query:
+    post:
+      tags:
+        - Analytics
+      summary: Get expanded-payout of a restaurant
+      description: Get expanded-payout of a restaurant
+      operationId: getExpandedPayout
+      parameters:
+        - name: restaurantId
+          required: true
+          in: path
+          description: Restaurant Id.
+          example: "123"
+          schema:
+            type: string
+      requestBody:
+        description: Payout request. 
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TimeSlabRequest'
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExpandedPayouts'
+        "500":
+          description: Error
+  /restaurants/{restaurantId}/payout/_query:
+    post:
+      tags:
+        - Analytics
+      summary: Get payout of a restaurant
+      description: Get payout of a restaurant
+      operationId: getPayout
+      parameters:
+        - name: restaurantId
+          required: true
+          in: path
+          description: Restaurant Id.
+          example: "123"
+          schema:
+            type: string
+      requestBody:
+        description: Payout request. 
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TimeSlabRequest'
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Payout'
+        "500":
+          description: Error
+  /restaurants/{restaurantId}/transactions/_query:
+    post:
+      tags:
+        - Analytics
+      summary: Get transactions of a restaurant
+      description: Get transactions of a restaurant
+      operationId: getTransactions
+      parameters:
+        - name: restaurantId
+          required: true
+          in: path
+          description: Restaurant Id.
+          example: "123"
+          schema:
+            type: string
+      requestBody:
+        description: Transactions  request. 
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TimeSlabRequest'
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Transactions'
+        "500":
+          description: Error
+  /restaurants/{restaurantId}/expanded-past-payout/_query:
+    post:
+      tags:
+        - Analytics
+      summary: Get expanded-past-payout of a restaurant
+      description: Get expanded-past-payout of a restaurant
+      operationId: getExpandedPastPayout
+      parameters:
+        - name: restaurantId
+          required: true
+          in: path
+          description: Restaurant Id.
+          example: "123"
+          schema:
+            type: string
+      requestBody:
+        description: Payout request. 
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TimeSlabRequest'
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExpandedPastPayouts'
+        "500":
+          description: Error
+  
+  /restaurants/{restaurantId}/past-payout/_query:
+    post:
+      tags:
+        - Analytics
+      summary: Get PastPayout of a restaurant
+      description: Get PastPayout of a restaurant
+      operationId: getPastPayout
+      parameters:
+        - name: restaurantId
+          required: true
+          in: path
+          description: Restaurant Id.
+          example: "123"
+          schema:
+            type: string
+      requestBody:
+        description: PastPayout  request. 
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TimeSlabRequest'
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PastPayout'
+        "500":
+          description: Error
+  /restaurants/{restaurantId}/analytics/_query:
+    post:
+      tags:
+        - Analytics
+      summary: Get analytics of a restaurant
+      description: Get analytics of a restaurant
+      operationId: getAnalyitcs
+      parameters:
+        - name: restaurantId
+          required: true
+          in: path
+          description: Restaurant Id.
+          example: "123"
+          schema:
+            type: string
+      requestBody:
+        description: Analytics request. 
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TimeSlabRequest'
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Analytics'
+        "500":
+          description: Error
+  /restaurants/{restaurantId}/analytics-orders/_query:
+    post:
+      tags:
+        - Analytics
+      summary: Get orders of analytics of a restaurant
+      description: Get orders analytics of a restaurant
+      operationId: getOrdersOfAnalyitcs
+      parameters:
+        - name: restaurantId
+          required: true
+          in: path
+          description: Restaurant Id.
+          example: "123"
+          schema:
+            type: string
+      requestBody:
+        description: Orders of Analytics request. 
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TimeSlabRequest'
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnalyticsOrders'
+        "500":
+          description: Error
+  /restaurants/{restaurantId}/status:
+    patch: 
+      tags:
+        - Restaurant
+      summary: Update online/offline status of a restaurant
+      description: Update online/offline status of a restaurant.
+      operationId: updateOffline
+      parameters:
+        - name: restaurantId
+          required: true
+          in: path
+          description: Restaurant Id.
+          example: "123"
+          schema:
+            type: string
+      requestBody:
+        description: Offline Status. 
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateRestaurantStatus'
+      responses:
+        "200":
+          description: Successful operation
+        "500":
+          description: Error
+  /foodcourt/promoted-restaurants:
+    get: 
+      tags:
+        - Restaurant
+      summary: Get promoted restaurants
+      description: Get promoted restaurants.
+      operationId: getPromotedRestaurant
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PromotedRestaurants'
+        "500":
+          description: Error 
+    post: 
+      tags:
+        - Restaurant
+      summary: Create promoted restaurant
+      description: Create promoted restaurant.
+      operationId: createPromotedRestaurant
+      requestBody:
+        description: Restaurant information. 
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PromotedRestaurants'
+            example:
+              {
+                "restaurants": [
+                    {
+                        "restaurantId": "3fe3bd21-448e-43b1-9c27-638fef87ea6c",
+                        "rank": 2
+                    },
+                    {
+                        "restaurantId": "9bb407c1-af9b-4d24-9484-26917c1f5fdd",
+                        "rank": 1
+                    },
+                    {
+                        "restaurantId": "bec4bd5d-af1d-4265-9656-9707bac5e82b",
+                        "rank": 3
+                    }
+                ]
+            }
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PromotedRestaurants'
+        "500":
+          description: Error
+  /restaurants/{restaurantId}/menu-categories:        
+    put: 
+      tags:
+        - Restaurant
+      summary: Create menu Category
+      description: Create menu Category
+      operationId: createMenuCategory
+      parameters:
+        - name: restaurantId
+          required: true
+          in: path
+          description: Restaurant Id.
+          example: "123"
+          schema:
+            type: string
+      requestBody:
+        description: MenuCategory information. 
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/MenuCategory'
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+               type: array
+               items:
+                 $ref: '#/components/schemas/MenuCategory'
+        "500":
+          description: Error
+    get: 
+      tags:
+        - Restaurant
+      summary: Get menu Categories
+      description: Get menu Categories
+      operationId: getMenuCategories
+      parameters:
+        - name: restaurantId
+          required: true
+          in: path
+          description: Restaurant Id.
+          example: "123"
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MenuCategories'
+        "500":
+          description: Error
+  /restaurants/{restaurantId}/menu-categories/{menuCategoryId}:
+    delete: 
+      tags:
+        - Restaurant
+      summary: Delete menu Category
+      description: Delete menu Category
+      operationId: deleteMenuCategory
+      parameters:
+        - name: restaurantId
+          required: true
+          in: path
+          description: Restaurant Id.
+          example: "123"
+          schema:
+            type: string
+        - name: menuCategoryId
+          required: true
+          in: path
+          description: Menu Category Id.
+          example: "123"
+          schema:
+            type: string
+        - name: forceDelete
+          required: false
+          in: query
+          description: Delete menu category.
+          example: "123"
+          schema:
+            type: boolean
+      responses:
+        "200":
+          description: Successful operation
+        "500":
+          description: Error     
+  /restaurants/{restaurantId}/files:
+    post: 
+      tags:
+        - File Upload
+      summary: Upload restaurant files 
+      description: Upload restaurant files 
+      operationId: uploadRestaurantFile
+      parameters:
+        - name: fileCategory
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/RestaurantFileCategoryEnum'
+        - name: restaurantId
+          required: true
+          in: path
+          description: Restaurant Id.
+          example: "123"
+          schema:
+            type: string
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties: 
+                file:
+                  type: string
+                  format: binary
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Restaurant'
+        "500":
+          description: Error
+    delete: 
+      tags:
+        - File Upload
+      summary: Delete restaurant files 
+      description: Delete restaurant files 
+      operationId: deleteRestaurantFile
+      parameters:
+        - name: fileCategory
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/RestaurantFileCategoryEnum'
+        - name: restaurantId
+          required: true
+          in: path
+          description: Restaurant Id.
+          example: "123"
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Restaurant'
+        "500":
+          description: Error
+  /dishes/{dishId}/files:
+    post: 
+      tags:
+        - File Upload
+      summary: Upload dish files 
+      description: Upload dish files 
+      operationId: uploadDishFile
+      parameters:
+        - name: fileCategory
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/DishFileCategoryEnum'
+        - name: dishId
+          required: true
+          in: path
+          description: Dish Id.
+          example: "123"
+          schema:
+            type: string
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties: 
+                file:
+                  type: string
+                  format: binary
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Dish'
+        "500":
+          description: Error
+  /foodcourt/search/history:
+    get: 
+      tags:
+        - Search
+      summary: Returns search history
+      description: Returns search history of the user
+      operationId: getSearchHistory
+      parameters:
+        - name: userId
+          required: true
+          in: query
+          description: User Id.
+          schema:
+            format: uuid
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchHistory'
+        "500":
+          description: Error  
+  /foodcourt/search/suggestions:
+    get: 
+      tags:
+        - Search
+      summary: Returns search suggestions
+      description: Returns search suggestions
+      operationId: getSearchSuggestions
+      parameters:
+        - name: keyword
+          required: true
+          in: query
+          description: Search keyword.
+          example: "para"
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchSuggestions'
+        "500":
+          description: Error  
+
 components:
   schemas:
-    AdminVoucherListResponseDTO:
-      type: object
-      description: The voucher search response that contains the list of voucher matching the search criteria.
-      properties:
-        countInCurrentPage: 
-          type: integer
-          description: The count of voucher returned in the search response.
-          example: 10
-        totalCount: 
-          type: integer
-          description: The total number of voucher that match the specified search criteria.
-          example: 100
-        vouchersList:
-          $ref: '#/components/schemas/VoucherListResponse'
-    VoucherListResponse:
-      type: array
-      items:
-       $ref: '#/components/schemas/AdminVoucherResponseDTO'
-    AdminVoucherResponseDTO:
+    FoodCourtGlobalData:
       type: object
       properties:
-       voucherId:
+        dishCategories:
+            type: array
+            items:
+              $ref: '#/components/schemas/DishCategory'
+        cuisineTypes:
+            type: array
+            items:
+              $ref: '#/components/schemas/cuisineType'
+        floorInfo:
+            type: array
+            items:
+              $ref: '#/components/schemas/FloorDetails'
+        defaultffers:
+            type: array
+            items:
+              $ref: '#/components/schemas/Offer'
+            example:
+              [
+                  {
+                    "discountPercentage": 15,
+                    "maxCap": 150
+                  }
+              ]
+    DishCategory:
+      type: object
+      properties:
+        dishCategory:
+          $ref: '#/components/schemas/DishCategoryEnum'
+        dishCategoryImageUrl:
           type: string
-          description: The internal system identifier for the Voucher.
-          example: 5cfbaaf0-3c7b-4eb4-a3ae-ac74887e9014
-       mallId:
+          example: https://aws.proximety.io/s3/image1.jpg
+          description: Image URL.
+    MenuCategories:
+      type: object
+      properties:
+        menuCategories:
+            items:
+              $ref: '#/components/schemas/MenuCategory'
+    MenuCategory:
+      type: object
+      properties:
+        menuCategoryId:
           type: string
-          description: The internal system identifier for the Mall.
-          example: 5cfbaaf0-3c7b-4eb4-a3ae-ac74887e9014
-       title:
+          description: The dish category Id.
+          example: 123
+        menuCategoryName:
           type: string
-          description: title for the voucher.
-          example: 30% Off
-       storeId:
+          description: The name  dish category.
+          example: Biriyani
+        menuCategoryImageUrl:
           type: string
-       category:
-          type: object
-          description: Enum for Category.
-          enum:
-           - Shopping
-           - Movies
-       startDate:
+          example: https://aws.proximety.io/s3/image1.jpg
+          description: Image URL.
+        restaurantId:
           type: string
-          description: The start date for the voucher.
-          example: 05/15/2022
-       endDate:
-          type: string
-          description: The end date for the voucher.
-          example: 05/15/2022
-       overview:
-          type: string
-          description: provides general overview of the voucher.
-          example: The voucher is valid for 6 months from the date of its issuance.
-       coinsNeeded:
+          example: "123"
+          description: Restaurant Id.
+        position:
+          type: number
+          description: Position of the menmu category
+          example: 1
+    cuisineType:  
+      type: object
+      properties:
+        cuisineType:
+          $ref: '#/components/schemas/cuisineTypeEnum'
+    FloorDetails:
+      type: object
+      description: The details of a floor in a shopping mall.
+      properties:
+        floorId: 
           type: integer
-          description: The coins needed in total to redeem the voucher.
-          example: 500
-       status:
+          description: The internal system identifier for a floor.
+          example: 1
+        name: 
+          type: string
+          description: The name for the floor.
+          example: Ground floor 
+    Restaurants:
+      type: object
+      properties:
+        restaurants:
+          description: List od restaurants.
           type: array
-          description: A  list of Voucher Statuses. 
           items:
-            enum:
-                - PAST
-                - NOW RUNNING
-                - UPCOMING
-    CustomerVoucherListResponse:
-      type: array
-      items:
-       $ref: '#/components/schemas/CustomerVoucherResponseDTO'
-    CustomerVoucherResponseDTO:
+            $ref: '#/components/schemas/Restaurant'
+    PromotedRestaurants:
       type: object
       properties:
-       customerId:
+        restaurants:
+          description: List promoted restaurants.
+          type: array
+          items:
+            $ref: '#/components/schemas/PromotedRestaurant'
+    PromotedRestaurant:
+      type: object
+      properties:
+        restaurantId:
           type: string
-          description: The internal system identifier for the Customer.
-          example: 5cfbaaf0-3c7b-4eb4-a3ae-ac74887e9014
-       voucherIssueId:
+          example: "123"
+          description: Restaurant Id.
+        restaurantName:
           type: string
-          description: The internal system identifier for the VoucherIssued to customer.
-          example: 5cfbaaf0-3c7b-4eb4-a3ae-ac74887e9014
-       customerVoucherStatus:
-          type: object
-          description: Status of Voucher issued to customer.
-          enum:
-              - NOT_REDEEMED
-              - REDEEMED
-              - APPLIED
-              - EXPIRED
-       voucherCode:
+          example: Paragon
+          description: Restaurant name.
+        rank:
+          type: number
+          example: 1
+          description: Restaurant rank.
+        rating:
+          type: number
+          example: 4.1
+          description: Restaurant user rating.
+        floor:
+          $ref: "#/components/schemas/FloorDetails"
+        restaurantImageUrl:
           type: string
-          description: 6 length alpha numeric String.
-          example: ee12jdskdfjhalss==
-       title:
+          example: https://aws.proximety.io/s3/image1.jpg
+          description: Image URL.
+    Restaurant:
+      type: object
+      properties:
+        restaurantId:
           type: string
-          description: title for the voucher.
-          example: 30% Off
-       voucher:
-          type: object
-          description: Have Info related to Store Details.
-          $ref: '#/components/schemas/Voucher'
-       isVoucherRedeemable:
+          example: "123"
+          description: Restaurant Id.
+        restaurantName:
+          type: string
+          example: Paragon
+          description: Restaurant name.
+        ownerName:
+          type: string
+          example: Mohan
+          description: Restaurant owner name.
+        priorityPhoneNumber:
+          $ref: '#/components/schemas/PhoneNumber'
+        restaurantPhoneNumberPrimary:
+          $ref: '#/components/schemas/PhoneNumber'
+        restaurantPhoneNumberSecondary:
+          $ref: '#/components/schemas/PhoneNumber'
+        ownerPhoneNumberPrimary:
+          $ref: '#/components/schemas/PhoneNumber'
+        ownerPhoneNumberSecondary:
+          $ref: '#/components/schemas/PhoneNumber'
+        email:
+          type: string
+          example: a@b.com
+          description: Email.
+        floor:
+          $ref: "#/components/schemas/FloorDetails"
+        averageCostPerPerson:
+          type: number
+          example: 100
+          description: Average cost per person.
+        cuisineTypes:
+          type: array
+          items:
+            $ref: '#/components/schemas/cuisineTypeEnum'
+          description: Dish categories the restaurant sells
+        openingTime:
+          type: string
+          example: '10:00'
+          description: Restaurant opening time.
+        closingTime:
+          type: number
+          example: '20:00'
+          description: Restaurant closing time.
+        restaurantImageUrl:
+          type: string
+          example: https://aws.proximety.io/s3/image1.jpg
+          description: Image URL.
+        restaurantLogoUrl:
+          type: string
+          example: https://aws.proximety.io/s3/image1.jpg
+        menuImageUrl:
+          type: string
+          example: https://aws.proximety.io/s3/image1.jpg
+          description: Image URL.
+        gstCertificateUrl:
+          type: string
+          example: https://aws.proximety.io/s3/image1.jpg
+        panFileUrl:
+          type: string
+          example: https://aws.proximety.io/s3/image1.jpg
+        fssaiCertificateUrl:
+          type: string
+          example: https://aws.proximety.io/s3/image1.jpg
+        rating:
+          type: number
+          example: 4.1
+          description: Restaurant user rating.
+        numberOfRatings:
+          type: number
+          example: 99
+          description: Number of ratings.
+        isOpen:
           type: boolean
-          description: Boolean value Indicating if Voucher is redeemable.
-          
-       additionalCoinsNeededToRedeem:
+          description: Indivated whether restaurant is open or closed
+        isOnline:
+          type: boolean
+          description: Indivated whether restaurant is online or offline
+        pureVeg:
+          type: boolean
+          description: Indivated whether restaurant is pure veg or not.
+        bankAccount:
+          $ref: '#/components/schemas/BankAccount'
+        gstSlab:
+          $ref: '#/components/schemas/GSTSlabEnum'
+        paytmVendorId:
+          type: string
+        dishes:
+          type: array
+          items:
+            $ref: '#/components/schemas/Dish'
+          description: List of dishes. Included only in specific cases.
+    RestaurantInfo:
+      type: object
+      properties:
+        restaurantId:
+          type: string
+          example: "123"
+          description: Restaurant Id.
+        restaurantName:
+          type: string
+          example: Paragon
+          description: Restaurant name.
+        floor:
+          $ref: "#/components/schemas/FloorDetails"
+        paytmVendorId:
+          type: string
+    Dishes:
+      type: object
+      properties:
+        dishes:
+          type: array
+          items:
+            $ref: '#/components/schemas/Dish'
+          description: List of dishes.
+    Dish:
+      type: object
+      properties:
+        dishId:
+          type: string
+          example: "123"
+          description: Dish Id.
+        restaurantId:
+          type: string
+          example: "123"
+          description: Restaurant Id.
+        dishName:
+          type: string
+          example: Chicken Biriyani
+          description: Dish name.
+        menuCategory:
+          $ref: '#/components/schemas/MenuCategory'
+        vegNonVeg:
+          $ref: '#/components/schemas/VegNonVegEnum'
+        cuisineType:
+          $ref: '#/components/schemas/cuisineTypeEnum'
+        price:
+          type: number
+          example: 125.5
+          description: Dish price.
+        description:
+          type: string
+          example: British style nadan biriyani
+          description: Dish description.
+        bestSeller:
+          type: boolean
+          example: true
+          description: Indicates whether the dish is a best seller.
+        inStock:
+          type: boolean
+          example: true
+          description: Indicates whether the dish is in stock.
+        rating:
+          type: number
+          example: 3.5
+          description: Dish rating.
+        numberOfRatings:
           type: integer
-          description: Additional coins needed to redeem voucher.
+          example: 17
+          description: Number of ratings.
+        dishImageUrl:
+          type: string
+          example: https://aws.proximety.io/s3/image1.jpg
+          description: Image URL.
+        dishCategories:
+          type: array
+          items:
+            $ref: '#/components/schemas/DishCategory'
+        addOnGroups:
+          type: array
+          items:
+            $ref: '#/components/schemas/AddOnGroup'
+          description: List of add on groups linked to the dish.
+        dishVariantGroups:
+          type: array
+          items:
+            $ref: '#/components/schemas/DishVariantGroup'
+          description: List of dish variant groups available for the dish.
+        isCustomisable:
+          type: boolean
+          example: true
+          description: Indicates whether the dish has variants or add ons.
+    AddOnGroups:
+      type: object
+      properties:
+        addOnGroups:
+          type: array
+          items:
+            $ref: '#/components/schemas/AddOnGroup'
+          description: List of dishes.
+    AddOnGroup:
+      type: object
+      properties:
+        addOnGroupId:
+          type: number
+          example: "123"
+        addOnGroupName:
+          type: string
+          example: toppings
+          description: Customization group name.
+        restaurantId:
+          type: string
+          example: "123"
+          description: Restaurant Id.
+        minimunValue:
+          type: number
+          description: Minimum number to be selected.
+        maximumValue:
+          type: number
+          description: Maximum number to be selected.
+        inStock:
+          type: boolean
+          description: Indicates whether add on group is in stock.
+        mappedDishes:
+          type: array
+          items:
+            $ref: '#/components/schemas/Dish'
+          example:
+           {
+             "dishId":"123",
+             "dishName": "Biriyani"
+           }
+          description: List of add ons.
+        addOns:
+          type: array
+          items:
+            $ref: '#/components/schemas/AddOn'  
+          description: List of add ons.
+    AddOn:
+      type: object
+      properties:
+        addOnId:
+          type: string
+          example: "123"
+          description: Item Id.
+        addOnName:
+          type: string
+          example: Almond Milk
+          description: Item name.
+        price:
+          type: number
+          example: 30
+          description: Price for the customization.
+        vegNonVeg:
+          $ref: '#/components/schemas/VegNonVegEnum'
+        inStock:
+          type: boolean
+          description: Indicates whether add on is in stock.
+    DishVariantGroup:
+      type: object
+      properties:
+        dishVariantGroupId:
+          type: string
+          example: "123"
+          description: Dish variant group Id.
+        variantGroupName:
+          type: string
+          example: Quantity
+          description: Dish variant group name.
+        dishVariants:
+          type: array
+          items:
+            $ref: '#/components/schemas/DishVariant'
+          description: List of dish variants.
+    DishVariant:
+      type: object
+      properties:
+        dishVariantId:
+          type: string
+          example: "123"
+          description: Dish variant Id.
+        variantName:
+          type: string
+          example: Half Biriyani
+          description: Dish variant name.
+        price:
+          type: number
           example: 100
-       validForDays:
+          description: Dish variant price.
+        inStock:
+          type: boolean
+          description: Indicates whether dish variant is in stock.
+    PromotedCombos:
+      type: object
+      properties:
+        combos:
+          description: List promoted combos.
+          type: array
+          items:
+            $ref: '#/components/schemas/PromotedCombo'
+    PromotedCombo:
+      type: object
+      properties:
+        comboId:
+          type: string
+          example: "123"
+          description: Combo Id.
+    Combos:
+      type: object
+      properties:
+        combos:
+          type: array
+          items:
+            $ref: '#/components/schemas/Combo'
+          description: Image URL.
+    Combo:
+      type: object
+      properties:
+        comboId:
+          type: string
+          example: "123"
+          description: Combo Id.
+        comboName:
+          type: string
+          example: Celebration Combo
+          description: Combo name.
+        comboImageUrl:
+          type: string
+          example: https://aws.proximety.io/s3/image1.jpg
+          description: Image URL.
+        comboDescription:
+          type: string
+          example: 1 biriyani + 1 drink
+          description: Combo description.
+        price:
+          type: number
+          example: 500
+          description: Combo price.
+        bestSeller:
+          type: boolean
+          description: Indicates whether the combo is a best seller.
+        vegNonVeg:
+          $ref: '#/components/schemas/VegNonVegEnum'
+        isAvailable:
+          type: boolean
+          description: Indicates if combo is available or not.
+        comboCategories:
+          type: array
+          items:
+            $ref: '#/components/schemas/ComboCategory'
+          description: List of combo categories.
+    ComboCategory:      
+      type: object
+      properties:
+        comboCategoryId:
+          type: string
+          example: "123"
+        categoryName:
+          type: string
+          example: Biriyanio
+          description: Combo category name
+        restaurantId:
+          type: string
+          example: "123"
+        restaurantName:
+          type: string
+          example: KFC
+        required:
+          type: boolean
+          description: Indicates if it's a required combo category.
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/ComboItem'
+          description: List of items/dishes in combo category.
+    ComboItem:      
+      type: object
+      properties:
+        comboItemId:
+          type: string
+          example: "123"
+        comboItemName:
+          type: string
+          example: "Fried Chicken"
+        restaurantId:
+          type: string
+          example: "123"
+        dishId:
+          type: string
+          example: "123"
+        dishVariantId:
+          type: string
+          example: "123"
+        price:
+          type: number
+          example: 125.5
+          description: Dish price.
+        vegNonVeg:
+          $ref: '#/components/schemas/VegNonVegEnum'
+    ComboFileCategoryEnum:
+       type: string
+       enum:
+        - COMBO_IMAGE
+    Coupons:
+      type: object
+      properties:
+        offers:
+          type: array
+          items:
+            $ref: '#/components/schemas/Coupon'
+          description: List of offers.
+    Coupon:
+      type: object
+      properties:
+        offer:
+          $ref: '#/components/schemas/Offer'
+        message:
+          type: string
+          description: Brief description about the customer perspective status of coupon.
+        isApplicable:
+          type: boolean
+          description: Indicates this coupon is applicable or not
+        saving:
+          type: number
+          example: 150
+          description: Amount can be saved
+    Offer:
+      type: object
+      properties:
+        offerId:
+          type: string
+          example: "123"
+          description: Offer Id.
+        restaurantId:
+          type: string
+          example: "123"
+          description: Restaurant Id.
+        discountPercentage:
+          type: number
+          example: 15
+          description: Percentage of discount
+        maxCap:
+          type: number
+          example: 150
+          description: Maximum amount of discount
+        userType:
+          $ref: '#/components/schemas/OfferUserTypeEnum'
+        campaignStartDate:
+          description: Start date.
+          example: '2022-11-07 17:12'
+        campaignEndDate:
+          description: End date.
+          example: '2022-11-07 17:12'
+        items:
+          type: array
+          example: ["123", "456"]
+          items:
+            type: string
+        couponCode:
+          type: string
+          example: "abcdf"
+          description: Coupon for the offer.
+        runningTime:
+           $ref: '#/components/schemas/OfferTimeEnum'
+        runningDays:
+           type: array
+           items:
+             $ref: '#/components/schemas/OfferDayEnum'
+        status:
+          $ref: '#/components/schemas/OfferStatusEnum'
+        restaurantName:
+          type: string
+        minimumOrderValue:
+          type: number
+          example: 150
+          description: Minimum order value for offer.
+    RestaurantOffers:
+      type: object
+      properties:
+        offers:
+          type: array
+          items:
+            $ref: '#/components/schemas/RestaurantOffer'
+          description: List of offers.
+    RestaurantOffer:
+      type: object
+      properties:
+        restaurantOffer:
+          $ref: '#/components/schemas/Offer'
+        numberOfOrders:
+          type: number
+          example: 15
+          description: Number Of orders used this offer
+        grossSales:
+          type: number
+          example: 15
+          description: Gross sales used this offer
+        discountGiven:
+          type: number
+          example: 15
+          description: Totaldiscount given
+        effectiveDiscount:
+          type: number
+          example: 15
+          description: Total Percentage of discount given
+    OfferStatusEnum:
+      type: string
+      enum:
+          - ACTIVE
+          - INACTIVE
+          - SCHEDULED
+    OfferUserTypeEnum:
+      type: string
+      enum:
+          - ALL_USERS
+          - NEW_USERS
+    OfferTimeEnum:
+      type: string
+      enum:
+         - MORNING
+         - NOON
+         - EVENING
+         - NIGHT
+    OfferDayEnum:
+      type: string
+      enum:
+         - MONDAY
+         - TUESDAY
+         - WEDNESDAY
+         - THURSDAY
+         - FRIDAY
+         - SATURDAY
+         - SUNDAY
+    Reviews:      
+      type: object
+      properties:
+        averageRating:
+          type: number
+          example: 3.5
+          description: Average rating.
+        numberOfRatings:
           type: integer
-          description: Specifies how many days are left before voucher expires.
           example: 20
-       brandLogoUrl:
-          type: string
-          description: Image to be shown on the voucher.
-          example: https://s3.ap-south-1.amazonaws.com/proximety.io/store-images-dev/94c353f3-9f06-43a7-b1ed-4aa3b8d0f2b9.png
-      
-    AdminVoucherRequestDTO:
-      type: object
-      properties:
-    
-       title:
-          type: string
-          description: title for the voucher.
-          example: 30% Off
-       storeId:
-          type: string
-          description: Have Info related to Store Details.
-          example: 0xD557BD156A424268B1450266609C29B2
-       category:
-          type: object
-          description: Enum for Category.
-          enum:
-           - Shopping
-           - Movies
-       startDate:
-          type: string
-          description: The start date for the voucher.
-          example: 05/15/2022
-       endDate:
-          type: string
-          description: The end date for the voucher.
-          example: 05/15/2022
-       overview:
-          type: string
-          description: provides general overview of the voucher.
-          example: The voucher is valid for 6 months from the date of its issuance.
-       coinsNeeded:
-          type: integer
-          description: The coins needed in total to redeem the voucher.
-          example: 500
-
-    PointRuleRequestDTO:
-      type: object
-      properties:
-    
-       ruleName:
-          type: string
-          description: Name for the rule.
-          example: Point Rule 1
-       startDate:
-          type: string
-          description: The start date for the Rule.
-          example: 05/15/2022
-       endDate:
-          type: string
-          description: The end date for the Rule.
-          example: 05/15/2022
-       coinValue:
-          type: integer
-          description: Value for 1 coin.
-          example: 500
-       isDefault:
-          type: integer
-          description: Signifies whether a rule is default or not.
-          example: true
-       storeIds:
+          description: Number of ratings.
+        userReviews:
           type: array
           items:
-           type: string
-    PointRuleSerachRequestDTO:
+            $ref: '#/components/schemas/Review'
+          description: List of reviews.
+    Review: 
       type: object
       properties:
-    
-       startDate:
+        username:
           type: string
-          description: The start date for the rule.
-          example: 05/15/2022
-       endDate:
+          example: Sunder
+        userId:
           type: string
-          description: The end date for the rule.
-          example: 05/15/2022
-       pointRuleStatuses:
+          format: uuid
+          description: User Id.
+        rating:
+          type: number
+          example: 3.5
+          description: Rating.
+        review:
+          type: string
+          example: awesome food 
+          description: Message.
+        userImageUrl:
+          type: string
+          example: https://aws.proximety.io/s3/image1.jpg
+          description: Image URL.
+    CartRequest:
+      type: object
+      properties:
+        userId:
+          type: string
+          example: '123'
+          description: User Id.
+        regularItems:
           type: array
           items:
-           enum:
-              - ACTIVE
-              - INACTIVE
-       page:
-          type: integer
-          description: page number for points list.
-          example: 2
-       size:
-          type: integer
-          description: size of  points list shown.
-          example: 10
-    PointRuleListResponse:
-      type: object
-      description: The point rules search response that contains the list of point rules matching the search criteria.
-      properties:
-        countInCurrentPage: 
-          type: integer
-          description: The count of point rules returned in the search response.
-          example: 10
-        totalCount: 
-          type: integer
-          description: The total number of point rules that match the specified search criteria.
-          example: 100
-        eventsList:
-          type: array
-          description: The embedded search results
-          items:
-                $ref: '#/components/schemas/PointRuleResponseDTO'
-    PointRuleResponseDTO:
-      type: object
-      properties:
-       ruleId:
-          type: string
-          description: The internal system identifier for the Rule.
-          example: 5cfbaaf0-3c7b-4eb4-a3ae-ac74887e9014
-       mallId:
-          type: string
-          description: The internal system identifier for the mall.
-          example: 5cfbaaf0-3c7b-4eb4-a3ae-ac74887e9014
-       ruleName:
-          type: string
-          description: Name for the rule.
-          example: 20% off
-       startDate:
-          type: string
-          description: The start date for the rule.
-          example: 05/15/2022
-       endDate:
-          type: string
-          description: The end date for the rule.
-          example: 05/15/2022
-       coinValue:
-          type: integer
-          description: Value for 1 coin.
-          example: 500
-       storeInfo:
-          type: string
-          description: Signifies whether a rule is applied to all stores or selective stores.
-          example: true
-       stores:
+            $ref: '#/components/schemas/CartRegularItem'
+          description: List of items.
+        comboItems:
           type: array
           items:
-           $ref: '#/components/schemas/Store'
-       status:
-          type: object
-          description: Signifies rule status.
-          enum:
-              - ACTIVE
-              - INACTIVE
-              
-    AdminVoucherSearchRequest:  
-      type: object
-      properties:   
-        
-       startDate:
-          type: string
-          description: The date at which Voucher starts.
-          example: 05/15/2022
-       endDate:
-          type: string
-          description: The date at which Voucher ends.
-          example: 05/15/2022
-       voucherStatuses:
-          type: string
-          description: Indicates current voucher status
-          enum:
-              - PAST
-              - NOW RUNNING
-              - UPCOMING
-       page:
-         type: string
-         description: Specifies the page no. for which vouchers needs to be shown.
-
-       offset:
-         type: string
-         description: Specifies the no of vouchers to be shown in a page.
-   
-    Store:
+            $ref: '#/components/schemas/CartComboItem'
+          description: List of items.
+        appliedOfferIds:
+          type: array
+          example: ["123", "456"]
+          items:
+            type: string
+    CartRegularItem:
       type: object
       properties:
-        UUId:
-         type: string
-         description: :Used as an Identifier for a Store
-         example: 5cfbaaf0-3c7b-4eb4-a3ae-ac74887e9014
-        name:
+        dishId:
           type: string
-          description: :Signifies name of the store
-          example: Allenso Watches
-        brandLogoUrl:
-          type: string
-          description: Url for Store
-    PaymentDetails:
+          example: "123"  
+          description: Dish Id.
+        quantity:
+          type: number
+          example: 5 
+          description: Quantity.
+        addOnIds:
+          type: array
+          example: ["123", "456"]
+          items:
+            type: string
+        dishVariantIds:
+          type: array
+          example: ["123", "456"]
+          items:
+            type: string
+    CartComboItem:
       type: object
       properties:
-        paymentId:
-         type: string
-         description: :Used as an Identifier for a Payment
-         example: 5cfbaaf0-3c7b-4eb4-a3ae-ac74887e9014
-        mallId:
-         type: string
-         description: :Used as an Identifier for a mall
-         example: 5cfbaaf0-3c7b-4eb4-a3ae-ac74887e9014
+        comboId:
+          type: string
+          example: "123"  
+          description: Dish Id.
+        quantity:
+          type: number
+          example: 5 
+          description: Quantity.
+        items:
+          $ref: '#/components/schemas/CartRegularItem'
+    CartDetails:
+      type: object
+      properties:
+        bundleId:
+          type: string
+          example: '123'
+        userId:
+          type: string
+          example: '123'
+          description: User Id.
+        lastUpdatedTime:
+          type: string
+          example: '2022-11-07 17:12'
+        cartItemsByRestaurant:
+          type: array
+          items:
+            $ref: '#/components/schemas/CartItemByRestaurant'
+        cartItemsByCombo:
+          type: array
+          items:
+            $ref: '#/components/schemas/CartItemByCombo'
+        tariff:
+          $ref: '#/components/schemas/Tariff'
+    CartItemByRestaurant:
+      type: object
+      properties:
+        restaurantInfo:
+          $ref: '#/components/schemas/RestaurantInfo'
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/SelectedItem'
+        appliedOfferId:
+          type: string
+          example: '123'
+    CartItemByCombo:
+      type: object
+      properties:
+        comboId:
+          type: string
+        quantity:
+          type: number
+          example: 5
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/SelectedItem'
+        appliedOfferId:
+          type: string
+          example: '123'
+    Tariff:
+      type: object
+      properties:
+        totalAmount:
+          type: number
+          example: 500  
+          description: Order total.
+        convenienceFee:
+          type: number
+          example: 10  
+        tax:
+          type: number
+          example: 100  
+          description: Tax.
+        discount:
+          type: number
+          example: 25  
+          description: Discount.
+        toPay:
+          type: number
+          example: 575  
+          description: To pay.
+    Orders:
+      type: object
+      properties:
+        orders:
+          type: array
+          items:
+            $ref: '#/components/schemas/Order'
+          description: List of orders.
+    OrderDetailsResponse:
+      type: object
+      properties:
+        orderId:
+          type: string
+          example: "123"  
+          description: Order Id.
         customerId:
-         type: string
-         description: :Used as an Identifier for a customer
-         example: 5cfbaaf0-3c7b-4eb4-a3ae-ac74887e9014
-        storeId:
-         type: string
-         description: :Used as an Identifier for a store
-         example: 5cfbaaf0-3c7b-4eb4-a3ae-ac74887e9014
+          type: string
+          example: "123"  
+          description: Customer Id.
+        txnAmount:
+            type: number
+            example: 100
+            description: Order total price.
+        orders:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderDetail' 
+    OrderDetail:
+      type: object
+      properties:
+        orderId:
+          type: string
+          example: "123"  
+          description: Order Id.
+        restaurantVendorId:
+          type: string
+          example: "123"  
+          description: Customer Id.
+        totalAmount:
+            type: number
+            example: 100
+            description: Order total price.
+        splitDetails:
+           $ref: '#/components/schemas/AmountSplitDetails' 
+    AmountSplitDetails:
+      type: object
+      properties:
+        commisionMargin:
+            type: number
+            example: 100
+        commisionHighrate:
+            type: number
+            example: 100
+        commisionLowrate:
+            type: number
+            example: 100
+        taxRate:
+            type: number
+            example: 100
+        taxOnCommitionRate:
+            type: number
+            example: 100
+        convinienceFeeRate:
+            type: number
+            example: 100
+    Order:
+      type: object
+      properties:
+        orderId:
+          type: string
+          example: "123"  
+          description: Order Id.
+        bundleId:
+          type: string
+          example: "123"  
+        orderType:
+          $ref: '#/components/schemas/OrderTypeEnum'
+        restaurantInfo:
+          $ref: "#/components/schemas/RestaurantInfo"
+        displayId:
+          type: number
+          example: 1  
+          description: Display Id.
+        orderPlacedTime:
+          type: string  
+          example: '2021-10-20 10:00'
+          description: Order date.
+        expectedDeliveryTime:
+          type: string  
+          example: '2021-10-20 11:00'
+          description: Order date.
+        otpForDelivery: 
+          type: integer
+          example: 5678
+          description: OTP. Present only after order is moved to ORDER_READY status.
+        preparationTime: 
+          type: number
+          example: 30
+          description: Preparation time (in minutes) updated by restaurant. Default 10 min. Present only after order is moved to CONFIRMED_AND_PREPARING_ORDER step.
+        orderStatus:
+          $ref: '#/components/schemas/OrderStatusEnum'
+        restaurantId:
+          type: string
+          example: "123"
+          description: Restaurant Id.
+        appliedOfferId:
+          type: string
+          example: "123"
+          description: Coupon Id.
         amount:
-         type: number
-         description: Amount paid at store
-         example: 100.56
-    CustomerRewardPointsMetadataDTO:
+          type: number
+          example: 100
+          description: Order total price.
+        orderItems:
+          type: array
+          items:
+            $ref: '#/components/schemas/SelectedItem' 
+          description: List of dishes selected by the user from the restaurant.
+        orderWorkflow:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderStage'
+          description: Sequence of steps through which order has gone.
+    OrderBundles:
       type: object
       properties:
-        customerId:
-         type: string
-         description: :Used as an Identifier for a Customer
-         example: 5cfbaaf0-3c7b-4eb4-a3ae-ac74887e9014
-        mallid:
-          type: string
-          description: Used as an Identifier for a mall
-          example: 5cfbaaf0-3c7b-4eb4-a3ae-ac74887e9014
-        pointsCollected:
-          type: integer
-          description: Total Points Collected using rewards
-
-        noOfActiveVouchers:
-          type: integer
-          description: Count of Vouchers that is active to be redeemed
-    Voucher:
+        orderBundles:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderBundle'
+          description: List of order bundles.
+    OrderBundle:
       type: object
+      properties:
+        bundleId:
+          type: string
+        rewardPointsEarned:
+          type: number
+          example: 80
+        orders:
+          type: array
+          items:
+            $ref: '#/components/schemas/Order'
+          description: List of orders.
+        tariff:
+          $ref: '#/components/schemas/Tariff'
+    OrdersCount:
+      type: object
+      properties: 
+        orderCount:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderCount'
+    OrderCount:
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/OrderStatusEnum'
+        count:
+          type: number
+          example: 3
+    SelectedItem:
+      type: object
+      properties: 
+        dish:
+          $ref: '#/components/schemas/Dish'
+        quantity:
+          type: integer  
+          example: 1
+          description: Quantity.
+        sellingPrice:
+          type: number  
+          example: 100
+        addedCustomizations:
+          type: array
+          items: 
+            $ref: '#/components/schemas/AddOnGroup'
+          description: List of add ons.
+        addedVariants:
+          type: array
+          items: 
+            $ref: '#/components/schemas/DishVariantGroup'
+        comboId:
+          type: string  
+    OrderStage:
+      type: object
+      properties:
+        sequenceId:
+          type: integer  
+          example: 1
+          description: Sequence Id.
+        orderStatus:
+          $ref: '#/components/schemas/OrderStatusEnum'
+        stepStartTime:
+          type: string
+          example: 3:10 
+          description: Step start time.
+        stepEndTime:
+          type: string
+          example: 3:15
+          description: Step end time. Present only if the step is completed.
+    UpdateRestaurantStatus:  
+      type: object
+      properties:
+        online:
+          type: boolean  
+          example: true
+          description: Pass this as false to update restaurant status as closed. True for going online again.
+        offlineReason:
+          $ref: '#/components/schemas/OfflineReasonEnum'  
+        backOnlineStrategy:
+          $ref: '#/components/schemas/BackOnlineStrategyEnum'
+        backOnlineTime:
+          type: string
+          example: '2021-10-20 10:00'
+          description: Back online time. Pass this only if the backOnlineStrategy is SPECIFIC_DATE_AND_TIME.
+    PhoneNumber: 
+      type: object
+      properties:
+        countryCode:
+          type: string
+          description: The country code prefix for the phone number.
+          example: "+91"
+        phoneNumber: 
+          type: number 
+          example: 9898989898
+          description: The 10-digit mobile number 
+    BankAccount:
+      type: object
+      properties:
+        bankAccountId:
+          type: string
+          example: "123"
+          description: Account Id.
+        accountName:
+          type: string
+          example: Savings account
+          description: Account name.
+        accountNumber:
+          type: string
+          example: 321321321
+          description: Account number.
+        bankName:
+          type: string
+          example: SBI
+          description: Bank name.
+        ifscCode:
+          type: string
+          example: SBIN13
+          description: IFSC code.
+        upiId:
+          type: string
+          example: paragon@upi
+          description: UPI Id Id.
+    OrderStatus:
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/OrderStatusEnum'
+        preparationTime: 
+          type: number
+          example: 30
+          description: Preparation time (in minutes). Default 10 min. Pass this value only for CONFIRMED_AND_PREPARING_ORDER step.
+    SearchHistory:
+      type: object
+      properties:
+        recentSearches:
+          type: array
+          example: ["Biriyani", "paragon hotel"]
+          items:
+            type: string
+    SearchSuggestions:
+      type: object
+      properties:
+        suggestions:
+          type: array
+          items:
+            $ref: '#/components/schemas/SearchSuggestion'
+    SearchSuggestion:
+      type: object
+      properties:
+        suggestionType:
+          type: string
+          enum:
+            - DISH_CATEGORY
+            - RESTAURANT
+        dishCategory:
+          $ref: '#/components/schemas/DishCategoryEnum'
+        dishCategoryImageUrl:
+          type: string
+          example: https://aws.proximety.io/s3/image1.jpg
+          description: Image URL. Present if suggestionType is DISH_CATEGORY.
+        restaurantId:
+          type: string
+          example: "123"
+          description: Restaurant Id. Present if suggestionType is RESTAURANT.
+        restaurantName:
+          type: string
+          example: "Paragon"
+        restaurantImageUrl:
+          type: string
+          example: https://aws.proximety.io/s3/image1.jpg
+          description: Image URL. Present if suggestionType is RESTAURANT.
+        floor:
+          $ref: "#/components/schemas/FloorDetails"
+        restaurntOpen:
+          type: boolean
+          example: true
+          description: Restaurant open status
+    GetOrdersRequest:
+      type: object
+      properties:
+        startDate:
+          description: Start date.
+          example: '2020-10-20'
+        endDate:
+          description: End date.
+          example: '2020-10-22'
+        userId:
+          type: string
+          example: "123"
+          description: User Id.
+        restaurantId:
+          type: string
+          example: "123"
+          description: Restaurant Id.
+        excludeOrderWorkflow:
+          type: boolean
+          description: To exclude order step info from order object.
+        inProgress:
+          type: boolean
+          description: Return in progress orders.
+        searchKeyword:
+          type: string
+          description: Dish name/Order Id filter.
+        dishId:
+          type: string
+          description: Dish Id filter.
+        offerId:
+          type: string
+          description: Offer Id filter.
+        status:
+          $ref: '#/components/schemas/OrderStatusEnum'
+        timeSlab:
+          $ref: '#/components/schemas/TimeSlabEnum'
+        statusPoll:
+          type: boolean
+          description: For status polling.
+    GetRestaurantsRequest:
+      type: object
+      properties:
+        restaurantName:
+          type: string
+          description: Restaurant name filter. Supports wildcard search also.
+          example: "para"
+        sortBy:
+          type: string
+          description: Sort strategy.
+          enum:
+              - RATING
+              - AVERAGE_COST
+        sortDirection:
+          type: string
+          description: Sort strategy.
+          enum:
+              - ASC
+              - DESC
+        dishCategory:
+          $ref: '#/components/schemas/DishCategoryEnum'
+        vegNonVeg:
+          $ref: '#/components/schemas/VegNonVegEnum'
+        searchKeyword:
+          type: string
+          description: Restaurant/Dish name filter. Supports wildcard search also.
+          example: "bir"
+        includeDishes:
+          type: boolean
+          description: To include dishes. Support only for specific use cases.
+        standardFilters:
+          type: array
+          items:
+            $ref: '#/components/schemas/RestaurantFilterEnum'
+    GetDishesRequest:
+      type: object
+      properties:
+        restaurantId:
+          type: string
+          description: Restaurant Id.
+          example: "123"
+        vegNonVeg:
+          $ref: '#/components/schemas/VegNonVegEnum'
+        addOnGroupId:
+          type: string
+          description: Filter to return dishes based on add on group Id.
+          example: "123"
+        keyword:
+          type: string
+          description: Dish name filter. Supports wildcard search.
+          example: "bir"
+        outOfStock:
+          type: boolean
+          description: Return dishes which are out of stock.
+        bestSeller:
+          type: boolean
+          description: Return dishes best seller dishes.
+        imageNotUploaded:
+          type: boolean
+          description: Return dishes with no image available.
+        dishCategory:
+         $ref: '#/components/schemas/DishCategoryEnum'
+        menuCategory:
+          $ref: '#/components/schemas/MenuCategory'
+    Menu:
+      type: object
+      properties:
+        dishGroupings:
+          type: array
+          items:
+            $ref: '#/components/schemas/DishGrouping'
+          description: List of dish groupings.
+    DishGrouping:
+      type: object
+      properties:
+        menuCategory:
+          $ref: '#/components/schemas/MenuCategory'
+        dishes:
+          type: array
+          items:
+            $ref: '#/components/schemas/Dish'
+    RestaurantFilterEnum:
+      type: string
+      enum: 
+            - RATING_FOUR_PLUS
+            - PURE_VEG
+    TimeSlabEnum:
+      type: string
+      enum: 
+            - TODAY
+            - PAST_2_DAYS
+            - PAST_7_DAYS
+            - PAST_1_MONTH
+    OrderStatusEnum:
+      type: string
+      enum:
+            - ORDER_RECEIVED
+            - ACCEPTED_AND_PREPARING
+            - READY
+            - DELIVERED
+            - REJECTED
+            - REFUND_INITIATED
+            - REFUNDED
+    OrderTypeEnum:
+      type: string
+      enum:
+            - DINE_IN
+            - TAKE_AWAY
+    OfflineReasonEnum:
+      type: string
+      enum:
+        - RAW_MATERIAL_OR_ITEM_OUT_OF_STOCK
+        - HIGH_ORDER_RUSH_OR_KITCHEN_IS_FULL
+        - KITCHEN_STAFF_NOT_AVAILABLE
+        - NEARING_CLOSING_TIME
+        - TEMPORARLY_CLOSED
+        - ISSUES_WITH_MENU
+        - OTHERS
+    BackOnlineStrategyEnum:
+      type: string
+      enum:
+        - AFTER_TWO_HOURS
+        - AFTER_FOUR_HOURS
+        - TOMORROW_MORNING
+        - SPECIFIC_DATE_AND_TIME
+        - WILL_TURN_ON_MANUALLY
+    RestaurantFileCategoryEnum:
+      type: string
+      enum:
+        - RESTAURANT_IMAGE
+        - RESTAURANT_LOGO
+        - RESAURANT_MENU_IMAGE
+        - RESTAURANT_GST_CERTIFICATE
+        - RESTAURANT_PAN
+        - RESTAURANT_FSSAI_CERTIFICATE
+    DishFileCategoryEnum:
+      type: string
+      enum:
+        - DISH_IMAGE
+    DishCategoryEnum:
+      type: string
+      description: Dynamic list. Obtained from globaldata API.
+      enum:
+        - BIRIYANI
+        - COFFE
+        - PIZZA
+    VegNonVegEnum:
+      type: string
+      enum:
+        - VEG
+        - NON_VEG
+    cuisineTypeEnum:
+      type: string
+      description: Dynamic list. Obtained from globaldata API.
+      enum:
+        - INDIAN
+        - CHINESE
+        - ARABIC
+    GSTSlabEnum:
+      type: string
+      enum:
+        - FIVE_PERCENT
+        - TWELVE_PERCENT
+        - EIGHTEEN_PERCENT
+    RefreshTokenRequest:
+      type: object
+      required:
+        - refreshToken
+      properties:
+        refreshToken: 
+          type: string
+          description: The refresh token based on which the new User Management token needs to be generated.
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJ1bV9hY2N
+    PasswordUpdateRequest:
+      type: object
+      description: The password update request.
+      required:
+        - username
+        - currentPassword
+        - newPassword
+      properties:
+        username: 
+          type: string
+          description: The username for the user whose password needs to be updated.
+          example: proximety-user101
+        currentPassword:
+          type: string
+          description: The current password for the user whose passoword needs to be updated.
+          example: uuiwquqxx
+          format: password
+        newPassword:
+          type: string
+          description: The new password for the user whose passoword needs to be updated.
+          example: 1235c12
+          format: password
+    PasswordUpdateResponse:
+      type: object
+      description: The password update response.
+      properties:
+        username:
+          type: string
+          description: The user name for the user logged into the system.
+          example: proximety-user101
+        restaurantId:
+          type: string
+          description: The internal system identifier for the food court.
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+        accessToken:
+          type: string
+          description: The token generated after User Management which needs to be passed in all subsequent calls to the system.
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJ1bV9hY2Nlc3MiLCJleHAiOjE2NjAyODE5
+        accessTokenType: 
+          type: string
+          description: The type of access token used.
+          example: Bearer
+        refreshToken:
+          type: string
+          description: The refresh token that can be used to regenerate the access token once it has expired.
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJ1bV9hY2N
+    UserRegistrationRequest:
+      type: object
+      description: The request body for creating a new partner app user for restaurant.
+      properties:
+        name: 
+          type: string
+          description: The name of the user.
+          example: Jack Headless
+        phoneNumber: 
+          description: The users phone number
+          $ref: '#/components/schemas/PhoneNumber'
+        restaurantId:
+          type: string
+          description: The restaurant id for which the user needs to be created
+        username: 
+          type: string
+          description: The unique username for the user.
+          example: paragonjackheadless
+        role: 
+          type: string
+          description: The user role for the restaurant user.
+          example: RESTAURANT_MANAGER
+          enum:
+            - RESTAURANT_MANAGER
+            - RESTAURANT_SALES_PERSON
+    RestaurantUser:
+      type: object
+      description: The response body from creating a new partner app user for restaurant.
       properties:
         id:
-         type: integer
-         description: Internal Identifier for a Voucher
-         example: 1
-        voucherId:
           type: string
-          description: Unique Identifier for a Voucher
-          example: 5cfbaaf0-3c7b-4eb4-a3ae-ac74887e9014
-        mallId:
+          description: The internal system identifier for the user.
+        restaurantId: 
           type: string
-          description: Unique Identifier for a mall
-          example: 5cfbaaf0-3c7b-4eb4-a3ae-ac74887e9014
-        title:
+          description: The restaurant id for which the user needs to be created
+        name: 
           type: string
-          description: Title for a Voucher
-          example: 20% off
-        storeId:
+          description: The name of the user.
+          example: Jack Headless
+        phoneNumber: 
+          description: The users phone number
+          $ref: '#/components/schemas/PhoneNumber'
+        username: 
           type: string
-          description: Unique Identifier for a Store
-          example: 5cfbaaf0-3c7b-4eb4-a3ae-ac74887e9014
-        categoryId:
+          description: The unique username for the user.
+          example: paragonjackheadless
+        role: 
           type: string
-          description: Unique Identifier for a Category
-          example: 2
+          description: The user role for the restaurant user.
+          example: RESTAURANT_MANAGER
+          enum:
+            - RESTAURANT_MANAGER
+            - RESTAURANT_SALES_PERSON
+    PasswordResetRequest:
+      type: object
+      description: The password reset request.
+      required:
+        - username
+      properties:
+        username:
+          type: string
+          description: The username for the user whose password needs to be reset. 
+          example: proximety-user101
+    PasswordResetResponse:
+      type: object
+      description: The password reset response.
+      properties:
+        username: 
+          type: string
+          description: The username for the user whose password is being reset.
+          example: proximety-user101
+        message:
+          type: string
+          description: The response message for the attempted password reset.
+          example: An email has been sent to x***z@gmail.com with password reset instructions.
+    LoginRequest:
+      type: object
+      required:
+        - username
+        - password
+        - deviceToken
+      properties:
+        username:
+          type: string
+          description: The username for the food court that needs to log info.
+          example: xyz@gmail.com
+        password:
+          type: string
+          description: The password of the food court trying to log into the system.
+          format: password
+          example: password
+        deviceToken:
+          type: string
+          description: Unique identifier of a device for sending notifications
+          example: hksdjfuoiweruojladsnkwr
+    PastPayout:
+      type: object
+      properties:
+        payments:
+            type: array
+            items:
+              $ref: '#/components/schemas/PastPayoutPayment'
+            description: Orders in past payout of a restaurant.
+    PastPayoutPayment:
+      type: object
+      description: Past payout payment of a restaurants.
+      properties:
+        date:
+          type: string
+          example: '2021-10-20 10:10'
+        utrId:
+          type: string
+          example: 'UTR1234'
+        netReceivables:
+         type: number
+         example: 100
+        account:
+         type: string
+         example: 'ABC'
+    ExpandedPastPayouts:
+      type: object
+      description: Expanded Payouts of a restaurants.
+      properties:
+        titles:
+          type: array
+          items:
+            type: string
+        expandedPayouts:
+          type: array
+          items:
+            $ref: '#/components/schemas/PastPayoutPayment'
+    ExpandedPayouts:
+      type: object
+      description: Expanded Payouts of a restaurants.
+      properties:
+        titles:
+          type: array
+          items:
+            type: string
+        expandedPayouts:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExpandedPayout'
+    ExpandedPayout:
+      type: object
+      description: Expanded Payout of a restaurants.
+      properties:
+        date:
+          type: string
+          example: '2021-10-20 10:10'
+        payout:
+          $ref: '#/components/schemas/Payout'
+    Payout:
+      type: object
+      description: Payout of a restaurants.
+      properties:
+        grossRevenue:
+          type: number
+          example: 200
+        deductions:
+          $ref: '#/components/schemas/Deductions'
+        netReceivables:
+         type: number
+         example: 100
+        utrId:
+          type: number
+          example: 1234
+        date:
+         type: string
+         example: '25/10/2020'
+        account:
+          type: string
+          example: 'xxx123'
+    Transactions:
+      type: object
+      description: Transactions of a restaurant.
+      properties:
+        orders:
+          type: array
+          items:
+            $ref: '#/components/schemas/TransactionOrder'
+          description: Orders in transactions of a restaurant.
+    Deductions: 
+      type: object
+      description: Deduction in a transaction.
+      properties:
+       total:
+         type: number
+         example: 123
+       tax:
+         type: number
+         example: 123
+       commision:
+         type: number
+         example: 123
+       taxOnCommision:
+        type: number
+        example: 123
+       convenienceFee:
+         type: number
+         example: 123
+    TransactionOrder:
+      type: object
+      description: Order in a transaction.
+      properties:
+        displayId:  
+          type: number
+          example: 123
+        orderId:  
+          type: number
+          example: 123
+        OrderStatus: 
+          $ref: '#/components/schemas/OrderStatusEnum'
+        grossRevenue:
+          type: number
+          example: 20000
+        netReceivable:
+          type: number
+          example: 1000
+        unsettledAmount:
+          type: number
+          example: 1000
+        date:
+          description: End date.
+          example: '2021-10-20 10:10'
+    TimeSlabRequest:
+      type: object
+      description: Request body of analytics
+      properties:
         startDate:
           type: string
-          description: The start date for the voucher.
-          example: 05/15/2022
+          example: '2021-10-20'
         endDate:
           type: string
-          description: The end date for the voucher.
-          example: 05/15/2022
-        overview:
-          type: string
-          description: provides general overview of the voucher.
-          example: The voucher is valid for 6 months from the date of its issuance.
-        coinsNeeded:
-          type: integer
-          description: The coins needed in total to redeem the voucher.
+          example: '2021-10-20'
+        timeSlab:
+          $ref: '#/components/schemas/TimeSlabEnum'
+    Analytics: 
+      type: object
+      description: Analytics of a restaurant.
+      properties:
+        grossAmount:
+          type: number
+          example: 20000
+        deductions:
+          type: number
           example: 500
+        amountPaidByProximety:
+          type: number
+          example: 300
+        ordersDelivered:
+          type: number
+          example: 23
+    AnalyticsOrders:
+      type: object
+      description: Orders for Analytics of a restaurant.
+      properties:
+        titles:
+          type: array
+          items:
+            type: string
+        analyticsOrders:
+          type: array
+          items: 
+            $ref: '#/components/schemas/AnalyticsOrder'
+    AnalyticsOrder:
+      type: object
+      description: Order info for Analytics of a restaurant.
+      properties:
+        orderPlacedTime:
+          type: string
+          example: '2021-10-20'
+        orderId:
+          type: string
+          example: '123'
+        amount:
+          type: number
+          example: 300
+        deduction:
+          type: number
+          example: 300
+        amountPaidByProximety:
+          type: number
+          example: 300
+    GlobalException:
+      type: object
+      description: An exception thrown by the system.
+      properties:
+        status:
+          type: integer
+          description: The status code for the error.
+          example: 401
+        type:
+          type: string
+          description: The type name for the error being thrown.
+          example: UNAUTHORIZED
+        title:
+          type: string
+          description: The error title.
+          example: Token expired.
+        detail:
+          type: string
+          description: The details of the error being thrown.
+          example: The access token has expired for the user. Please generate a new token and try again.
+        tags:
+          type: array
+          description: The varios tags associated with the error that provides additional information about the error.
+          items: 
+            type: string
+            example: ACCESS_TOKEN_INVALID 
+    LoginResponse:
+      type: object
+      properties:
+        username:
+          type: string
+          description: The user name for the user logged into the system.
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+        restaurantId:
+          type: string
+          description: The internal system identifier for food court.
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+        accessToken:
+          type: string
+          description: The token generated after User Management which needs to be passed in all subsequent calls to the system.
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJ1bV9hY2Nlc3MiLCJleHAiOjE2NjAyODE5
+        accessTokenType: 
+          type: string
+          description: The type of access token used.
+          example: Bearer
+        refreshToken:
+          type: string
+          description: The refresh token that can be used to regenerate the access token once it has expired.
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJ1bV9hY2N
+        needsPasswordUpdate:
+          type: string
+          description: True indicates that the passowrd needs to be reset for the user, false indicates otherwise.
+          example: false
