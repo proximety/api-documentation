@@ -297,7 +297,6 @@ components:
           format: uri
           description: url of the poster
           example: https://dev.proximety.io/api/movies/eahdjk14129102==
-          example: https://dev.proximety.io/api/movies/eahdjk14129102==
         bookingOpen:
           type: boolean
           description: To indicate if booking is open for the movie.
