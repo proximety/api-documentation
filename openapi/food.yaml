@@ -2763,6 +2763,14 @@ components:
           type: string
           example: 1 biriyani + 1 drink
           description: Combo description.
+        numOfItems:
+          type: number
+          example: 2
+          description: Number of items in Combo.
+        basePrice:
+          type: number
+          example: 500
+          description: Combo base price.
         price:
           type: number
           example: 500
@@ -2822,6 +2830,10 @@ components:
         dishVariantId:
           type: string
           example: "123"
+        itemCount:
+          type: number
+          example: 2
+          description: Item count in the combo.
         price:
           type: number
           example: 125.5
