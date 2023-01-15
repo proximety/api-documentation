@@ -14,6 +14,131 @@ servers:
 # - name: User
 # - name: Issue Ticket
 paths:
+  /ad-slots:
+    get: 
+      tags: 
+        - Ad slots
+      summary: Fetch ad time slots
+      description: Retrieves the time slot definitions for serving promoted content on the platform.
+      operationId: getTimeSlots
+      parameters:
+        - name: Authorization
+          in: header
+          description: The authentication bearer token.
+          required: true
+          example: Bearer asd.js2jd9a.gC6paXtNOg0OZL4-adsd-asd
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdSlots'
+              example: 
+                {
+                  "slots": [
+                    {
+                      "id": "a3956089-d4b1-4116-9ae0-4844118af826",
+                      "name": "A",
+                      "startTime": "00:00",
+                      "endTime": "11:00"
+                    },
+                    {
+                      "id": "a3956089-d4b1-4116-9ae0-4844117af826",
+                      "name": "B",
+                      "startTime": "11:00",
+                      "endTime": "00:00"
+                    }
+                  ]
+                }
+    put: 
+      tags: 
+        - Ad slots
+      summary: Update ad time slots
+      description: Updates the time slot definitions for serving promoted content on the platform.
+      operationId: updateTimeSlot
+      parameters:
+        - name: Authorization
+          in: header
+          description: The authentication bearer token.
+          required: true
+          example: Bearer asd.js2jd9a.gC6paXtNOg0OZL4-adsd-asd
+          schema:
+            type: string    
+      requestBody:
+        description: The details of the time slots for serving ads. The slot definitions must cover the entire 24 hour range and should not have overlapping ranges.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdSlots'
+            example: {
+                      "slots": [
+                        {
+                          "name": "A",
+                          "startTime": "00:00",
+                          "endTime": "11:00"
+                        },
+                        {
+                          "name": "B",
+                          "startTime": "11:00",
+                          "endTime": "00:00"
+                        }
+                      ]
+                    }
+        required: true
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdSlots'
+              example: 
+                {
+                  "slots": [
+                    {
+                      "id": "a3956089-d4b1-4116-9ae0-4844118af826",
+                      "name": "A",
+                      "startTime": "00:00",
+                      "endTime": "11:00"
+                    },
+                    {
+                      "id": "a3956089-d4b1-4116-9ae0-4844117af826",
+                      "name": "B",
+                      "startTime": "11:00",
+                      "endTime": "00:00"
+                    }
+                  ]
+                }
+        "400":
+          description: Bad request          
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GlobalException"
+              example: 
+                {
+                  "status": 400,
+                  "type": "BAD_REQUEST",
+                  "title": "Mandatory fields missing from request.",
+                  "detail": "No start time specified for the ad slot.",
+                }
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GlobalException"
+              example: 
+                {
+                  "status": 403,
+                  "type": "FORBIDDEN",
+                  "title": "Token expired.",
+                  "detail": "The specified access token has expired. Please try again with an active access token.",
+                  "tags":[]
+                }
   /banners:
     post: 
       tags:
@@ -1520,7 +1645,36 @@ paths:
                }
 components:
   schemas:
-    
+    AdSlots:
+      type: object
+      description: The time slots for serving promoted content across the app.
+      properties:
+        slots:
+          type: array
+          items:   
+            $ref: '#/components/schemas/AdSlot'
+    AdSlot: 
+      type: object
+      description: Details of a tiem slot for serving promoted content. 
+      properties:
+        id: 
+          type: string
+          description: The internal system identifier for the time slot. 
+          example: a3956089-d4b1-4116-9ae0-4844118af826 
+        name: 
+          type: string
+          description: The name for the time slot. 
+          example: A
+        startTime: 
+          type: string
+          format: time
+          description: The start time for the slot in 24 hr format. 
+          example: 11:00 
+        endTime: 
+          type: string
+          format: time
+          description: The start time for the slot in 24 hr format. 
+          example: 00:00          
     PromotedStoresRequest: 
       type: object 
       description: The list of promoted stores. (Max size - 5)
