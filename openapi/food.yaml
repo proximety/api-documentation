@@ -1193,12 +1193,6 @@ paths:
           in: query
           schema:
               $ref: '#/components/schemas/OrderTypeEnum'
-      requestBody:
-        description: Cart information.  
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CartRequest'
       responses:
         "200":
           description: Successful operation
