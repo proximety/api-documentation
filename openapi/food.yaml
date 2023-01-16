@@ -2485,8 +2485,8 @@ components:
           example: true
           description: Indicates whether the dish has variants or not.
         variantType:
-          type: String
-          example: quantity
+          type: string
+          example: 'Quantity'
         inStock:
           type: boolean
           example: true
