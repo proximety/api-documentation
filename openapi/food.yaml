@@ -2484,6 +2484,10 @@ components:
           type: boolean
           example: true
           description: Indicates whether the dish has variants or not.
+        isCustomisable:
+          type: boolean
+          example: true
+          description: Indicates whether the dish is customisable or not.
         variantType:
           type: string
           example: 'Quantity'
