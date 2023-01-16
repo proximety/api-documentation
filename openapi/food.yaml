@@ -2631,6 +2631,8 @@ components:
         inStock:
           type: boolean
           description: Indicates whether dish variant is in stock.
+        vegNonVeg:
+          $ref: '#/components/schemas/VegNonVegEnum'
     PromotedCombos:
       type: object
       properties:
