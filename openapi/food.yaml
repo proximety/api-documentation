@@ -2752,6 +2752,11 @@ components:
           type: number
           example: 125.5
           description: Dish price.
+        dishChoiceIds:
+          type: array
+          example: ["123", "456"]
+          items:
+            type: string
         vegNonVeg:
           $ref: '#/components/schemas/VegNonVegEnum'
     ComboFileCategoryEnum:
