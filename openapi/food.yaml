@@ -2711,8 +2711,7 @@ components:
           example: Biriyanio
           description: Combo category name
         restaurantId:
-          type: string
-          example: "123"
+          $ref: '#/components/schemas/RestaurantInfo'
         restaurantName:
           type: string
           example: KFC
@@ -2733,15 +2732,10 @@ components:
         comboItemName:
           type: string
           example: "Fried Chicken"
-        restaurantId:
-          type: string
-          example: "123"
-        dishId:
-          type: string
-          example: "123"
-        dishVariantId:
-          type: string
-          example: "123"
+        dish:
+          $ref: '#/components/schemas/Dish'
+        chosenDishVariant:
+          $ref: '#/components/schemas/DishVariant'
         itemCount:
           type: number
           example: 2
@@ -2754,7 +2748,7 @@ components:
           type: number
           example: 125.5
           description: Dish price.
-        dishChoiceGroups:
+        chosenDishChoiceGroups:
           type: array
           items:
             $ref: '#/components/schemas/DishChoiceGroup'
