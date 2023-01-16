@@ -418,13 +418,13 @@ components:
           description: Name of the store
           example: Nike
        status:
-          type: array
-          description: A  list of Voucher Statuses. 
-          items:
-            enum:
-                - PAST
-                - NOW RUNNING
-                - UPCOMING
+          type: string
+          description: Voucher Statuses. 
+          enum:
+                - REDEEMED
+                - NOT_REDEEMED
+                - EXPIRED
+                - APPLIED
     CustomerVoucherListResponse:
       type: array
       items:
