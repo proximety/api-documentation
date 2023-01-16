@@ -595,39 +595,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Dish'
-            example:
-                {
-                  "restaurantId": "b30a6100-1e2d-43a7-b301-bd0fda7571c2",
-                  "dishName": "CHICKOO",
-                  "menuCategory": {
-                      "menuCategoryId":"f94ce675-c2f5-4778-9398-08866b50e2f2"
-                  },
-                  "vegNonVeg": "VEG",
-                  "cuisineType": "INDIAN",
-                  "price": 125.5,
-                  "description": "British style nadan biriyani",
-                  "bestSeller": true,
-                  "inStock": true,
-                  "dishImageUrl": "https://aws.proximety.io/s3/image1.jpg",
-                  "addOnGroups": [
-                    {
-                      "addOnGroupId": "3dc0965f-7281-4433-b04b-c228eeccc9b5"
-                    }
-                  ],
-                  "dishVariantGroups": [
-                    {
-                      "variantGroupName": "Quantity",
-                      "dishVariants": [
-                        {
-                          "dishVariantId": "123",
-                          "variantName": "Half Biriyani",
-                          "price": 100,
-                          "inStock": true
-                        }
-                      ]
-                    }
-                  ]
-                }
       responses:
         "200":
           description: Successful operation
@@ -681,62 +648,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Dish'
-            example:
-              {
-                "dishId": "a7d8e5c3-bc24-4904-a193-62002fdb48fb",
-                "restaurantId": "b30a6100-1e2d-43a7-b301-bd0fda7571c2",
-                "dishName": "CHICKOO",
-                "menuCategory": {
-                  "menuCategoryId":"f94ce675-c2f5-4778-9398-08866b50e2f2"
-                },
-                "vegNonVeg": "VEG",
-                "cuisineType": "INDIAN",
-                "price": 125.5,
-                "description": "British style nadan biriyani",
-                "rating": 0.0,
-                "numberOfRatings": 0,
-                "dishImageUrl": null,
-                "dishVariantGroups": [
-                    {
-                        "dishVariantGroupId": "5573b176-963e-4dff-84cf-3048aadbe904",
-                        "variantGroupName": "Quantity",
-                        "dishVariants": [
-                            {
-                                "dishVariantId": "123",
-                                "variantName": "Half Biriyani",
-                                "price": 100.0,
-                                "inStock": false
-                            },
-                            {
-                                "variantName": "Full Biriyani",
-                                "price": 100.0,
-                                "inStock": false
-                            }
-                        ]
-                    }
-                ],
-                "addOnGroups": [
-                    {
-                        "addOnGroupId": "46e70a41-7b3c-4295-b088-e25a5441b5cf",
-                        "addOnGroupName": "toppings",
-                        "restaurantId": "b30a6100-1e2d-43a7-b301-bd0fda7571c2",
-                        "minimumValue": 0.0,
-                        "maximumValue": 0.0,
-                        "addOns": [
-                            {
-                                "addOnId": "4d64f6fe-a89f-4e31-a41f-02e6afa7cd3a",
-                                "addOnName": "Almond Milk",
-                                "price": 30.0,
-                                "vegNonVeg": null,
-                                "inStock": true
-                            }
-                        ],
-                        "inStock": true
-                    }
-                ],
-                "inStock": true,
-                "bestSeller": true
-            }
       responses:
         "200":
           description: Successful operation
@@ -941,26 +852,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Combo'
-            example:
-              {
-                "comboName": "Celebration Combo",
-                "comboImageUrl": "https://aws.proximety.io/s3/image1.jpg",
-                "comboDescription": "1 biriyani + 1 drink",
-                "price": 500,
-                "bestSeller": true,
-                "comboCategories": [
-                  {
-                    "comboCategoryName": "Biriyan4",
-                    "items": [
-                      {
-                        "restaurantId": "b30a6100-1e2d-43a7-b301-bd0fda7571c2",
-                        "dishId": "c6fdb497-5e17-49f9-95b4-3a9268af8ef5",
-                        "dishVariantId": "eab4c442-477e-458b-b106-a6d6345738aa"
-                      }
-                    ]
-                  }
-                ]
-              }
       responses:
         "200":
           description: Successful operation
@@ -2616,11 +2507,10 @@ components:
           items:
             $ref: '#/components/schemas/AddOnGroup'
           description: List of add on groups linked to the dish.
-        dishVariantGroups:
+        dishVariants:
           type: array
           items:
-            $ref: '#/components/schemas/DishVariantGroup'
-          description: List of dish variant groups available for the dish.
+            $ref: '#/components/schemas/DishVariant'
     AddOnGroups:
       type: object
       properties:
@@ -2687,22 +2577,6 @@ components:
         inStock:
           type: boolean
           description: Indicates whether add on is in stock.
-    DishVariantGroup:
-      type: object
-      properties:
-        dishVariantGroupId:
-          type: string
-          example: "123"
-          description: Dish variant group Id.
-        variantGroupName:
-          type: string
-          example: Quantity
-          description: Dish variant group name.
-        dishVariants:
-          type: array
-          items:
-            $ref: '#/components/schemas/DishVariant'
-          description: List of dish variants.
     DishVariant:
       type: object
       properties:
@@ -2718,6 +2592,34 @@ components:
           type: number
           example: 100
           description: Dish variant price.
+        inStock:
+          type: boolean
+          description: Indicates whether dish variant is in stock.
+    DishChoiceGroup:
+      type: object
+      properties:
+        dishChoiceGroupId:
+          type: string
+          example: "123"
+        choiceGroupName:
+          type: string
+          example: Quantity
+          description: Dish variant group name.
+        dishChoices:
+          type: array
+          items:
+            $ref: '#/components/schemas/DishChoice'
+    DishChoice:
+      type: object
+      properties:
+        dishChoiceId:
+          type: string
+          example: "123"
+          description: Dish variant Id.
+        choiceName:
+          type: string
+          example: Half Biriyani
+          description: Dish variant name.
         inStock:
           type: boolean
           description: Indicates whether dish variant is in stock.
@@ -3015,10 +2917,6 @@ components:
     CartRequest:
       type: object
       properties:
-        userId:
-          type: string
-          example: '123'
-          description: User Id.
         regularItems:
           type: array
           items:
@@ -3045,12 +2943,16 @@ components:
           type: number
           example: 5 
           description: Quantity.
+        dishVariantId:
+          type: string
+          example: "123"
+          description: Dish variant Id.
         addOnIds:
           type: array
           example: ["123", "456"]
           items:
             type: string
-        dishVariantIds:
+        dishChoiceIds:
           type: array
           example: ["123", "456"]
           items:
@@ -3313,17 +3215,16 @@ components:
         sellingPrice:
           type: number  
           example: 100
-        addedCustomizations:
+        selectedDishVariant:
+          $ref: '#/components/schemas/DishVariant'  
+        selectedAddOns:
           type: array
           items: 
             $ref: '#/components/schemas/AddOnGroup'
-          description: List of add ons.
-        addedVariants:
+        selectedDishChoices:
           type: array
           items: 
-            $ref: '#/components/schemas/DishVariantGroup'
-        comboId:
-          type: string  
+            $ref: '#/components/schemas/DishChoiceGroup'
     OrderStage:
       type: object
       properties:
