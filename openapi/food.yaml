@@ -2713,11 +2713,8 @@ components:
           type: string
           example: Biriyanio
           description: Combo category name
-        restaurantId:
+        restaurant:
           $ref: '#/components/schemas/RestaurantInfo'
-        restaurantName:
-          type: string
-          example: KFC
         required:
           type: boolean
           description: Indicates if it's a required combo category.
