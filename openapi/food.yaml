@@ -2605,6 +2605,14 @@ components:
           type: string
           example: Quantity
           description: Dish variant group name.
+        minimum:
+          type : number
+          example: 1
+          description: minimum number of choice item that should be added
+        maximum:
+          type : number
+          example: 1
+          description: maximum number of choice item that should be added
         dishChoices:
           type: array
           items:
@@ -2620,14 +2628,6 @@ components:
           type: string
           example: Half Biriyani
           description: Dish variant name.
-        minimum:
-          type : number
-          example: 1
-          description: minimum number of choice item that should be added
-        maximum:
-          type : number
-          example: 1
-          description: maximum number of choice item that should be added
         inStock:
           type: boolean
           description: Indicates whether dish variant is in stock.
