@@ -441,7 +441,7 @@ components:
           description: The internal system identifier for the VoucherIssued to customer.
           example: 5cfbaaf0-3c7b-4eb4-a3ae-ac74887e9014
        customerVoucherStatus:
-          type: object
+          type: string
           description: Status of Voucher issued to customer.
           enum:
               - NOT_REDEEMED
