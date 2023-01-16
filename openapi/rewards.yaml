@@ -413,6 +413,10 @@ components:
           type: integer
           description: The coins needed in total to redeem the voucher.
           example: 500
+       storeName:
+          type: string
+          description: Name of the store
+          example: Nike
        status:
           type: array
           description: A  list of Voucher Statuses. 
@@ -468,6 +472,10 @@ components:
           type: integer
           description: Specifies how many days are left before voucher expires.
           example: 20
+       storeName:
+          type: string
+          description: Name of the store.
+          example: Nike
        brandLogoUrl:
           type: string
           description: Image to be shown on the voucher.
@@ -688,6 +696,9 @@ components:
         pointsCollected:
           type: integer
           description: Total Points Collected using rewards
+        pointsAvailable:
+          type: integer
+          description: Total points available for redemption
 
         noOfActiveVouchers:
           type: integer
