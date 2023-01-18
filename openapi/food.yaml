@@ -562,7 +562,8 @@ paths:
                  "averageCostPerPerson": "150",
                   "closingTime": "20:00",
                   "openingTime": "10:00",
-                  "cuisineTypes": ["CHINESE"]
+                  "cuisineTypes": ["CHINESE"],
+                  "blocked":true
               }
       responses:
         "200":
@@ -2403,6 +2404,9 @@ components:
         isOpen:
           type: boolean
           description: Indivated whether restaurant is open or closed
+        blocked:
+          type: boolean
+          description: Indivated whether restaurant is blocked or active.
         isOnline:
           type: boolean
           description: Indivated whether restaurant is online or offline
