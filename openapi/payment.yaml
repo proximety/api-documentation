@@ -29,7 +29,73 @@ paths:
         required: true
       responses:
         "200":
-          description: Successful operation=
+          description: Successful operation
+        "400":
+          description: Bad request          
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GlobalException"
+              example: 
+                {
+                  "status": 400,
+                  "type": "BAD_REQUEST",
+                  "title": "Invalid request.",
+                  "detail": "Invalid request. Try again.",
+                }      
+  /payment-orders/upi-payment-records:
+    post: 
+      tags:
+        - UPI Payment
+      summary: Record UPI Payment
+      description: Records a UPI payment made through the platform.
+      requestBody:
+        description: The details of the payment for the transaction.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UPIPaymentRecordRequest'
+        required: true
+      responses:
+        "200":          
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UPIPaymentRecordResponse'
+        "400":
+          description: Bad request          
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GlobalException"
+              example: 
+                {
+                  "status": 400,
+                  "type": "BAD_REQUEST",
+                  "title": "Invalid request.",
+                  "detail": "Invalid request. Try again.",
+                }
+  /payment-orders/upi-validate:
+    post: 
+      tags:
+        - UPI Payment
+      summary: Validate UPI ID.
+      description: Validates the specified UPI ID against the UPI IDs stored in the platform and verifies that the UPI ID is attached to a store in the platform.
+      requestBody:
+        description: The details of the payment for the transaction.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UPIValidationRequest'
+        required: true
+      responses:
+        "200":          
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UPIValidationResponse'
         "400":
           description: Bad request          
           content:
@@ -147,6 +213,62 @@ paths:
   #                $ref: "#/components/schemas/TransactionsByOrder"
 components:
   schemas:   
+    UPIValidationRequest: 
+      type: object
+      properties:
+        upiId: 
+          type: string
+          description: The UPI ID that needs to be validated. 
+          example: test@okhdfcbank 
+    UPIValidationResponse: 
+      type: object 
+      properties:
+        status:
+          type: string
+          description: The status of the UPI validation operation. 
+          example: SUCCESS 
+          enum:
+            - SUCCESS
+            - FAILED 
+        message: 
+          type: string 
+          description: The message tied to the validation status. 
+          example: UPI ID successfully validated. 
+    UPIPaymentRecordRequest: 
+      type: object
+      description: The request for recording a UPI payment made through the platform.
+      properties:
+        amount: 
+          type: number
+          description: The amount for which the UPI Payment was made. 
+          example: 278.12 
+        upiId: 
+          type: string 
+          description: The UPI ID to which the transfer was initiated.
+          example: test@okhdfcbank 
+        userId: 
+          type: string
+          description: The internal system identifier for the user initiating the payment request. 
+          example: 66ec2d45-9762-4710-b69c-1518e06fffc6
+    UPIPaymentRecordResponse: 
+      type: object 
+      properties: 
+        id: 
+          type: string
+          description: The internal system identifier for the recorder UPI transaction. 
+          example: 66ec2d45-9762-4710-b69c-1518e06fffc7
+        amount: 
+          type: number
+          description: The amount for which the UPI Payment was made. 
+          example: 278.12 
+        upiId: 
+          type: string 
+          description: The UPI ID to which the transfer was initiated.
+          example: test@okhdfcbank 
+        userId: 
+          type: string
+          description: The internal system identifier for the user initiating the payment request. 
+          example: 66ec2d45-9762-4710-b69c-1518e06fffc6
     PaymentConfirmationRequest: 
       type: object
       required:
