@@ -197,7 +197,7 @@ paths:
        content:
           application/json:
             schema:
-                $ref: '#/components/schemas/PaymentDetails'
+                $ref: '#/components/schemas/PaymentDetailsList'
       responses:
         "200":
           description: Updated Customers Metadata
@@ -413,14 +413,30 @@ components:
           type: integer
           description: The coins needed in total to redeem the voucher.
           example: 500
+       storeName:
+          type: string
+          description: Name of the store
+          example: Nike
        status:
-          type: array
-          description: A  list of Voucher Statuses. 
-          items:
-            enum:
-                - PAST
-                - NOW RUNNING
-                - UPCOMING
+          type: string
+          description: Voucher Statuses. 
+          enum:
+                - REDEEMED
+                - NOT_REDEEMED
+                - EXPIRED
+                - APPLIED
+       voucherValue:
+          type: number
+          description: Voucher value in rupees.
+          example: 500.0
+       redeemableCouponCount:
+          type: integer
+          description: Number of times the voucher can be redeemed.
+          example: 100
+       totalRedemptions:
+          type: integer
+          description: Total number of redemptions for the voucher.
+          example: 50
     CustomerVoucherListResponse:
       type: array
       items:
@@ -437,7 +453,7 @@ components:
           description: The internal system identifier for the VoucherIssued to customer.
           example: 5cfbaaf0-3c7b-4eb4-a3ae-ac74887e9014
        customerVoucherStatus:
-          type: object
+          type: string
           description: Status of Voucher issued to customer.
           enum:
               - NOT_REDEEMED
@@ -468,6 +484,10 @@ components:
           type: integer
           description: Specifies how many days are left before voucher expires.
           example: 20
+       storeName:
+          type: string
+          description: Name of the store.
+          example: Nike
        brandLogoUrl:
           type: string
           description: Image to be shown on the voucher.
@@ -507,6 +527,14 @@ components:
           type: integer
           description: The coins needed in total to redeem the voucher.
           example: 500
+       voucherValue:
+          type: number
+          description: Voucher value in rupees.
+          example: 500.0
+       redeemableCouponCount:
+          type: integer
+          description: Number of times the voucher can be redeemed.
+          example: 100
 
     PointRuleRequestDTO:
       type: object
@@ -651,6 +679,10 @@ components:
         brandLogoUrl:
           type: string
           description: Url for Store
+    PaymentDetailsList:
+      type: array
+      items:
+       $ref: '#/components/schemas/PaymentDetails'
     PaymentDetails:
       type: object
       properties:
@@ -674,6 +706,13 @@ components:
          type: number
          description: Amount paid at store
          example: 100.56
+        category:
+         type: string
+         description: Enum for Category.
+         enum:
+          - STORE
+          - RESTAURANT
+          - MOVIE
     CustomerRewardPointsMetadataDTO:
       type: object
       properties:
@@ -688,7 +727,9 @@ components:
         pointsCollected:
           type: integer
           description: Total Points Collected using rewards
-
+        pointsAvailable:
+          type: integer
+          description: Total points available for redemption
         noOfActiveVouchers:
           type: integer
           description: Count of Vouchers that is active to be redeemed
@@ -735,3 +776,15 @@ components:
           type: integer
           description: The coins needed in total to redeem the voucher.
           example: 500
+        voucherValue:
+          type: number
+          description: Voucher value in rupees.
+          example: 500.0
+        redeemableCouponCount:
+          type: integer
+          description: Number of times the voucher can be redeemed.
+          example: 100
+        totalRedemptions:
+          type: integer
+          description: Total number of redemptions for the voucher.
+          example: 50
