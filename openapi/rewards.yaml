@@ -425,6 +425,18 @@ components:
                 - NOT_REDEEMED
                 - EXPIRED
                 - APPLIED
+       voucherValue:
+          type: number
+          description: Voucher value in rupees.
+          example: 500.0
+       redeemableCouponCount:
+          type: integer
+          description: Number of times the voucher can be redeemed.
+          example: 100
+       totalRedemptions:
+          type: integer
+          description: Total number of redemptions for the voucher.
+          example: 50
     CustomerVoucherListResponse:
       type: array
       items:
@@ -515,6 +527,14 @@ components:
           type: integer
           description: The coins needed in total to redeem the voucher.
           example: 500
+       voucherValue:
+          type: number
+          description: Voucher value in rupees.
+          example: 500.0
+       redeemableCouponCount:
+          type: integer
+          description: Number of times the voucher can be redeemed.
+          example: 100
 
     PointRuleRequestDTO:
       type: object
@@ -746,3 +766,15 @@ components:
           type: integer
           description: The coins needed in total to redeem the voucher.
           example: 500
+        voucherValue:
+          type: number
+          description: Voucher value in rupees.
+          example: 500.0
+        redeemableCouponCount:
+          type: integer
+          description: Number of times the voucher can be redeemed.
+          example: 100
+        totalRedemptions:
+          type: integer
+          description: Total number of redemptions for the voucher.
+          example: 50
