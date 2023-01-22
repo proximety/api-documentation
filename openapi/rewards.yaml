@@ -197,7 +197,7 @@ paths:
        content:
           application/json:
             schema:
-                $ref: '#/components/schemas/PaymentDetails'
+                $ref: '#/components/schemas/PaymentDetailsList'
       responses:
         "200":
           description: Updated Customers Metadata
@@ -679,6 +679,10 @@ components:
         brandLogoUrl:
           type: string
           description: Url for Store
+    PaymentDetailsList:
+      type: array
+      items:
+       $ref: '#/components/schemas/PaymentDetails'
     PaymentDetails:
       type: object
       properties:
@@ -702,6 +706,13 @@ components:
          type: number
          description: Amount paid at store
          example: 100.56
+        category:
+         type: string
+         description: Enum for Category.
+         enum:
+          - STORE
+          - RESTAURANT
+          - MOVIE
     CustomerRewardPointsMetadataDTO:
       type: object
       properties:
@@ -719,7 +730,6 @@ components:
         pointsAvailable:
           type: integer
           description: Total points available for redemption
-
         noOfActiveVouchers:
           type: integer
           description: Count of Vouchers that is active to be redeemed
