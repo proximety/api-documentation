@@ -535,8 +535,8 @@ paths:
     patch: 
       tags:
         - Restaurant
-      summary: Update restaurant
-      description: Update restaurant.
+      summary: Patch Update restaurant
+      description: Patch Update restaurant.
       operationId: patchUpdateRestaurant
       parameters:
         - name: restaurantId
@@ -3443,6 +3443,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/RestaurantFilterEnum'
+        upiId:
+          type: string
+          example: paragon@upi
+          description: UPI Id Id.
     GetDishesRequest:
       type: object
       properties:
