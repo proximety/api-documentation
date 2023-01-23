@@ -1197,6 +1197,10 @@ components:
           type: boolean 
           description: Attribute to filter stores based on parking fee redemption availability.
           example: false
+        upiId: 
+          type: string
+          description: The UPI ID tied to the account.
+          example: xyz@okhdfcbank
         storeCategories:
           type: array
           items:
