@@ -853,6 +853,52 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Combo'
+            example:
+              {
+                "comboName": "Biriyani Combo",
+                "comboDescription": "Biriyani Combo",
+                "price": 280,
+                "bestSeller": false,
+                "comboCategories": [
+                    {
+                        "comboCategoryName": "Biriyani",
+                        "restaurant": {
+                            "restaurantId": "bec4bd5d-af1d-4265-9656-9707bac5e82b"
+                        },
+                        "items": [
+                            {
+                                "dish": {
+                                    "dishId": "2c07a112-b9cd-4894-8ee9-500791c5cf48"
+                                },
+                                "chosenDishVariant": {
+                                    "dishVariantId": "8cbb5717-d0b9-497e-ac9c-d30cd040bdb3"
+                                },
+                                "price": 200,
+                                "dishChoiceGroups": [
+                                    {
+                                        "dishChoiceGroupId": "89a6ec13-04be-483a-af3c-a8675e8bc83e",
+                                        "dishChoices": [
+                                            {
+                                                "dishChoiceId": "ccfdd2e0-7443-46a0-abfc-ce2bb35e7ddc",
+                                                "choiceName": "Toasted Bread"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "dish": {
+                                    "dishId": "2c07a112-b9cd-4894-8ee9-500791c5cf48"
+                                },
+                                "chosenDishVariant": {
+                                    "dishVariantId": "e8cee2ed-e56e-4f24-8cff-20b0b82ec2b1"
+                                }
+                            }
+                        ]
+                    }
+                ]
+            }
+            
       responses:
         "200":
           description: Successful operation
