@@ -1690,6 +1690,10 @@ components:
                 type: string
                 description: The internal system identifier for the store.
                 example: 37813679djj
+        slotId: 
+          type: string
+          description: The internal system identifier for the ad time slot.
+          example: 09cbb8df-2b48-4760-8016-de46496cdf7f
     PromotedStores: 
       type: object 
       description: The list of promoted stores. (Max size - 5)
@@ -2137,6 +2141,10 @@ components:
                 type: string
                 description: The internal system identifier for the banner.
                 example: 37813679djj
+        slotId: 
+          type: string
+          description: The internal system identifier for the ad time slot.
+          example: 09cbb8df-2b48-4760-8016-de46496cdf7f
     PromotedBanners:
       type: object 
       description: The list of promoted banners. (Max size - 5)
@@ -2174,6 +2182,10 @@ components:
                 type: string
                 description: The internal system identifier for the offer.
                 example: 37813679djj
+        slotId: 
+          type: string
+          description: The internal system identifier for the ad time slot.
+          example: 09cbb8df-2b48-4760-8016-de46496cdf7f
     OfferDetails: 
       type: object
       description: The offer c reation request

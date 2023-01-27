@@ -14,27 +14,88 @@ servers:
 tags:
 - name: Payment
 paths:  
-  /transactions:
+  /payment-orders/confirm:
     post: 
       tags:
-        - Initiate
-      summary: Initiate a transaction
-      description: Initiate a transaction based on order id
-      operationId: initTransaction
+        - Payment
+      summary: Mark payment success
+      description: Marks the specified transaction as successful based on the provided input.
       requestBody:
-        description: The details of the order for which a transaction has to be initiated
+        description: The details of the payment for the transaction.
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/InitiateTransactionRequest'
+              $ref: '#/components/schemas/PaymentConfirmationRequest'
         required: true
       responses:
         "200":
           description: Successful operation
+        "400":
+          description: Bad request          
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/InitiateTransactionResponse'
+                $ref: "#/components/schemas/GlobalException"
+              example: 
+                {
+                  "status": 400,
+                  "type": "BAD_REQUEST",
+                  "title": "Invalid request.",
+                  "detail": "Invalid request. Try again.",
+                }      
+  /payment-orders/upi-payment-records:
+    post: 
+      tags:
+        - UPI Payment
+      summary: Record UPI Payment
+      description: Records a UPI payment made through the platform.
+      requestBody:
+        description: The details of the payment for the transaction.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UPIPaymentRecordRequest'
+        required: true
+      responses:
+        "200":          
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UPIPaymentRecordResponse'
+        "400":
+          description: Bad request          
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GlobalException"
+              example: 
+                {
+                  "status": 400,
+                  "type": "BAD_REQUEST",
+                  "title": "Invalid request.",
+                  "detail": "Invalid request. Try again.",
+                }
+  /payment-orders/upi-validate:
+    post: 
+      tags:
+        - UPI Payment
+      summary: Validate UPI ID.
+      description: Validates the specified UPI ID against the UPI IDs stored in the platform and verifies that the UPI ID is attached to a store in the platform.
+      requestBody:
+        description: The details of the payment for the transaction.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UPIValidationRequest'
+        required: true
+      responses:
+        "200":          
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UPIValidationResponse'
         "400":
           description: Bad request          
           content:
@@ -48,110 +109,183 @@ paths:
                   "title": "Invalid request.",
                   "detail": "Invalid request. Try again.",
                 }           
-  /transactions/status/_query:
-    post: 
-      tags:
-        - Status
-      summary: Status of a transaction
-      description: Gets the status of the transaction based on transaction id.
-      operationId: checkTransactionStatus
-      requestBody:
-        description: The details of the transaction whose status is to be checked.
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/TransactionStatusRequest'
-        required: true
-      responses:
-        "200":          
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TransactionStatusResponse'
-        "400":
-          description: Bad request          
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/GlobalException"
-              example: 
-                {
-                  "status": 400,
-                  "type": "BAD_REQUEST",
-                  "title": "Invalid request.",
-                  "detail": "Invalid request. Try again.",
-                }
-  /transactions/update:
-    post: 
-      tags:
-        - Update
-      summary: Save the transaction details. This should ideally be the callback API.
-      description: Save the transaction details.
-      operationId: saveTransaction
-      requestBody:
-        description: transaction details
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/SaveTransactionRequest'
-        required: true
-      responses:
-        "200":
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                default:
-                  description: successful operation
-        "400":
-          description: Bad request          
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/GlobalException"
-              example: 
-                {
-                  "status": 400,
-                  "type": "BAD_REQUEST",
-                  "title": "Invalid request.",
-                  "detail": "Invalid request. Try again.",
-                }
-  /transactions/transactions-by-order/_query:
-    post: 
-      tags:
-        - Transactions-by-Order
-      summary: Get the transaction by order details. 
-      description: get the transaction by order details.
-      operationId: getTransactionsByOrder
-      requestBody:
-        description: List of order ids.
-        content:
-          application/json:
-            schema:
-              type: array
-              example: ["123", "456"]
-              items:
-                 type: string
-        required: true
-      responses:
-        "200":
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                default:
-                  description: successful operation
-        "400":
-          description: Bad request          
-          content:
-            application/json:
-              schema:
-               type: array
-               items:
-                 $ref: "#/components/schemas/TransactionsByOrder"
+  # /transactions/status/_query:
+  #   post: 
+  #     tags:
+  #       - Status
+  #     summary: Status of a transaction
+  #     description: Gets the status of the transaction based on transaction id.
+  #     operationId: checkTransactionStatus
+  #     requestBody:
+  #       description: The details of the transaction whose status is to be checked.
+  #       content:
+  #         application/json:
+  #           schema:
+  #             $ref: '#/components/schemas/TransactionStatusRequest'
+  #       required: true
+  #     responses:
+  #       "200":          
+  #         description: Successful operation
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/TransactionStatusResponse'
+  #       "400":
+  #         description: Bad request          
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: "#/components/schemas/GlobalException"
+  #             example: 
+  #               {
+  #                 "status": 400,
+  #                 "type": "BAD_REQUEST",
+  #                 "title": "Invalid request.",
+  #                 "detail": "Invalid request. Try again.",
+  #               }
+  # /transactions/update:
+  #   post: 
+  #     tags:
+  #       - Update
+  #     summary: Save the transaction details. This should ideally be the callback API.
+  #     description: Save the transaction details.
+  #     operationId: saveTransaction
+  #     requestBody:
+  #       description: transaction details
+  #       content:
+  #         application/json:
+  #           schema:
+  #             $ref: '#/components/schemas/SaveTransactionRequest'
+  #       required: true
+  #     responses:
+  #       "200":
+  #         description: Successful operation
+  #         content:
+  #           application/json:
+  #             schema:
+  #               default:
+  #                 description: successful operation
+  #       "400":
+  #         description: Bad request          
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: "#/components/schemas/GlobalException"
+  #             example: 
+  #               {
+  #                 "status": 400,
+  #                 "type": "BAD_REQUEST",
+  #                 "title": "Invalid request.",
+  #                 "detail": "Invalid request. Try again.",
+  #               }
+  # /transactions/transactions-by-order/_query:
+  #   post: 
+  #     tags:
+  #       - Transactions-by-Order
+  #     summary: Get the transaction by order details. 
+  #     description: get the transaction by order details.
+  #     operationId: getTransactionsByOrder
+  #     requestBody:
+  #       description: List of order ids.
+  #       content:
+  #         application/json:
+  #           schema:
+  #             type: array
+  #             example: ["123", "456"]
+  #             items:
+  #                type: string
+  #       required: true
+  #     responses:
+  #       "200":
+  #         description: Successful operation
+  #         content:
+  #           application/json:
+  #             schema:
+  #               default:
+  #                 description: successful operation
+  #       "400":
+  #         description: Bad request          
+  #         content:
+  #           application/json:
+  #             schema:
+  #              type: array
+  #              items:
+  #                $ref: "#/components/schemas/TransactionsByOrder"
 components:
-  schemas:    
+  schemas:   
+    UPIValidationRequest: 
+      type: object
+      properties:
+        upiId: 
+          type: string
+          description: The UPI ID that needs to be validated. 
+          example: test@okhdfcbank 
+    UPIValidationResponse: 
+      type: object 
+      properties:
+        status:
+          type: string
+          description: The status of the UPI validation operation. 
+          example: SUCCESS 
+          enum:
+            - SUCCESS
+            - FAILED 
+        message: 
+          type: string 
+          description: The message tied to the validation status. 
+          example: UPI ID successfully validated. 
+    UPIPaymentRecordRequest: 
+      type: object
+      description: The request for recording a UPI payment made through the platform.
+      properties:
+        amount: 
+          type: number
+          description: The amount for which the UPI Payment was made. 
+          example: 278.12 
+        upiId: 
+          type: string 
+          description: The UPI ID to which the transfer was initiated.
+          example: test@okhdfcbank 
+        userId: 
+          type: string
+          description: The internal system identifier for the user initiating the payment request. 
+          example: 66ec2d45-9762-4710-b69c-1518e06fffc6
+    UPIPaymentRecordResponse: 
+      type: object 
+      properties: 
+        id: 
+          type: string
+          description: The internal system identifier for the recorder UPI transaction. 
+          example: 66ec2d45-9762-4710-b69c-1518e06fffc7
+        amount: 
+          type: number
+          description: The amount for which the UPI Payment was made. 
+          example: 278.12 
+        upiId: 
+          type: string 
+          description: The UPI ID to which the transfer was initiated.
+          example: test@okhdfcbank 
+        userId: 
+          type: string
+          description: The internal system identifier for the user initiating the payment request. 
+          example: 66ec2d45-9762-4710-b69c-1518e06fffc6
+    PaymentConfirmationRequest: 
+      type: object
+      required:
+        - "transactionId" 
+        - "razorpayPaymentId"
+        - "razorpaySignature"
+      properties:
+        transactionId: 
+          type: string
+          description: The internal system identifier for the transaction.
+          example: 76595cef-4743-461f-a5d1-4ba4bb4ae2ba
+        razorpayPaymentId: 
+          type: string
+          description: The payment id returned by Razorpay on successful completion of payment. 
+        razorpaySignature: 
+          type: string
+          description: The signature returned by Razorpay which can be used for validating the authenticity of the request.
     InitiateTransactionRequest:    
       type: object
       required:

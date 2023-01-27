@@ -208,6 +208,28 @@ paths:
           description: Bad request
         "403":
           description: Unauthorized access
+  /movie-orders/{orderId}/payment:
+    post: 
+      tags:
+        - Payment
+      summary: Initiate payment
+      description: Initiates the payment for completing a ticket order.
+      parameters:
+        - name: orderId
+          in: path
+          description: The internal system identifier for the movie ticket order.
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PaymentInitiationResponse'
   /movies/tickets:
     get: 
       tags:
@@ -243,6 +265,18 @@ paths:
       
 components:
   schemas:
+    PaymentInitiationResponse: 
+      type: object
+      description: The response from initiating the payment for a movie ticket order.
+      properties:
+        paymentGatewayOrderId: 
+          type: string
+          description: The razorpay order id which can be used for loading the payment form on UI using razorpay SDK.
+          example: order_L5BydJtdpwEpFV
+        transactionId: 
+          type: string
+          description: The internal system identifier for the transaction.
+          example: 76595cef-4743-461f-a5d1-4ba4bb4ae2ba
     TicketOrder:
       type: object
       properties:       

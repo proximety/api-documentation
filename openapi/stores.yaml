@@ -155,6 +155,39 @@ paths:
                   "detail": "The specified access token has expired. Please try again with an active access token.",
                   "tags":[]
                 }
+    patch: 
+      tags:
+        - Stores
+      summary: Update store
+      description: Update store.
+      operationId: patchUpdateStore
+      parameters:
+        - name: storeId
+          required: true
+          in: path
+          description: Store Id
+          example: "123"
+          schema:
+            type: string
+      requestBody:
+        description: Store information. 
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StoreDetails'
+            example:
+              {
+                  "blocked":true
+              }
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StoreDetails'
+        "500":
+          description: Error
     put: 
       tags:
         - Stores
@@ -1164,6 +1197,10 @@ components:
           type: boolean 
           description: Attribute to filter stores based on parking fee redemption availability.
           example: false
+        upiId: 
+          type: string
+          description: The UPI ID tied to the account.
+          example: xyz@okhdfcbank
         storeCategories:
           type: array
           items:
@@ -1248,6 +1285,9 @@ components:
           type: boolean
           description: True indicates that parking fees can be redeemed on shopping at the store, false indicates otherwise.
           example: true
+        blocked:
+          type: boolean
+          description: Indivated whether store is blocked or active.
         primaryEmail: 
           type: string
           description: The primary email id for the store.
