@@ -363,6 +363,146 @@ paths:
           description: Bad request
         "403":
           description: Unauthorized access
+  /rewards/customer/{customerId}/customer_rewards_summary:
+    get: 
+      tags:
+        - CustomerRewardResource
+      summary: Get summary of customer reward points.
+      operationId: getCustomerRewardPointsSummary
+      parameters:
+        - name: customerId
+          in: path
+          description: Unique identifier of the customer
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Reward point summary successfully retrieved.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RewardPointSummary'
+        "400":
+          description: Bad request
+        "403":
+          description: Unauthorized access
+
+  /scratch-cards:
+    post: 
+      tags:
+        - ScratchCardResource
+      summary: Create Scratch card at Admin Side.
+      operationId: addScratchCard
+      requestBody:
+       content:
+          application/json:
+            schema:
+                $ref: '#/components/schemas/ScratchCardRequestDTO'
+      responses:
+        "200":
+          description: Returns the response of scratch card created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScratchCardResponseDTO'
+        "400":
+          description: Bad request
+        "403":
+          description: Unauthorized access
+  /scratch-cards/{cardId}:
+    get: 
+      tags:
+        - ScratchCardResource
+      summary: Get details of scratch card.
+      operationId: getScratchCardDetails
+      parameters:
+        - name: cardId
+          in: path
+          description: Unique identifier of the scratch card
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Scratch card details successfully retrieved.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScratchCardResponseDTO'
+        "400":
+          description: Bad request
+        "403":
+          description: Unauthorized access
+    put: 
+      tags:
+        - ScratchCardResource
+      summary: Update Scratch card at Admin Side.
+      operationId: updateScratchCardDetails
+      parameters:
+        - name: cardId
+          in: path
+          description: Unique identifier of the scratch card
+          required: true
+          schema:
+            type: string
+      requestBody:
+       content:
+          application/json:
+            schema:
+                $ref: '#/components/schemas/ScratchCardRequestDTO'
+      responses:
+        "200":
+          description: Returns the response of scratch card created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScratchCardResponseDTO'
+        "400":
+          description: Bad request
+        "403":
+          description: Unauthorized access
+    delete: 
+      tags:
+        - ScratchCardResource
+      summary: Delete scratch card.
+      operationId: deleteScratchCard
+      parameters:
+        - name: cardId
+          in: path
+          description: Unique identifier of the scratch card
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Deleted the card Successfully.
+        "400":
+          description: Bad request
+        "403":
+          description: Unauthorized access
+  /scratch-cards/issue_coupon:
+    post: 
+      tags:
+        - ScratchCardResource
+      summary: Issue coupon.
+      operationId: issueCoupon
+      parameters:
+        - name: couponCode
+          in: query
+          description: Coupon code to be issued
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Coupon issued
+        "400":
+          description: Not a valid coupon
+        "406":
+          description: Already redeemed
+        "403":
+          description: Unauthorized access
 
 
 
@@ -787,4 +927,139 @@ components:
         totalRedemptions:
           type: integer
           description: Total number of redemptions for the voucher.
+          example: 50
+    RewardPointSummary:
+      type: object
+      properties:
+        movie:
+          type: integer
+          description: Total points earned for movie booking
+          example: 120
+        shopping:
+          type: integer
+          description: Total points earned for shopping
+          example: 10
+        foodOrder:
+          type: integer
+          description: Total points earned for food order
+          example: 80
+    OrderRewards:
+      type: object
+      description: Returns a map which has orderId as key and reward points as value
+      example: {"ahdgj3kjhdf-32434-23234" : 20}
+
+    ScratchCardRequestDTO:
+      type: object
+      properties:
+        title:
+          type: string
+          description: title for the scratch card.
+          example: 30% Off
+        subTitle:
+          type: string
+          description: sub title for the scratch card.
+          example: At Adidas
+        storeId:
+          type: string
+          description: Unique id of the store.
+          example: 0xD557BD156A424268B1450266609C29B2
+        targetOrder:
+          type: string
+          description: Enum for target order type.
+          enum:
+           - STORE
+           - MOVIE
+           - RESTAURANT
+        applicableStoreIds:
+          type: array
+          description: List of applicable storeIds.
+          example: [0xD557BD156A424268B1450266609C29B2]
+        startDate:
+          type: string
+          description: The start date for the scratch card.
+          example: 2022-12-05
+        endDate:
+          type: string
+          description: The end date for the scratch card.
+          example: 2022-12-05
+        termsConditions:
+          type: string
+          description: provides general overview of the scratch card.
+          example: The scratch card is valid for 6 months from the date of its issuance.
+        dailyLimit:
+          type: integer
+          description: Daily limit for issuing scratch card
+          example: 15
+        minPurchaseValue:
+          type: number
+          description: Minimum purchase amount eligible for scratch card.
+          example: 500.0
+    ScratchCardResponseDTO:
+      type: object
+      properties:
+        cardId:
+          type: string
+          description: unique identifier of scratch card.
+          example: sddsfdf-24234fsd3-332w
+        title:
+          type: string
+          description: title for the scratch card.
+          example: 30% Off
+        subTitle:
+          type: string
+          description: sub title for the scratch card.
+          example: At Adidas
+        storeId:
+          type: string
+          description: Unique id of the store.
+          example: 0xD557BD156A424268B1450266609C29B2
+        storeName:
+          type: string
+          description: Name of the store.
+          example: Allenso Watches
+        targetOrder:
+          type: string
+          description: Enum for target order type.
+          enum:
+           - STORE
+           - MOVIE
+           - RESTAURANT
+        applicableStoreIds:
+          type: array
+          description: List of applicable storeIds.
+          example: [0xD557BD156A424268B1450266609C29B2]
+        startDate:
+          type: string
+          description: The start date for the scratch card.
+          example: 2022-12-05
+        endDate:
+          type: string
+          description: The end date for the scratch card.
+          example: 2022-12-05
+        status:
+          type: string
+          description: Enum for scratch card status.
+          enum:
+           - EXPIRED
+           - ACTIVE
+           - UPCOMING
+        termsConditions:
+          type: string
+          description: provides general overview of the scratch card.
+          example: The voucher is valid for 6 months from the date of its issuance.
+        dailyLimit:
+          type: integer
+          description: Daily limit for issuing scratch card
+          example: 15
+        minPurchaseValue:
+          type: number
+          description: Minimum purchase amount eligible for scratch card.
+          example: 500.0
+        totalWinnings:
+          type: integer
+          description: Total winnings of the scratch card
+          example: 75
+        totalRedemptions:
+          type: integer
+          description: Total redemptions of the scratch card
           example: 50
