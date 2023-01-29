@@ -503,7 +503,80 @@ paths:
           description: Already redeemed
         "403":
           description: Unauthorized access
-
+  /scratch-cards/coupon:
+    post: 
+      tags:
+        - CustomerCouponResource
+      summary: Create customer coupon.
+      operationId: generateCustomerCoupon
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CouponRequestDTO'
+      responses:
+        "200":
+          description: Coupon generated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CouponResponseDTO'
+        "400":
+          description: Not a valid coupon
+        "403":
+          description: Unauthorized access
+  /scratch-cards/coupon/{couponId}:
+    put: 
+      tags:
+        - CustomerCouponResource
+      summary: Update coupon and generate coupon code.
+      operationId: updateCustomerCoupon
+      parameters:
+        - name: couponId
+          in: path
+          description: Unique identifier of coupon
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CouponRequestSummaryDTO'
+      responses:
+        "200":
+          description: Coupon updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CouponResponseDTO'
+        "400":
+          description: Not a valid coupon
+        "403":
+          description: Unauthorized access
+    get: 
+      tags:
+        - CustomerCouponResource
+      summary: Get coupon details.
+      operationId: getCustomerCoupon
+      parameters:
+        - name: couponId
+          in: path
+          description: Unique identifier of coupon
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Coupon details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CouponResponseDTO'
+        "400":
+          description: Not a valid coupon
+        "403":
+          description: Unauthorized access
 
 
 
@@ -1063,3 +1136,63 @@ components:
           type: integer
           description: Total redemptions of the scratch card
           example: 50
+    CouponRequestSummaryDTO:
+      type: object
+      properties:
+        customerId:
+          type: string
+          description: unique identifier of coupon.
+          example: sddsfdf-24234fsd3-332w
+        scratched:
+          type: boolean
+          description: Indicates if coupon is scratched.
+    CouponRequestDTO:
+      type: object
+      properties:
+        customerId:
+          type: string
+          description: unique identifier of customer.
+          example: sddsfdf-24234fsd3-332w
+        storeId:
+          type: string
+          description: unique identifier of the store.
+          example: sddsfdf-24234fsd3-332w
+        paymentId:
+          type: string
+          description: unique identifier of payment transaction.
+          example: sddsfdf-24234fsd3-332w
+        amount:
+          type: number
+          description: Purchase amount.
+          example: 500.0
+    CouponResponseDTO:
+      type: object
+      properties:
+        couponId:
+          type: string
+          description: unique identifier of coupon.
+          example: sddsfdf-24234fsd3-332w
+        cardId:
+          type: string
+          description: unique identifier of scratch card.
+          example: sddsfdf-24234fsd3-332w
+        customerId:
+          type: string
+          description: unique identifier of customer.
+          example: sddsfdf-24234fsd3-332w
+        couponCode:
+          type: string
+          description: 8 digit coupon code.
+          example: KIvw3Fkz
+        createdDate:
+          type: string
+          description: The created date for the coupon.
+          example: 2022-12-05
+        couponIssued:
+          type: boolean
+          description: Indicates if coupon is issued.
+          example: true
+        scratched:
+          type: boolean
+          description: Indicates if coupon is scratched.
+          example: true
