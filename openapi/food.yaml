@@ -3035,7 +3035,9 @@ components:
           example: 5 
           description: Quantity.
         items:
-          $ref: '#/components/schemas/CartRegularItem'
+          type: array
+          items:
+            $ref: '#/components/schemas/CartRegularItem'
     CartDetails:
       type: object
       properties:
