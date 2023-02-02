@@ -3280,6 +3280,9 @@ components:
           type: integer  
           example: 1
           description: Quantity.
+        effectiveDishPrice:
+          type: number  
+          example: 100
         sellingPrice:
           type: number  
           example: 100
