@@ -388,7 +388,7 @@ paths:
         "403":
           description: Unauthorized access
 
-  /scratch-cards:
+  /scratch_cards:
     post: 
       tags:
         - ScratchCardResource
@@ -410,7 +410,7 @@ paths:
           description: Bad request
         "403":
           description: Unauthorized access
-  /scratch-cards/{cardId}:
+  /scratch_cards/{cardId}:
     get: 
       tags:
         - ScratchCardResource
@@ -481,7 +481,7 @@ paths:
           description: Bad request
         "403":
           description: Unauthorized access
-  /scratch-cards/issue_coupon:
+  /scratch_cards/issue_coupon:
     post: 
       tags:
         - ScratchCardResource
@@ -503,7 +503,31 @@ paths:
           description: Already redeemed
         "403":
           description: Unauthorized access
-  /scratch-cards/coupon:
+  /scratch_cards/scratch_card_search:
+    post: 
+      tags:
+        - ScratchCardResource
+      summary: Returns Details of all scratch cards created for the mall.
+      operationId: getVouchers
+      requestBody:
+       description: Filters for listing the vouchers created by the admin. 
+       content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScratchCardSearchRequest'
+       required: true
+      responses:
+        "200":
+          description: Returns the filtered list of scratch cards
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScratchCardListResponse'
+        "400":
+          description: Bad request
+        "403":
+          description: Unauthorized access
+  /scratch_cards/coupon:
     post: 
       tags:
         - CustomerCouponResource
@@ -525,7 +549,7 @@ paths:
           description: Not a valid coupon
         "403":
           description: Unauthorized access
-  /scratch-cards/coupon/{couponId}:
+  /scratch_cards/coupon/{couponId}:
     put: 
       tags:
         - CustomerCouponResource
@@ -577,7 +601,7 @@ paths:
           description: Not a valid coupon
         "403":
           description: Unauthorized access
-  /scratch-cards/probability:
+  /scratch_cards/probability:
     post: 
       tags:
         - ScratchCardResource
@@ -1242,5 +1266,40 @@ components:
       properties:
         winningProbability:
           type: integer
+    ScratchCardSearchRequest:  
+      type: object
+      properties:   
+        title:
+         type: string
+         description: Scratch card title
+        couponStatus:
+          type: string
+          description: Indicates current scratch card status
+          enum:
+              - EXPIRED
+              - ACTIVE
+              - UPCOMING
+        page:
+         type: string
+         description: Specifies the page no. for which vouchers needs to be shown.
+        offset:
+         type: string
+         description: Specifies the no of vouchers to be shown in a page.
+   
+    ScratchCardListResponse:
+      type: object
+      properties:
+        countInCurrentPage:
+          type: integer
+          description: Count of scratch cards in current page
+          example: 10
+        totalCount:
+          type: integer
+          description: Total number of cards matching the applied filter
+          example: 15
+        scratchCards:
+          type: array
+          items:
+            $ref: '#/components/schemas/ScratchCardResponseDTO'
 
     
