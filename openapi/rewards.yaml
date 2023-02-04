@@ -186,7 +186,7 @@ paths:
           description: Bad request
         "403":
           description: Unauthorized access
-  /customer/vouchers/add_reward_points:
+  /customer/vouchers/reward_points:
     post: 
       tags:
         - CustomerVoucherResource
@@ -575,6 +575,47 @@ paths:
                 $ref: '#/components/schemas/CouponResponseDTO'
         "400":
           description: Not a valid coupon
+        "403":
+          description: Unauthorized access
+  /scratch-cards/probability:
+    post: 
+      tags:
+        - ScratchCardResource
+      summary: Set winning probability.
+      operationId: setConfigurations
+      requestBody:
+       content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Probability'
+                
+      responses:
+        "200":
+          description: set winningProbability
+          content:
+            application/json:
+              schema:
+                type: integer
+                example : 70
+        "400":
+          description: Invalid request
+        "403":
+          description: Unauthorized access
+    get: 
+      tags:
+        - ScratchCardResource
+      summary: Get winning probability.
+      operationId: getConfigurations
+      responses:
+        "200":
+          description: get winningProbability
+          content:
+            application/json:
+              schema:
+                type: integer
+                example : 70
+        "400":
+          description:  Invalid request
         "403":
           description: Unauthorized access
 
@@ -1196,3 +1237,10 @@ components:
           type: boolean
           description: Indicates if coupon is scratched.
           example: true
+    Probability:
+      type: object
+      properties:
+        winningProbability:
+          type: integer
+
+    
