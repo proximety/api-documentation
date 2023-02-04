@@ -1280,10 +1280,10 @@ components:
               - ACTIVE
               - UPCOMING
         page:
-         type: string
+         type: integer
          description: Specifies the page no. for which vouchers needs to be shown.
         offset:
-         type: string
+         type: integer
          description: Specifies the no of vouchers to be shown in a page.
    
     ScratchCardListResponse:
