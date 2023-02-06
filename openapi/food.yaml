@@ -1368,6 +1368,26 @@ paths:
                 $ref: '#/components/schemas/Order'
         "500":
           description: Error 
+  /foodcourt/cart/payment:
+    post: 
+      tags:
+        - Payment
+      summary: Initiate cart payment/checkout
+      description: Initiates a cart checkout by triggering a payment request with Razorpay,
+      parameters:
+        - name: userId
+          required: true
+          in: query
+          example: "123"
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentInitiationResponse'
   /foodcourt/orders/{orderId}/payment-details:
     get: 
       tags:
@@ -2674,6 +2694,18 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/DishChoice'
+    PaymentInitiationResponse: 
+      type: object
+      description: The response from initiating the payment for a movie ticket order.
+      properties:
+        paymentGatewayOrderId: 
+          type: string
+          description: The razorpay order id which can be used for loading the payment form on UI using razorpay SDK.
+          example: order_L5BydJtdpwEpFV
+        transactionId: 
+          type: string
+          description: The internal system identifier for the transaction.
+          example: 76595cef-4743-461f-a5d1-4ba4bb4ae2ba
     DishChoice:
       type: object
       properties:
