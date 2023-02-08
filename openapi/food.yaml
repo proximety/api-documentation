@@ -1140,7 +1140,7 @@ paths:
           description: Error
   
   /foodcourt/order/coupons/_query:
-    post: 
+    get: 
       tags:
         - Offer
       summary: Returns list of coupons appliacble for an order
