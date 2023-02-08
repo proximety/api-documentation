@@ -1153,12 +1153,6 @@ paths:
           example: "123"
           schema:
             type: string
-      requestBody:
-        description: Cart information. 
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CartRequest'
       responses:
         "200":
           description: Successful operation
@@ -2847,7 +2841,7 @@ components:
     Coupons:
       type: object
       properties:
-        offers:
+        coupons:
           type: array
           items:
             $ref: '#/components/schemas/Coupon'
@@ -2870,7 +2864,7 @@ components:
     Offer:
       type: object
       properties:
-        offerId:
+        restaurantOfferId:
           type: string
           example: "123"
           description: Offer Id.
@@ -2878,6 +2872,10 @@ components:
           type: string
           example: "123"
           description: Restaurant Id.
+        restaurantName:
+          type: string
+          example: "KFC"
+          description: Restaurant Name.
         discountPercentage:
           type: number
           example: 15
@@ -2911,8 +2909,6 @@ components:
              $ref: '#/components/schemas/OfferDayEnum'
         status:
           $ref: '#/components/schemas/OfferStatusEnum'
-        restaurantName:
-          type: string
         minimumOrderValue:
           type: number
           example: 150
