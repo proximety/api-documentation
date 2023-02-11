@@ -1493,18 +1493,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Order'
-              example:
-                {
-                  "orderId": "123",
-                  "orderPlacedTime": "2021-10-20 10:00",
-                  "expectedDeliveryTime": "2021-10-20 11:00",
-                  "otp": 5678,
-                  "preparationTime": 30,
-                  "orderStatus": "ORDER_RECEIVED",
-                  "restaurantId": "123",
-                  "appliedOfferId": "123",
-                  "amount": 100,
-                }
         "500":
           description: Error
   /restaurants/{restaurantId}/offers/generate-otp:
@@ -3087,6 +3075,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/CartItemByCombo'
+        appliedOfferIds:
+          type: array
+          items:
+            type: string
         tariff:
           $ref: '#/components/schemas/Tariff'
     CartItemByRestaurant:
@@ -3098,9 +3090,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/SelectedItem'
-        appliedOfferId:
-          type: string
-          example: '123'
     CartItemByCombo:
       type: object
       properties:
@@ -3261,6 +3250,10 @@ components:
           items:
             $ref: '#/components/schemas/OrderStage'
           description: Sequence of steps through which order has gone.
+        paymentStatus:
+          $ref: '#/components/schemas/OrderPaymentStatus'
+        rewardPointsEarned:
+          type: number
     OrderBundles:
       type: object
       properties:
@@ -3573,6 +3566,13 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Dish'
+    OrderPaymentStatus:
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/MenuCategory'
+        timestamp:
+          type: string
     RestaurantFilterEnum:
       type: string
       enum: 
@@ -3593,6 +3593,12 @@ components:
             - READY
             - DELIVERED
             - REJECTED
+            - REFUND_INITIATED
+            - REFUNDED
+    OrderPaymentStatusEnum:
+      type: string
+      enum:
+            - SUCCESSFUL
             - REFUND_INITIATED
             - REFUNDED
     OrderTypeEnum:
