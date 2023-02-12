@@ -1180,6 +1180,10 @@ components:
           type: string
           description: The google id token recieved on signing in with google.
           example: eepadifmaifdmalli222nmfo==
+        deviceToken: 
+          type: string
+          description: The firebase device token for the device from which the login is requested. This is used for sending push notifications to the customer.
+          example: fhd2E1RVRDy4GNXgmY1ok3:APA91bGlnCIwtPEbqlDujC2Imi4IlGJW5lc1J9Z7w9ohzDxSsfZz9EyM_jkSQLt4YZPJoFMFlcRKExOQHwOl1jA_4Th9-9_2kTOYLyeT_FUGqQTSFnXPfrha-s6fWcY7ykJveu-JOu05
     FacebookLoginRequest:
       type: object
       properties:
@@ -1187,6 +1191,10 @@ components:
           type: string
           description: The user access token recieved on signing in with facebook.
           example: EAAJfZBkQ8aEEBAMEMHraKMzBZCnl4cDmc74LoUHsZAbw6xLFZCsEl5XBMMAR9GsDBdGhhCWJlNZC7lxmTeTyUh69m4iQTaANyQEAHGUbiRAUFIz7OELM1eIndnsCZCs9ZCO2OxZBXQkj4GFAZAO9Sn21NMaKgzghRxyvAn8suBNbwTyYWsA3slP4PDicyF4py1WSRj7OEcGRiK39RcdgcP9Nq
+        deviceToken: 
+          type: string
+          description: The firebase device token for the device from which the login is requested. This is used for sending push notifications to the customer.
+          example: fhd2E1RVRDy4GNXgmY1ok3:APA91bGlnCIwtPEbqlDujC2Imi4IlGJW5lc1J9Z7w9ohzDxSsfZz9EyM_jkSQLt4YZPJoFMFlcRKExOQHwOl1jA_4Th9-9_2kTOYLyeT_FUGqQTSFnXPfrha-s6fWcY7ykJveu-JOu05
     OTPLoginRequest:
       type: object
       properties:
@@ -1197,6 +1205,10 @@ components:
          type: string
          description: The OTP recieved by the user to the specified mobile number on initiating an OTP generation request.
          example: 829142
+        deviceToken: 
+          type: string
+          description: The firebase device token for the device from which the login is requested. This is used for sending push notifications to the customer.
+          example: fhd2E1RVRDy4GNXgmY1ok3:APA91bGlnCIwtPEbqlDujC2Imi4IlGJW5lc1J9Z7w9ohzDxSsfZz9EyM_jkSQLt4YZPJoFMFlcRKExOQHwOl1jA_4Th9-9_2kTOYLyeT_FUGqQTSFnXPfrha-s6fWcY7ykJveu-JOu05
     AuthTokenResponse:
       type: object
       properties:
