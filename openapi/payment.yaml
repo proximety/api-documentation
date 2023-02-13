@@ -96,6 +96,17 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UPIValidationResponse'
+              example: 
+                {
+                  "status": "SUCCESS",
+                  "message": "UPI ID successfully validated.",
+                  "storeDetails": {
+                      "storeId": "03e1f88d-2656-4522-9618-5a08056841e8",
+                      "storeName": "Nesto Hypermarket",
+                      "brandLogoUrl": "https://d5dzxmd2db8tt.cloudfront.net/store-images-dev/b1819b08-e7aa-4cdc-b88a-2e580ee25f58.png",
+                      "storeType": "STORE"
+                  }
+              }
         "400":
           description: Bad request          
           content:
