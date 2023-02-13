@@ -3102,9 +3102,8 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/SelectedItem'
-        appliedOfferId:
+        comboName:
           type: string
-          example: '123'
     Tariff:
       type: object
       properties:
@@ -4030,7 +4029,6 @@ components:
     LoginResponse:
       type: object
       properties:
-        username:
           type: string
           description: The user name for the user logged into the system.
           example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
