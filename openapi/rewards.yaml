@@ -678,11 +678,11 @@ components:
        startDate:
           type: string
           description: The start date for the voucher.
-          example: 05/15/2022
+          example: 05-12-2022
        endDate:
           type: string
           description: The end date for the voucher.
-          example: 05/15/2022
+          example: 05-12-2022
        overview:
           type: string
           description: provides general overview of the voucher.
@@ -792,11 +792,11 @@ components:
        startDate:
           type: string
           description: The start date for the voucher.
-          example: 05/15/2022
+          example: 05-12-2022
        endDate:
           type: string
           description: The end date for the voucher.
-          example: 05/15/2022
+          example: 05-12-2022
        overview:
           type: string
           description: provides general overview of the voucher.
@@ -825,11 +825,11 @@ components:
        startDate:
           type: string
           description: The start date for the Rule.
-          example: 05/15/2022
+          example: 05-12-2022
        endDate:
           type: string
           description: The end date for the Rule.
-          example: 05/15/2022
+          example: 05-12-2022
        coinValue:
           type: integer
           description: Value for 1 coin.
@@ -849,11 +849,11 @@ components:
        startDate:
           type: string
           description: The start date for the rule.
-          example: 05/15/2022
+          example: 05-12-2022
        endDate:
           type: string
           description: The end date for the rule.
-          example: 05/15/2022
+          example: 05-12-2022
        pointRuleStatuses:
           type: array
           items:
@@ -892,11 +892,11 @@ components:
        startDate:
           type: string
           description: The start date for the rule.
-          example: 05/15/2022
+          example: 05-12-2022
        endDate:
           type: string
           description: The end date for the rule.
-          example: 05/15/2022
+          example: 05-12-2022
        coinValue:
           type: integer
           description: Value for 1 coin.
@@ -923,11 +923,11 @@ components:
        startDate:
           type: string
           description: The date at which Voucher starts.
-          example: 05/15/2022
+          example: 05-12-2022
        endDate:
           type: string
           description: The date at which Voucher ends.
-          example: 05/15/2022
+          example: 05-12-2022
        voucherStatuses:
           type: string
           description: Indicates current voucher status
@@ -1041,11 +1041,11 @@ components:
         startDate:
           type: string
           description: The start date for the voucher.
-          example: 05/15/2022
+          example: 05-12-2022
         endDate:
           type: string
           description: The end date for the voucher.
-          example: 05/15/2022
+          example: 05-12-2022
         overview:
           type: string
           description: provides general overview of the voucher.
@@ -1070,16 +1070,34 @@ components:
       type: object
       properties:
         movie:
-          type: integer
+          type: object
           description: Total points earned for movie booking
-          example: 120
+          $ref: '#/components/schemas/RewardPointByCategory'
         shopping:
-          type: integer
+          type: object
           description: Total points earned for shopping
-          example: 10
+          $ref: '#/components/schemas/RewardPointByCategory'
         foodOrder:
+          type: object
+          description: Total points earned for food orders
+          $ref: '#/components/schemas/RewardPointByCategory'
+    RewardPointByCategory:
+      type: object
+      properties:
+        category:
+          type: string
+          description: category name
+          enum:
+           - STORE
+           - MOVIE
+           - RESTAURANT
+        orderCount:
           type: integer
-          description: Total points earned for food order
+          description: Total number of orders
+          example: 10
+        points:
+          type: integer
+          description: Total points earned
           example: 80
     OrderRewards:
       type: object
