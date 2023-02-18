@@ -1450,12 +1450,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Review'
-            example:
-              {
-                "userId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-                "rating": 3.5,
-                "message": "awesome food"
-              }
       responses:
         "200":
           description: Successful operation
@@ -3011,6 +3005,9 @@ components:
           type: string
           format: uuid
           description: User Id.
+        orderId:
+          type: string
+          format: uuid
         rating:
           type: number
           example: 3.5
@@ -3333,6 +3330,10 @@ components:
         sellingPrice:
           type: number  
           example: 100
+        userRating:
+          type: number  
+        userReview:
+          type: string 
         selectedDishVariant:
           $ref: '#/components/schemas/DishVariant'  
         selectedAddOns:
