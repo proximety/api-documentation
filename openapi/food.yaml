@@ -2223,7 +2223,34 @@ paths:
               schema:
                 $ref: '#/components/schemas/SearchHistory'
         "500":
-          description: Error  
+          description: Error 
+    delete: 
+      tags:
+        - Search
+      summary: Delet search history record
+      description: Delete search history of the user
+      operationId: deleteSearchHistoryRecord
+      parameters:
+        - name: userId
+          required: true
+          in: query
+          description: User Id.
+          schema:
+            format: uuid
+        - name: searchKeyword
+          required: true
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchHistory'
+        "500":
+          description: Error 
   /foodcourt/search/suggestions:
     get: 
       tags:
