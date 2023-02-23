@@ -1322,7 +1322,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/TimeSlabRequest'
+              $ref: '#/components/schemas/GetOrderCountRequest'
       responses:
         "200":
           description: Successful operation
@@ -3508,6 +3508,13 @@ components:
         statusPoll:
           type: boolean
           description: For status polling.
+    GetOrderCountRequest:
+      type: object
+      properties:
+        restaurantId:
+          type: string
+          example: "123"
+          description: Restaurant Id.
     GetRestaurantsRequest:
       type: object
       properties:
