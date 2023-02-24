@@ -3446,6 +3446,7 @@ components:
           enum:
             - DISH_CATEGORY
             - RESTAURANT
+            - DISH
         dishCategory:
           $ref: '#/components/schemas/DishCategoryEnum'
         dishCategoryImageUrl:
@@ -3469,6 +3470,10 @@ components:
           type: boolean
           example: true
           description: Restaurant open status
+        dishId:
+          type: string
+        dishImageUrl:
+          type: string
     GetOrdersRequest:
       type: object
       properties:
