@@ -3472,6 +3472,8 @@ components:
           description: Restaurant open status
         dishId:
           type: string
+        dishName:
+          type: string
         dishImageUrl:
           type: string
     GetOrdersRequest:
