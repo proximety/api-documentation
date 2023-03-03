@@ -226,6 +226,53 @@ paths:
                   "detail": "The google ID token you have specified has expired. Please login and try again.",
                   "tags":["FACEBOOK_TOKEN_EXPIRED"]
                 }
+  /users/auth/apple-login:
+    post: 
+      tags:
+        - Auth
+      summary: Apple Login
+      description: Enables logging into the system by providing the user access token recieved from apple sign in.
+      operationId: signInWithApple
+      requestBody:
+        description: The request object indicating the details recieved from apple sign in.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AppleLoginRequest'
+      responses:
+        "200":
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthTokenResponse'
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GlobalException"
+              example: 
+                {
+                  "status": 400,
+                  "type": "BAD_REQUEST",
+                  "title": "Apple user access token not specified.",
+                  "detail": "Please specify a valid apple user access token and try again."
+                }
+        "401":
+          description: Unauthorized access
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GlobalException"
+              example: 
+                {
+                  "status": 403,
+                  "type": "FORBIDDEN",
+                  "title": "Google ID token expired",
+                  "detail": "The google ID token you have specified has expired. Please login and try again.",
+                  "tags":["APPLE_TOKEN_EXPIRED"]
+                }
   # /users:
     # post:
     #   tags:
@@ -1195,6 +1242,21 @@ components:
           type: string
           description: The firebase device token for the device from which the login is requested. This is used for sending push notifications to the customer.
           example: fhd2E1RVRDy4GNXgmY1ok3:APA91bGlnCIwtPEbqlDujC2Imi4IlGJW5lc1J9Z7w9ohzDxSsfZz9EyM_jkSQLt4YZPJoFMFlcRKExOQHwOl1jA_4Th9-9_2kTOYLyeT_FUGqQTSFnXPfrha-s6fWcY7ykJveu-JOu05
+    AppleLoginRequest:
+      type: object
+      properties:
+        identifierFromApp:
+          type: string
+          description: The apple client id.
+        authorizationCode:
+          type: string
+          description: The user access token recieved on signing in with facebook.
+          example: EAAJfZBkQ8aEEBAMEMHraKMzBZCnl4cDmc74LoUHsZAbw6xLFZCsEl5XBMMAR9GsDBdGhhCWJlNZC7lxmTeTyUh69m4iQTaANyQEAHGUbiRAUFIz7OELM1eIndnsCZCs9ZCO2OxZBXQkj4GFAZAO9Sn21NMaKgzghRxyvAn8suBNbwTyYWsA3slP4PDicyF4py1WSRj7OEcGRiK39RcdgcP9Nq
+        deviceToken: 
+          type: string
+          description: The firebase device token for the device from which the login is requested. This is used for sending push notifications to the customer.
+          example: fhd2E1RVRDy4GNXgmY1ok3:APA91bGlnCIwtPEbqlDujC2Imi4IlGJW5lc1J9Z7w9ohzDxSsfZz9EyM_jkSQLt4YZPJoFMFlcRKExOQHwOl1jA_4Th9-9_2kTOYLyeT_FUGqQTSFnXPfrha-s6fWcY7ykJveu-JOu05
+   
     OTPLoginRequest:
       type: object
       properties:
