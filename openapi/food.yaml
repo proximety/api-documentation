@@ -1310,6 +1310,32 @@ paths:
                 $ref: '#/components/schemas/Order'
         "500":
           description: Error
+  /foodcourt/orders/last-unreviewed-order:
+    get: 
+      tags:
+        - Order
+      summary: Get last unreviwed order
+      description: Get last unreviwed order
+      operationId: getLastUnreviewedOrderForUser
+      parameters:
+        - name: userId
+          in: query
+          required: true
+          description: User Id.
+          example: "123"
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+        "204":
+          description: No Content
+        "500":
+          description: Error
   /foodcourt/orders/count/_query:
     post:
       tags:
