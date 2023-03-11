@@ -74,10 +74,17 @@ components:
     tokenNotification:
       type: object
       required:
+        - appName
         - deviceToken
         - title
         - message
       properties:
+        appName:
+          type: string
+          description: To identify the app to send notification
+          enum: 
+            - CUSTOMER_APP
+            - PARTNER_APP
         deviceToken:
             type: string
             description: Device token of the user.
@@ -94,16 +101,28 @@ components:
             type: string
             description: Notification image url.
             example: "Testing"
+        properties:
+            type: object
+            description: customizations supported in the notification
+            $ref: "#/components/schemas/notificationProperty" 
         data:
             type: object
+            $ref: "#/components/schemas/notificationData"
             description: Additional data to be sent in notification. Can have any non null key-value pairs
     topicNotification:
       type: object
       required:
+        - appName
         - topic
         - title
         - message
       properties:
+        appName:
+          type: string
+          description: To identify the app to send notification
+          enum: 
+            - CUSTOMER_APP
+            - PARTNER_APP
         topic:
             type: string
             description: Topic subscribed.
@@ -120,9 +139,14 @@ components:
             type: string
             description: Notification image url.
             example: "Testing"
+        properties:
+            type: object
+            description: customizations supported in the notification
+            $ref: "#/components/schemas/notificationProperty" 
         data:
             type: object
             description: Additional data to be sent in notification. Can have any non null key-value pairs
+            $ref: "#/components/schemas/notificationData"
     subscribe:
       type: object
       required:
@@ -136,4 +160,55 @@ components:
             type: string
             description: Topic to be subscribed. If no topic is passed, then default topic is "notifyAll"
             example: "Hello"
+    notificationData:
+      type: object
+      properties:
+        notificationType: 
+          type: string 
+          enum : 
+            - FOOD_ORDER_ACCEPTED
+            - FOOD_ORDER_REJECTED
+            - FOOD_ORDER_READY
+            -  FOOD_ORDER_DELIVERED
+            - FOOD_ORDER_REFUND_INITIATED
+            - FOOD_ORDER_REFUNDED
+            - NEW_SCRATCH_CARD
+            - CC_TICKET_UPDATE
+            - MOVIE_SHOWTIME_REMINDER
+            - NEW_FOOD_ORDER_RECEIVED
+            - PAYOUT_SETTLED
+        landingObjectType:
+          type : string
+          enum :
+            - FOOD_ORDER,
+            - MOVIE_TICKET
+            - CC_TICKET
+            - SCRATCH_CARD
+            - PAYOUT
+            - EVENT
+            - STORE
+            - RESTAURANT
+            - MOVIE
+            - FOOD_COMBO
+            - DISH
+            - MENU_CATEGORY
+            - OFFERS_LIST
+            - OFFER
+        landingObjectId:
+          type : string
+          description: unique id of the object
+    notificationProperty:
+      type: object
+      properties:
+        sound:
+          type: string
+          description: name of the sound file
+        colour:
+          type: string
+          description: colour of the notification icon in hexcode
+          example: '#000000'
+        icon:
+          type: string
+          description: name of the icon file
+
     
