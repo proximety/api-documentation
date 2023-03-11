@@ -1343,6 +1343,32 @@ paths:
           description: No Content
         "500":
           description: Error
+  /foodcourt/orders/{orderId}/cancel-review-option:
+    patch: 
+      tags:
+        - Order
+      summary: Cancel Review Option
+      description: Cancel Review Option
+      operationId: cancelReviewOption
+      parameters:
+        - name: orderId
+          in: path
+          required: true
+          example: "123"
+          schema:
+            type: string
+        - name: dishId
+          in: query
+          required: false
+          description: Dish Id.
+          example: "123"
+          schema:
+            type: string
+      responses:
+        "204":
+          description: No Content
+        "500":
+          description: Error
   /foodcourt/orders/count/_query:
     post:
       tags:
