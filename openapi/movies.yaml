@@ -271,7 +271,11 @@ components:
       properties:
         paymentGatewayOrderId: 
           type: string
-          description: The razorpay order id which can be used for loading the payment form on UI using razorpay SDK.
+          description: The easebuzz order key which can be used for loading the payment form on UI using razorpay SDK.
+          example: order_L5BydJtdpwEpFV
+        paymentGatewayOrderKey: 
+          type: string
+          description: The easebuzz order key which can be used for loading the payment form on UI using razorpay SDK.
           example: order_L5BydJtdpwEpFV
         transactionId: 
           type: string
