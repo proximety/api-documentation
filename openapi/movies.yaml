@@ -221,6 +221,16 @@ paths:
           required: true
           schema:
             type: string
+        - name: successRedirectUrl
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: failureRedirectUrl
+          in: query
+          required: false
+          schema:
+            type: string
       responses:
         200:
           description: Successful operation
