@@ -1427,13 +1427,12 @@ paths:
         - Payment
       summary: Initiate cart payment/checkout
       description: Initiates a cart checkout by triggering a payment request with Razorpay,
-      parameters:
-        - name: userId
-          required: true
-          in: query
-          example: "123"
-          schema:
-            type: string
+      requestBody:
+        description: Order Status. 
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentInitiationRequest'
       responses:
         "200":
           description: Successful operation
@@ -2756,6 +2755,19 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/DishChoice'
+    PaymentInitiationRequest: 
+      type: object
+      description: The request body for initiating a payment request
+      properties:
+        userId: 
+          type: string
+          description: The user id of the user who is initiating payment for a cart.
+        successRedirectUrl: 
+          type: string
+          description: The URL to which the flow needs to redirect on successful completion of payment. For mobile apps, this url should be the deep link to a page in the app.
+        failureRedirectUrl: 
+          type: string
+          description: The URL to which the flow needs to redirect on payment failure. For mobile apps, this url should be the deep link to a page in the app.
     PaymentInitiationResponse: 
       type: object
       description: The response from initiating the payment for a movie ticket order.
