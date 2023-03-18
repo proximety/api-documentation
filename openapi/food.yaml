@@ -2925,6 +2925,8 @@ components:
     Coupons:
       type: object
       properties:
+        numOfApplicableCoupons:
+          type: integer
         coupons:
           type: array
           items:
