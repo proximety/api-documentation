@@ -280,6 +280,10 @@ components:
           type: string
           description: The internal system identifier for the user initiating the payment request. 
           example: 66ec2d45-9762-4710-b69c-1518e06fffc6
+        rewardPointsCollected:
+          type: string
+          description: The reward points provided to the customer.
+          example: 10
     PaymentConfirmationRequest: 
       type: object
       required:
