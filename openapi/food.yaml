@@ -1343,7 +1343,7 @@ paths:
           description: No Content
         "500":
           description: Error
-  /foodcourt/orders/{orderId}/cancel-review-option:
+  /foodcourt/orders/{orderId}/close-order-status-card:
     patch: 
       tags:
         - Order
@@ -1364,6 +1364,10 @@ paths:
           example: "123"
           schema:
             type: string
+        - name: cardType
+          in: query
+          schema:
+              $ref: '#/components/schemas/OrderStatusCardTypeEnum'
       responses:
         "204":
           description: No Content
@@ -3780,6 +3784,11 @@ components:
         - FIVE_PERCENT
         - TWELVE_PERCENT
         - EIGHTEEN_PERCENT
+    OrderStatusCardTypeEnum:
+      type: string
+      enum:
+        - FOOD_REVIEW_CARD
+        - ORDER_REJECTED_CARD
     RefreshTokenRequest:
       type: object
       required:
