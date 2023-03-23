@@ -2974,10 +2974,10 @@ components:
           $ref: '#/components/schemas/OfferUserTypeEnum'
         campaignStartDate:
           description: Start date.
-          example: '2022-11-07 17:12'
+          example: '2022-11-07'
         campaignEndDate:
           description: End date.
-          example: '2022-11-07 17:12'
+          example: '2022-11-07'
         items:
           type: array
           example: ["123", "456"]
