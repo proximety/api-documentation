@@ -1209,41 +1209,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CartDetails'
-  /foodcourt/orders:
-    post: 
-      tags:
-        - Order
-      summary: Place orders
-      description: Place orders
-      operationId: placeOrder
-      parameters:
-        - name: userId
-          required: true
-          in: query
-          description: User Id.
-          schema:
-            format: uuid
-        - name: bundleId
-          required: true
-          in: query
-          description: Bundle Id.
-          schema:
-            format: uuid
-        - name: orderType
-          required: true
-          in: query
-          schema:
-              $ref: '#/components/schemas/OrderTypeEnum'
-      responses:
-        "200":
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Orders'
-
-        "500":
-          description: Error
   /foodcourt/orders/_query:
     post: 
       tags:
@@ -3104,6 +3069,8 @@ components:
     CartRequest:
       type: object
       properties:
+        orderType:
+          $ref: '#/components/schemas/OrderTypeEnum'
         regularItems:
           type: array
           items:
