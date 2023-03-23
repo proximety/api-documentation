@@ -1347,8 +1347,8 @@ paths:
     patch: 
       tags:
         - Order
-      summary: Cancel Review Option
-      description: Cancel Review Option
+      summary: Close Order Card
+      description: Close Order Card
       operationId: cancelReviewOption
       parameters:
         - name: orderId
@@ -3442,6 +3442,8 @@ components:
           type: string
           example: 3:15
           description: Step end time. Present only if the step is completed.
+        hideStatusCardOnCapp:
+          type: boolean
     UpdateRestaurantStatus:  
       type: object
       properties:
