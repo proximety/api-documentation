@@ -854,12 +854,11 @@ components:
           type: string
           description: The end date for the rule.
           example: 05-12-2022
-       pointRuleStatuses:
-          type: array
-          items:
-           enum:
-              - ACTIVE
-              - INACTIVE
+       pointRuleStatus:
+          type: string
+          enum:
+            - ACTIVE
+            - INACTIVE
        page:
           type: integer
           description: page number for points list.
