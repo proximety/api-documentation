@@ -1409,7 +1409,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PaymentInitiationResponse'
+                $ref: '#/components/schemas/PaymentInitiationResponseV2'
   /foodcourt/cart/paymentV2:
     post: 
       tags:
@@ -1428,7 +1428,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PaymentInitiationResponse'
+                $ref: '#/components/schemas/PaymentInitiationResponseV2'
   /foodcourt/orders/{orderId}/payment-details:
     get: 
       tags:
@@ -2744,6 +2744,13 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/DishChoice'
+    PaymentInitiationRequest: 
+      type: object
+      description: The request body for initiating a payment request
+      properties:
+        userId: 
+          type: string
+          description: The user id of the user who is initiating payment for a cart.
     PaymentInitiationRequestV2: 
       type: object
       description: The request body for initiating a payment request
