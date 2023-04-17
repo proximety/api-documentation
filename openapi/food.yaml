@@ -1009,7 +1009,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Combos'
+                $ref: '#/components/schemas/PromotedCombos'
               example:
                {
                 "combos": [
