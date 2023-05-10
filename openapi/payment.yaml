@@ -119,7 +119,36 @@ paths:
                   "type": "BAD_REQUEST",
                   "title": "Invalid request.",
                   "detail": "Invalid request. Try again.",
-                }           
+                }  
+  /transactions/{transactionId}:
+    get: 
+      tags:
+        - Transactions
+      summary: Get Transaction
+      description: Fetches the details of a transaction
+      parameters:
+        -   name: transactionId
+            in: path
+            required: true
+            schema:
+              type: string
+      
+      responses:
+        "200":          
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Transaction'
+              example: 
+                {
+                    "transactionId": "f1a3298f-7549-44dd-840e-345a54b6b0c2",
+                    "amount": {
+                        "currencyCode": "INR",
+                        "value": 1.0
+                    },
+                    "status": "FAILED"
+                }
   # /transactions/status/_query:
   #   post: 
   #     tags:
@@ -231,6 +260,24 @@ components:
           type: string
           description: The UPI ID that needs to be validated. 
           example: test@okhdfcbank 
+    Transaction: 
+      type: object
+      properties:
+        transactionId: 
+          type: string
+          description: The internal system identifier for the transaction.
+        amount: 
+          example: {
+                      "currencyCode": "INR",
+                      "value": 1.0
+                  }
+        status: 
+          type: string
+          description: The status of the transaction
+          enum:
+            - INITIATED 
+            - SUCCESS 
+            - FAILED
     UPIValidationResponse: 
       type: object 
       properties:
