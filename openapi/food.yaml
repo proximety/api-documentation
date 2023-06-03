@@ -3001,6 +3001,14 @@ components:
           type: number
           example: 150
           description: Minimum order value for offer.
+        hasCouponLimit:
+          type: boolean
+        couponLimit:
+          type: integer
+        hasDailyLimit:
+          type: boolean
+        dailyLimit:
+          type: integer
     RestaurantOffers:
       type: object
       properties:
