@@ -2644,6 +2644,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/DishVariant'
+        isTakeAwayAvailable:
+            type: boolean
+        packaginCharges:
+          type: number
     AddOnGroups:
       type: object
       properties:
@@ -3223,6 +3227,9 @@ components:
           type: number
           example: 25  
           description: Discount.
+        packagingCharges:
+          type: number
+          example: 25 
         toPay:
           type: number
           example: 575  
