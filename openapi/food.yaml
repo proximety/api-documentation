@@ -2644,9 +2644,9 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/DishVariant'
-        TakeAwayAvailable:
+        takeAwayAvailable:
             type: boolean
-        packaginCharges:
+        packaginCharge:
           type: number
     AddOnGroups:
       type: object
