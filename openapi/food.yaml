@@ -2990,7 +2990,9 @@ components:
           example: "abcdf"
           description: Coupon for the offer.
         runningTime:
-           $ref: '#/components/schemas/OfferTimeEnum'
+           type: array
+           items:
+            $ref: '#/components/schemas/OfferTimeEnum'
         runningDays:
            type: array
            items:
