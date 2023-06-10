@@ -1644,6 +1644,12 @@ paths:
           example: "123"
           schema:
             type: string
+        - name: otp
+          in: query
+          required: true
+          example: "1234"
+          schema:
+            type: string
       requestBody:
         description: cart. 
         content:
