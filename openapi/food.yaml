@@ -2598,6 +2598,10 @@ components:
           type: number
           example: 125.5
           description: Dish price.
+        listPrice:
+          type: number
+          example: 125
+          description: Dish Display price in customer app.
         description:
           type: string
           example: British style nadan biriyani
@@ -2709,6 +2713,10 @@ components:
           type: number
           example: 30
           description: Price for the customization.
+        listPrice:
+          type: number
+          example: 125
+          description: Add on Display price in customer app.
         vegNonVeg:
           $ref: '#/components/schemas/VegNonVegEnum'
         inStock:
