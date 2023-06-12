@@ -3246,7 +3246,7 @@ components:
           type: number
           example: 25  
           description: Discount.
-        packagingCharges:
+        packagingCharge:
           type: number
           example: 25 
         toPay:
