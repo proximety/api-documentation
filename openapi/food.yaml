@@ -2333,7 +2333,7 @@ components:
             type: array
             items:
               $ref: '#/components/schemas/FloorDetails'
-        orderAutoRejectionTime:
+        orderAutoRejectionTimeout:
           type: number
         defaultffers:
             type: array
