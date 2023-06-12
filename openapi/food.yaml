@@ -2732,6 +2732,9 @@ components:
           type: number
           example: 100
           description: Dish variant price.
+        listPrice:
+          type: number
+          description: Price of varinat for diaplay
         inStock:
           type: boolean
           description: Indicates whether dish variant is in stock.
