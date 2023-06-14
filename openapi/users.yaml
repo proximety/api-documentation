@@ -84,6 +84,20 @@ paths:
                   "title": "OTP invalid",
                   "detail": "The OTP you have entered for the specified mobile number is invalid. Please specify a valid OTP and try again.",
                 }
+  /users/auth/logout:
+    post: 
+      tags:
+        - Auth
+      summary: Logout user
+      description: Logs out the user from the platfoorm
+      operationId: logoutUser
+      responses:
+        "200":
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LogoutResponse'
   /users/auth/refresh:
     post: 
       tags:
@@ -1288,6 +1302,12 @@ components:
           items: 
             type: string
             example: ACCESS_TOKEN_INVALID  
+    LogoutResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Logout successful.
     RefreshTokenRequest:
       type: object
       properties:
