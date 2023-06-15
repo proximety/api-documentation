@@ -2538,6 +2538,11 @@ components:
         blocked:
           type: boolean
           description: Indivated whether restaurant is blocked or active.
+        packagingCharge:
+          type: number
+          description: Fixed Packaging charge 
+        hasFixedPackagingCharge:
+          type: boolean
         isOnline:
           type: boolean
           description: Indivated whether restaurant is online or offline
