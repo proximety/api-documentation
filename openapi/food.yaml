@@ -2968,7 +2968,7 @@ components:
         message:
           type: string
           description: Brief description about the customer perspective status of coupon.
-        isApplicable:
+        applicable:
           type: boolean
           description: Indicates this coupon is applicable or not
         saving:
