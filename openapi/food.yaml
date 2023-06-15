@@ -3397,6 +3397,14 @@ components:
           $ref: '#/components/schemas/OrderPaymentStatus'
         rewardPointsEarned:
           type: number
+        billValueForRestaurant:
+         type: number
+         example: 100
+         description : Bill value for this order
+        grossAmountAfterDiscount:
+          type: number
+          example: 80
+          description : Bill value after discount
     OrderBundles:
       type: object
       properties:
@@ -4050,20 +4058,13 @@ components:
         grossRevenue:
           type: number
           example: 200
+        discount:
+          type: number
         deductions:
           $ref: '#/components/schemas/Deductions'
         netReceivables:
          type: number
          example: 100
-        utrId:
-          type: number
-          example: 1234
-        date:
-         type: string
-         example: '25/10/2020'
-        account:
-          type: string
-          example: 'xxx123'
     Transactions:
       type: object
       description: Transactions of a restaurant.
@@ -4080,18 +4081,12 @@ components:
        total:
          type: number
          example: 123
-       tax:
-         type: number
-         example: 123
        commision:
          type: number
          example: 123
        taxOnCommision:
         type: number
         example: 123
-       convenienceFee:
-         type: number
-         example: 123
     TransactionOrder:
       type: object
       description: Order in a transaction.
@@ -4135,6 +4130,9 @@ components:
         grossAmount:
           type: number
           example: 20000
+        grossAmountAfterDiscount:
+          type: number
+          example: 15000
         deductions:
           type: number
           example: 500
