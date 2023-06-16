@@ -3410,6 +3410,9 @@ components:
           type: number
           example: 80
           description : Bill value after discount
+        orderItemDetails:
+          type: string
+          description: Dish item deatils as string
     OrderBundles:
       type: object
       properties:
