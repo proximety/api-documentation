@@ -3388,6 +3388,9 @@ components:
           type: number
           example: 100
           description: Order total price.
+        taxAmountToRestaurant:
+         type: number
+         description: Tax owe by restuarant
         orderItems:
           type: array
           items:
