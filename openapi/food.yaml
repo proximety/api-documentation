@@ -3475,6 +3475,10 @@ components:
           type: number  
         userReview:
           type: string 
+        isComboItem:
+          type: boolean
+        isPriceOverridenForCombo:
+          type: boolean
         selectedDishVariant:
           $ref: '#/components/schemas/DishVariant'  
         selectedAddOns:
