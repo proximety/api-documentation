@@ -680,6 +680,8 @@ paths:
                             "ownerId": "88d899132",
                             "ownerType": "STORE"
                           },
+                          "imageUrl":"https://xyz.png",
+                          "category":"FASHION",
                           "proposedLandingPage": "DETAILS_PAGE",
                           "status": "PENDING_APPROVAL",
                           "cardContent": {
@@ -812,23 +814,26 @@ paths:
             schema:
               $ref: '#/components/schemas/OfferDetails'
             example: {
-                      "title": "Adidas - Buy 1 get 20% off",
-                      "ownerDetails": {
-                        "ownerId": "88d899132",
-                        "ownerType": "STORE"
-                      },
-                      "proposedLandingPage": "DETAILS_PAGE",
-                      "status": "PENDING_APPROVAL",
-                      "cardContent": {
-                        "topText": "Buy 1",
-                        "bottomText": "Get 20% off"
-                      },
-                      "color": "BLUE",
-                      "couponCode": "XAPy123",
-                      "startDate": "2022-05-12",
-                      "endDate": "2022-06-15",
-                      "termsAndConditions": "This voucher is valid only in exclusive stores of Adidas."
-                    }
+                          "id": "371827398ghjh",
+                          "title": "Adidas - Buy 1 get 20% off",
+                          "ownerDetails": {
+                            "ownerId": "88d899132",
+                            "ownerType": "STORE"
+                          },
+                          "imageUrl":"https://xyz.png",
+                          "category":"FASHION",
+                          "proposedLandingPage": "DETAILS_PAGE",
+                          "status": "PENDING_APPROVAL",
+                          "cardContent": {
+                            "topText": "Buy 1",
+                            "bottomText": "Get 20% off"
+                          },
+                          "color": "BLUE",
+                          "couponCode": "XAPy123",
+                          "startDate": "2022-05-12",
+                          "endDate": "2022-06-15",
+                          "termsAndConditions": "This voucher is valid only in exclusive stores of Adidas."
+                        }
         required: true
       responses:
         "200":
@@ -2253,6 +2258,31 @@ components:
           example: DETAILS_PAGE
           enum:
             - DETAILS_PAGE
+        imageUrl:
+          type: string
+          description: URL for the offer's background image
+        category:
+          type: string
+          enum: 
+            - FOOTWEAR
+            - APPAREL
+            - JEWELLERY
+            - LUXURY
+            - ELECTRONICS
+            - COSMETICS
+            - WATCHES
+            - DECOR
+            - FASHION_MEN
+            - FASHION_WOMEN
+            - FASHION_KIDS
+            - TOYS
+            - BOOKS
+            - SALON_AND_SPA
+            - BAGS_AND_LUGGAGE
+            - DEPARTMENT_STORE
+            - HYPERMARKET
+            - FASHION
+            - BEAUTY
         status: 
           type: string
           description: The current status of the offer.
@@ -2313,6 +2343,8 @@ components:
                       "name": "Adidas",
                       "brandImageUrl": "https://s3.ap-south-1.amazonaws.com/proximety.io/profile-pictures-dev/d5b37874-6c6f-43cf-ad3c-f306cb2d360a.png"
                     },
+                    "imageUrl":"https://xyz.png",
+                    "category":"FASHION",
                     "proposedLandingPage": "DETAILS_PAGE",
                     "status": "PENDING_APPROVAL",
                     "cardContent": {
@@ -2344,6 +2376,28 @@ components:
             type: string
             description: The internal system identifier for the offer
             example: 371890273gghg
+        category: 
+          type: string
+          enum: 
+            - FOOTWEAR
+            - APPAREL
+            - JEWELLERY
+            - LUXURY
+            - ELECTRONICS
+            - COSMETICS
+            - WATCHES
+            - DECOR
+            - FASHION_MEN
+            - FASHION_WOMEN
+            - FASHION_KIDS
+            - TOYS
+            - BOOKS
+            - SALON_AND_SPA
+            - BAGS_AND_LUGGAGE
+            - DEPARTMENT_STORE
+            - HYPERMARKET
+            - FASHION
+            - BEAUTY
         storeIds: 
           type: array
           items:
