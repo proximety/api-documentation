@@ -1225,6 +1225,8 @@ components:
             - BAGS_AND_LUGGAGE
             - DEPARTMENT_STORE
             - HYPERMARKET
+            - FASHION
+            - BEAUTY
           example: [FOOTWEAR, APPARELS]
         sortBy:
           type: string
@@ -1321,6 +1323,8 @@ components:
             - BAGS_AND_LUGGAGE
             - DEPARTMENT_STORE
             - HYPERMARKET
+            - FASHION
+            - BEAUTY
         storeSizeInSqFt:
           type: integer
           description: The size of the store in square feet.
@@ -1407,6 +1411,8 @@ components:
             - BAGS_AND_LUGGAGE
             - DEPARTMENT_STORE
             - HYPERMARKET
+            - FASHION
+            - BEAUTY
         brandLogo:
           type: string
           description: The URL to the brand logo image. 
