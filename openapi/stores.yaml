@@ -375,6 +375,7 @@ paths:
                   enum:
                     - BRAND_IMAGE
                     - STORE_IMAGE
+                    - STORE_COVER_IMAGE
                 image:
                   type: string
                   format: binary
@@ -1344,6 +1345,13 @@ components:
           type: string
           description: The URL to the store display image.
           example: https://dev.proximety.io/images/21423.jpg
+        coverImageUrl:
+          type: string
+          description: The URL to the store cover image.
+          example: https://dev.proximety.io/images/21423.jpg
+        becoPointId:
+          type: string
+          description: The Beco Point ID.
         storeTimings:
           type: object
           description: The store operation timing details.
