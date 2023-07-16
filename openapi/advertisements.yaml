@@ -1160,6 +1160,94 @@ paths:
                   "detail": "The specified access token has expired. Please try again with an active access token.",
                   "tags":[]
                }
+  /promoted-content/offers/banners:
+    get: 
+      tags:
+        - Promoted Content
+      summary: Get promoted banners for offers home page
+      description: Retrieves the list of promoted banners.
+      parameters:
+        - name: Authorization
+          in: header
+          description: The authentication bearer token.
+          required: true
+          example: Bearer asd.js2jd9a.gC6paXtNOg0OZL4-adsd-asd
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PromotedBanners'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GlobalException"
+              example: 
+                {
+                  "status": 403,
+                  "type": "FORBIDDEN",
+                  "title": "Token expired.",
+                  "detail": "The specified access token has expired. Please try again with an active access token.",
+                  "tags":[]
+               }
+    put: 
+      tags:
+        - Promoted Content
+      summary: Update promoted banners for offers home page
+      description: Updates the banners that needs to be displayed in the promoted content section.
+      parameters:
+        - name: Authorization
+          in: header
+          description: The authentication bearer token.
+          required: true
+          example: Bearer asd.js2jd9a.gC6paXtNOg0OZL4-adsd-asd
+          schema:
+            type: string
+      requestBody:
+        description: The list of promoted banners.
+        content:
+          application/json:
+            schema:
+                $ref: '#/components/schemas/PromotedBannersRequest'
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PromotedBanners'
+        "400":
+          description: Bad request          
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GlobalException"
+              example: 
+                {
+                  "status": 400,
+                  "type": "BAD_REQUEST",
+                  "title": "Mandatory fields missing from request.",
+                  "detail": "No id specified for the banner. Please specify an id for the banner and try again.",
+                }
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GlobalException"
+              example: 
+                {
+                  "status": 403,
+                  "type": "FORBIDDEN",
+                  "title": "Token expired.",
+                  "detail": "The specified access token has expired. Please try again with an active access token.",
+                  "tags":[]
+               }
   /promoted-content/stores/banners:
     get: 
       tags:
