@@ -246,7 +246,7 @@ paths:
       tags:
         - AdminVoucherResource
       summary: Returns Details of all Vouchers created for the mall.
-      operationId: getVouchers
+      operationId: getAdminVouchers
       requestBody:
        description: Filters for listing the vouchers created by the admin. 
        content:
@@ -525,6 +525,32 @@ paths:
                 $ref: '#/components/schemas/ScratchCardListResponse'
         "400":
           description: Bad request
+        "403":
+          description: Unauthorized access
+  /scratch_cards/coupon/customer:
+    post: 
+      tags:
+        - CustomerCouponResource
+      summary: Get coupons list
+      operationId: getCustomerCoupons
+      parameters:
+        - name: customerId
+          in: query
+          description: Unique identifier of coupon
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Coupon generated
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CouponResponseDTO'
+        "400":
+          description: Not a valid coupon
         "403":
           description: Unauthorized access
   /scratch_cards/coupon:
@@ -1127,6 +1153,8 @@ components:
            - RESTAURANT
         applicableStoreIds:
           type: array
+          items:
+           type: string
           description: List of applicable storeIds.
           example: [0xD557BD156A424268B1450266609C29B2]
         startDate:
@@ -1181,6 +1209,8 @@ components:
            - RESTAURANT
         applicableStoreIds:
           type: array
+          items:
+           type: string
           description: List of applicable storeIds.
           example: [0xD557BD156A424268B1450266609C29B2]
         startDate:
@@ -1247,6 +1277,29 @@ components:
           type: number
           description: Purchase amount.
           example: 500.0
+    CouponListDTO:
+      type: object
+      properties:
+        couponId:
+          type: string
+          description: unique identifier of coupon.
+          example: sddsfdf-24234fsd3-332w
+        cardId:
+          type: string
+          description: unique identifier of scratch card.
+          example: sddsfdf-24234fsd3-332w
+        isScratched:
+          type: boolean
+        storeName:
+          type: string
+        brandLogoUrl:
+          type: string
+        storeId:
+          type: string
+        status:
+          type: string
+        scratchCard:
+          $ref: '#/components/schemas/ScratchCardResponseDTO'
     CouponResponseDTO:
       type: object
       properties:
