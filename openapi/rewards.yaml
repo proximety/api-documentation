@@ -1248,6 +1248,8 @@ components:
           type: integer
           description: Total redemptions of the scratch card
           example: 50
+        storeLogoUrl:
+          type : string
     CouponRequestSummaryDTO:
       type: object
       properties:
