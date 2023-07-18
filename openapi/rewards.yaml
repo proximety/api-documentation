@@ -1333,6 +1333,8 @@ components:
           type: boolean
           description: Indicates if coupon is scratched.
           example: true
+        hasWon:
+          type: boolean
         scratchCard:
            $ref: '#/components/schemas/ScratchCardResponseDTO'
     Probability:
