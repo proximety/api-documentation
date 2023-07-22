@@ -61,6 +61,9 @@ paths:
                  poster:
                   format: binary
                   example: Expects an Image for event poster
+                 wide-banner:
+                  format: binary
+                  example: Expects an Image for event wide banner
       responses:
         "201":
           description: Event Created successfully
@@ -213,6 +216,10 @@ components:
           format: uri
           example: https://dev.proximety.io/images/21423.jpg
        banner:
+          type: string
+          format: uri
+          example: https://dev.proximety.io/images/21423.jpg
+       wideBanner:
           type: string
           format: uri
           example: https://dev.proximety.io/images/21423.jpg
