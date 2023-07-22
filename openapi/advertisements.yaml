@@ -1336,6 +1336,94 @@ paths:
                   "detail": "The specified access token has expired. Please try again with an active access token.",
                   "tags":[]
                }
+  /promoted-content/stores/posters:
+    get: 
+      tags:
+        - Promoted Content
+      summary: Get promoted banners for stores
+      description: Retrieves the list of promoted banners.
+      parameters:
+        - name: Authorization
+          in: header
+          description: The authentication bearer token.
+          required: true
+          example: Bearer asd.js2jd9a.gC6paXtNOg0OZL4-adsd-asd
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PromotedBanners'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GlobalException"
+              example: 
+                {
+                  "status": 403,
+                  "type": "FORBIDDEN",
+                  "title": "Token expired.",
+                  "detail": "The specified access token has expired. Please try again with an active access token.",
+                  "tags":[]
+               }
+    put: 
+      tags:
+        - Promoted Content
+      summary: Update promoted banners for stores
+      description: Updates the banners that needs to be displayed in the promoted content section.
+      parameters:
+        - name: Authorization
+          in: header
+          description: The authentication bearer token.
+          required: true
+          example: Bearer asd.js2jd9a.gC6paXtNOg0OZL4-adsd-asd
+          schema:
+            type: string
+      requestBody:
+        description: The list of promoted banners.
+        content:
+          application/json:
+            schema:
+                $ref: '#/components/schemas/PromotedBannersRequest'
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PromotedBanners'
+        "400":
+          description: Bad request          
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GlobalException"
+              example: 
+                {
+                  "status": 400,
+                  "type": "BAD_REQUEST",
+                  "title": "Mandatory fields missing from request.",
+                  "detail": "No id specified for the banner. Please specify an id for the banner and try again.",
+                }
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GlobalException"
+              example: 
+                {
+                  "status": 403,
+                  "type": "FORBIDDEN",
+                  "title": "Token expired.",
+                  "detail": "The specified access token has expired. Please try again with an active access token.",
+                  "tags":[]
+               }
   /promoted-content/stores/offers:
     get: 
       tags:
@@ -1900,6 +1988,9 @@ components:
           type: string
           description: The query string based on which banners need to be retrieved.
           example: Indi
+        searchPosters: 
+          type: boolean
+          description: Indicates whether the search is to be done on posters and not banners
         bannerIds: 
           type: array
           items:
@@ -2060,6 +2151,9 @@ components:
             - REJECTED
             - ACTIVE
             - EXPIRED
+        poster: 
+          type: boolean 
+          description: Indicates whether the banner is a poster
         couponCode: 
           type: string
           description: The coupon code tied to the banner.
@@ -2099,6 +2193,7 @@ components:
                 "status": "PENDING_APPROVAL",
                 "couponCode": "XDgh123",
                 "startDate": "2022-05-17",
+                "poster":false,
                 "endDate": "2022-05-17",
                 "termsAndConditions": "1. This voucher is valid until 10 days from the date of purchase.",
                 "bannerImageUrl": "https://s3.ap-south-1.amazonaws.com/proximety.io/profile-pictures-dev/d5b37874-6c6f-43cf-ad3c-f306cb2d360a.png"
@@ -2174,6 +2269,10 @@ components:
           type: string
           description: The coupon code tied to the banner being created.
           example: XDgh123
+        poster:
+          type: boolean
+          description: Indicates whether the banner being created is a poster.
+          example: false
         startDate:
           type: string
           description: The date on which the offer starts.
@@ -2203,6 +2302,7 @@ components:
                 "couponCode": "XDgh123",
                 "startDate": "2022-05-17",
                 "endDate": "2022-05-17",
+                "poster":false,
                 "termsAndConditions": "1. This voucher is valid until 10 days from the date of purchase."
               }
     OfferCreationRequest:
