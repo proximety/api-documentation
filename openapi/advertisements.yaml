@@ -556,6 +556,33 @@ paths:
                   "detail": "The specified access token has expired. Please try again with an active access token.",
                   "tags":[]
                 }
+  /offers/offer_categories:
+    get: 
+      tags:
+        - Offers
+      summary: Get active Offer categories
+      description: Get active Offer categories
+      operationId: getOfferCategories
+      parameters:
+        - name: Authorization
+          in: header
+          description: The authentication bearer token.
+          required: true
+          example: Bearer asd.js2jd9a.gC6paXtNOg0OZL4-adsd-asd
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  imageUrl:
+                    type: array
+                    items: 
+                      $ref: '#/components/schemas/OfferCategory'
   /offers/images:
     post: 
       tags:
@@ -2546,6 +2573,28 @@ components:
                     "termsAndConditions": "This voucher is valid only in exclusive stores of Adidas."
                   }
                 
+    OfferCategory:
+      type: string 
+      enum: 
+            - FOOTWEAR
+            - APPAREL
+            - JEWELLERY
+            - LUXURY
+            - ELECTRONICS
+            - COSMETICS
+            - WATCHES
+            - DECOR
+            - FASHION_MEN
+            - FASHION_WOMEN
+            - FASHION_KIDS
+            - TOYS
+            - BOOKS
+            - SALON_AND_SPA
+            - BAGS_AND_LUGGAGE
+            - DEPARTMENT_STORE
+            - HYPERMARKET
+            - FASHION
+            - BEAUTY
     OfferSearchRequest:
       type: object
       description: The search filters based on which a list of offers are to be retrieved.
