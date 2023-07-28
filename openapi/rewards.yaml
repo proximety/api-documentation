@@ -363,6 +363,136 @@ paths:
           description: Bad request
         "403":
           description: Unauthorized access
+  /rewards/customer/{customerId}/bills/bills/{billId}:
+   put:
+      tags:
+        - UpdateCustomerBill
+      summary:  Update customer bill manually.
+      operationId: updateBill
+      parameters:
+        - name: customerId
+          in: path
+          description: Unique identifier of the customer
+          required: true
+          schema:
+            type: string
+        - name: billId
+          in: path
+          description: Unique identifier of the customer bill
+          required: true
+          schema:
+            type: string
+      requestBody:
+       content:
+          application/json:
+            schema:
+                $ref: '#/components/schemas/CustomerBill'
+      responses:
+        "200":
+          description: Reward point summary successfully retrieved.
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/schemas/CustomerBill'
+        "400":
+          description: Bad request
+        "403":
+          description: Unauthorized access
+   patch:
+      tags:
+        - PatchUpdateCustomerBill
+      summary: Patch Update customer bill manually.Used for approving/rejecting
+      operationId: patchUpdateBill
+      parameters:
+        - name: customerId
+          in: path
+          description: Unique identifier of the customer
+          required: true
+          schema:
+            type: string
+        - name: billId
+          in: path
+          description: Unique identifier of the customer bill
+          required: true
+          schema:
+            type: string
+      requestBody:
+       content:
+          application/json:
+            schema:
+                $ref: '#/components/schemas/CustomerBill'
+      responses:
+        "200":
+          description: Reward point summary successfully retrieved.
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/schemas/CustomerBill'
+        "400":
+          description: Bad request
+        "403":
+          description: Unauthorized access
+  /rewards/customer/{customerId}/bills:
+   get:
+      tags:
+        - GetCustomerBills
+      summary: get customer bills.
+      operationId: getBills
+      parameters:
+        - name: customerId
+          in: path
+          description: Unique identifier of the customer
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Reward point summary successfully retrieved.
+          content:
+            application/json:
+              schema:
+                type: array
+                items: 
+                  $ref: '#/components/schemas/CustomerBill'
+        "400":
+          description: Bad request
+        "403":
+          description: Unauthorized access
+  /rewards/customer/{customerId}/bills/upload:
+   post:
+      tags:
+        - UploadCustomerBill
+      summary: Upload customer bill manually..
+      operationId: uploadBill
+      parameters:
+        - name: customerId
+          in: path
+          description: Unique identifier of the customer
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties: 
+                file:
+                  type: string
+                  format: binary
+      responses:
+        "200":
+          description: Reward point summary successfully retrieved.
+          content:
+            application/json:
+              schema:
+                type: array
+                items: 
+                  $ref: '#/components/schemas/CustomerBill'
+        "400":
+          description: Bad request
+        "403":
+          description: Unauthorized access
   /rewards/customer/{customerId}/customer_rewards_summary:
     get: 
       tags:
@@ -1091,6 +1221,33 @@ components:
           type: integer
           description: Total number of redemptions for the voucher.
           example: 50
+    CustomerBill:
+      type: object
+      properties:
+        customerId:
+         type: string
+        customerBillId:
+         type: string
+        billImageUrl:
+         type: string
+        storeName:
+         type: string
+        storeId:
+         type: string
+        billAmount:
+         type: number
+        points:
+         type: integer
+        billStatus:
+         $ref: '#/components/schemas/CustomerBillStatusEnum'
+        rejectingReason:
+         type: string
+    CustomerBillStatusEnum:
+      type: string
+      enum:
+            - APPROVED
+            - REJECTED
+            - APPROVAL_PENDING
     RewardPointSummary:
       type: object
       properties:
