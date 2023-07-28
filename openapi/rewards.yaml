@@ -363,19 +363,36 @@ paths:
           description: Bad request
         "403":
           description: Unauthorized access
-  /rewards/customer/{customerId}/bills/bills/{billId}:
+  /rewards/customer/bills/{billId}:
+   get:
+      tags:
+        - CustomerBill
+      summary:  Get customer bill.
+      operationId: getBill
+      parameters:
+        - name: billId
+          in: path
+          description: Unique identifier of the customer bill
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Reward point summary successfully retrieved.
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/schemas/CustomerBill'
+        "400":
+          description: Bad request
+        "403":
+          description: Unauthorized access
    put:
       tags:
         - CustomerBill
       summary:  Update customer bill manually.
       operationId: updateBill
       parameters:
-        - name: customerId
-          in: path
-          description: Unique identifier of the customer
-          required: true
-          schema:
-            type: string
         - name: billId
           in: path
           description: Unique identifier of the customer bill
@@ -404,12 +421,6 @@ paths:
       summary: Patch Update customer bill manually.Used for approving/rejecting
       operationId: patchUpdateBill
       parameters:
-        - name: customerId
-          in: path
-          description: Unique identifier of the customer
-          required: true
-          schema:
-            type: string
         - name: billId
           in: path
           description: Unique identifier of the customer bill
@@ -432,19 +443,12 @@ paths:
           description: Bad request
         "403":
           description: Unauthorized access
-  /rewards/customer/{customerId}/bills:
+  /rewards/customer/bills:
    get:
       tags:
         - CustomerBill
       summary: get customer bills.
       operationId: getBills
-      parameters:
-        - name: customerId
-          in: path
-          description: Unique identifier of the customer
-          required: true
-          schema:
-            type: string
       responses:
         "200":
           description: Reward point summary successfully retrieved.
@@ -453,7 +457,7 @@ paths:
               schema:
                 type: array
                 items: 
-                  $ref: '#/components/schemas/CustomerBill'
+                  $ref: '#/components/schemas/CustomerBillLite'
         "400":
           description: Bad request
         "403":
@@ -478,8 +482,9 @@ paths:
               type: object
               properties: 
                 file:
-                  type: string
-                  format: binary
+                  type: array
+                  items: 
+                   format: binary
       responses:
         "200":
           description: Reward point summary successfully retrieved.
@@ -1221,6 +1226,15 @@ components:
           type: integer
           description: Total number of redemptions for the voucher.
           example: 50
+    CustomerBillLite:
+      type: object
+      properties:
+        customerBillId:
+         type: string
+        billImageUrl:
+         type: string
+        billStatus:
+         $ref: '#/components/schemas/CustomerBillStatusEnum'
     CustomerBill:
       type: object
       properties:
@@ -1228,8 +1242,10 @@ components:
          type: string
         customerBillId:
          type: string
-        billImageUrl:
-         type: string
+        images:
+         type: array
+         items: 
+          type: string
         storeName:
          type: string
         storeId:
