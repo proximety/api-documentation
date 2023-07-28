@@ -491,9 +491,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items: 
-                  $ref: '#/components/schemas/CustomerBill'
+                $ref: '#/components/schemas/CustomerBill'
         "400":
           description: Bad request
         "403":
