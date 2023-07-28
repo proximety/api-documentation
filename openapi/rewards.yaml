@@ -366,7 +366,7 @@ paths:
   /rewards/customer/{customerId}/bills/bills/{billId}:
    put:
       tags:
-        - UpdateCustomerBill
+        - CustomerBill
       summary:  Update customer bill manually.
       operationId: updateBill
       parameters:
@@ -400,7 +400,7 @@ paths:
           description: Unauthorized access
    patch:
       tags:
-        - PatchUpdateCustomerBill
+        - CustomerBill
       summary: Patch Update customer bill manually.Used for approving/rejecting
       operationId: patchUpdateBill
       parameters:
@@ -435,7 +435,7 @@ paths:
   /rewards/customer/{customerId}/bills:
    get:
       tags:
-        - GetCustomerBills
+        - CustomerBill
       summary: get customer bills.
       operationId: getBills
       parameters:
@@ -461,7 +461,7 @@ paths:
   /rewards/customer/{customerId}/bills/upload:
    post:
       tags:
-        - UploadCustomerBill
+        - CustomerBill
       summary: Upload customer bill manually..
       operationId: uploadBill
       parameters:
