@@ -363,6 +363,30 @@ paths:
           description: Bad request
         "403":
           description: Unauthorized access
+  /rewards/customer/bills/{billId}/verify:
+   get:
+      tags:
+        - CustomerBill
+      summary:  Verify customer bill.
+      operationId: verifyBill
+      parameters:
+        - name: billId
+          in: path
+          description: Unique identifier of the customer bill
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Reward point summary successfully retrieved.
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/schemas/SimilarTransactionsForBill'
+        "400":
+          description: Bad request
+        "403":
+          description: Unauthorized access
   /rewards/customer/bills/{billId}:
    get:
       tags:
@@ -1233,6 +1257,32 @@ components:
          type: string
         billStatus:
          $ref: '#/components/schemas/CustomerBillStatusEnum'
+    SimilarTransactionsForBill:
+      type: object
+      properties:
+        customerBillId:
+         type: string
+        claimedBillFound:
+         type: boolean
+        transactions:
+         type: array
+         items:
+           $ref: '#/components/schemas/RewardsTransaction'
+    RewardsTransaction:
+      type: object
+      properties:
+        customerId:
+         type: string
+        amount:
+          type: number
+        category:
+          type: string
+        time:
+          type: string
+        storeId:
+          type: string
+        storeName:
+          type: string
     CustomerBill:
       type: object
       properties:
