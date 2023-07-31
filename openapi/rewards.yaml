@@ -1256,6 +1256,14 @@ components:
          $ref: '#/components/schemas/CustomerBillStatusEnum'
         rejectingReason:
          type: string
+        invoiceNumber:
+         type: string
+        billDate:
+         type: string
+         example: '2020-10-22'
+        billUploadedDate:
+          example: '2020-10-22'
+          type: string
     CustomerBillStatusEnum:
       type: string
       enum:
