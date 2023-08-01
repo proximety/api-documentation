@@ -72,13 +72,13 @@ paths:
       summary: Movie schedule
       description: Retrieves the schedule of a given movie option.
       operationId: getSchedule
-      # parameters:
-      #   - name: mallId
-      #     in: query
-      #     description: The internal system identifier for the mall.
-      #     required: true
-      #     schema:
-      #       type: string
+      parameters:
+         - name: optionId
+           in: path
+           description: The internal system identifier for the moview option.
+           required: true
+           schema:
+            type: string
       responses:
         "200":
           description: Successful operation
@@ -397,7 +397,15 @@ components:
           description: To indicate if booking is open for the movie.
         hasPremiumExperience:
           type: boolean
-          description: Is premium experience available for the movie.       
+          description: Is premium experience available for the movie.
+        logoUrl:
+          type: string
+        bannerUrl:
+          type: string
+        trailers:
+         type: array
+         items:
+           $ref: '#/components/schemas/Trailer'
     MovieDetails:
       type: object
       required:
