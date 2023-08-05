@@ -375,6 +375,13 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/CustomerBill'
+            example:
+              {
+                "billAmount": 100,
+                "storeId":"1234",
+                "invoiceNumber": "123",
+                "billDate": ""
+              }
        required: true
       responses:
         "200":
@@ -416,34 +423,6 @@ paths:
         - CustomerBill
       summary:  Update customer bill manually.
       operationId: updateBill
-      parameters:
-        - name: billId
-          in: path
-          description: Unique identifier of the customer bill
-          required: true
-          schema:
-            type: string
-      requestBody:
-       content:
-          application/json:
-            schema:
-                $ref: '#/components/schemas/CustomerBill'
-      responses:
-        "200":
-          description: Reward point summary successfully retrieved.
-          content:
-            application/json:
-              schema:
-                  $ref: '#/components/schemas/CustomerBill'
-        "400":
-          description: Bad request
-        "403":
-          description: Unauthorized access
-   patch:
-      tags:
-        - CustomerBill
-      summary: Patch Update customer bill manually.Used for approving/rejecting
-      operationId: patchUpdateBill
       parameters:
         - name: billId
           in: path
@@ -1253,17 +1232,16 @@ components:
       properties:
         customerBillId:
          type: string
-        billImageUrl:
+        billUploadedDate:
+         type : string
+         example: '2020-10-22'
+        storeName:
          type: string
         billStatus:
          $ref: '#/components/schemas/CustomerBillStatusEnum'
     SimilarTransactionsForBill:
       type: object
       properties:
-        customerBillId:
-         type: string
-        claimedBillFound:
-         type: boolean
         transactions:
          type: array
          items:
