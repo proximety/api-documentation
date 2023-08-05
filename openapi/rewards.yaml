@@ -363,19 +363,19 @@ paths:
           description: Bad request
         "403":
           description: Unauthorized access
-  /rewards/customer/bills/{billId}/verify:
-   get:
+  /rewards/customer-bills/verify:
+   post:
       tags:
         - CustomerBill
       summary:  Verify customer bill.
       operationId: verifyBill
-      parameters:
-        - name: billId
-          in: path
-          description: Unique identifier of the customer bill
-          required: true
-          schema:
-            type: string
+      requestBody:
+       description: The Voucher Details to be Updated. 
+       content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomerBill'
+       required: true
       responses:
         "200":
           description: Reward point summary successfully retrieved.
