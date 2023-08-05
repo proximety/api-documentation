@@ -363,7 +363,7 @@ paths:
           description: Bad request
         "403":
           description: Unauthorized access
-  /rewards/customer-bills/verify:
+  /rewards/customer_bills/verify:
    post:
       tags:
         - CustomerBill
@@ -639,7 +639,11 @@ paths:
             type: string
       responses:
         "200":
-          description: Coupon issued
+          description: Returns the issued coupon deatils
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IssuedCodeResponseDTO'
         "400":
           description: Not a valid coupon
         "406":
@@ -1556,6 +1560,19 @@ components:
       properties:
         winningProbability:
           type: integer
+    IssuedCodeResponseDTO: 
+      type: object
+      properties:   
+        storeName:
+         type: string
+        logoUrl:
+         type: string
+        codeType:
+         type: string
+        title:
+         type: string
+        status:
+         type: string
     ScratchCardSearchRequest:  
       type: object
       properties:   
