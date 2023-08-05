@@ -461,6 +461,13 @@ paths:
                 type: array
                 items: 
                   $ref: '#/components/schemas/CustomerBillLite'
+                example:
+                  {
+                     "customerBillId": "123",
+                     "billUploadedDate":"",
+                     "billStatus": "APPROVED",
+  	                 "storeName":"test"
+                  }
         "400":
           description: Bad request
         "403":
