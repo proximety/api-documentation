@@ -2569,6 +2569,8 @@ components:
           type: string
           example: "123"
           description: Restaurant Id.
+        restaurantLogoUrl:
+          type: string
         restaurantName:
           type: string
           example: Paragon
