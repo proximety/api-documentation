@@ -452,6 +452,13 @@ paths:
         - CustomerBill
       summary: get customer bills.
       operationId: getBills
+      parameters:
+        - name: customerId
+          in: query
+          description: Unique identifier of the customer 
+          required: true
+          schema:
+            type: string
       responses:
         "200":
           description: Reward point summary successfully retrieved.
