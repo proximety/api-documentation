@@ -147,7 +147,9 @@ paths:
                         "currencyCode": "INR",
                         "value": 1.0
                     },
-                    "status": "FAILED"
+                    "status": "FAILED",
+                    "rewardPoints":32,
+                    "scratchCardCouponId":"8hd9014jjj8210"
                 }
   # /transactions/status/_query:
   #   post: 
@@ -278,6 +280,13 @@ components:
             - INITIATED 
             - SUCCESS 
             - FAILED
+        rewardPoints:
+          type: number
+          description: The number of reward points earned as part of the transaction
+          example: 25
+        scratchCardCouponId:
+          type: string
+          description: The internal system identifier for the scratch card
     UPIValidationResponse: 
       type: object 
       properties:
