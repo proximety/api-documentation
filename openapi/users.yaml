@@ -1078,6 +1078,13 @@ paths:
         - Rewards
       summary: Get rewards summary
       description: Retrieves a summary of the various reward points earned by the user.
+      parameters:
+        - name: userId
+          in: path
+          description: The internal system identifier of the user for whom the new alert needs to be created.
+          required: true
+          schema:
+            type: string
       responses:
         200:
           description: Successful operation
@@ -1306,6 +1313,8 @@ components:
               type: string
               description: The zone name for the parking lot.
               example: A0
+            becoPointId:
+              type: string
             floor:
               $ref: '#/components/schemas/FloorDetails'
     FloorDetails:
