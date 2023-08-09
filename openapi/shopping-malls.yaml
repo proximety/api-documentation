@@ -542,6 +542,8 @@ components:
           type: string
           description: The display name for the parking lot.
           example: A0-1
+        becoPointId:
+          type: string
     ShoppingMallDetails:
       type: object
       description: The details of a shopping mall.
