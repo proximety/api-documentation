@@ -197,6 +197,14 @@ components:
           type: string
           description: The html formatted terms and conditions associated with using the app.
           example: 1.This voucher is valid until Six months from the date of issuance, and can be redeemed at any Apparel Group stores in UAE\r\n2. This voucher is non-refundable and cannot be exchanged for cash in part or full and is valid for a single transaction only\r\n3. This voucher is not valid during sale or in conjunction with any special promotion\r\n4. Club Apparel points cannot be availed or redeemed while using this voucher\r\n5. Strictly no extension of the expiry date from the date of issue will be allowed
+        privacyPolicy:
+          type: string
+        frequentlyAskedQuestions:
+          $ref: '#/components/schemas/FAQList'
+    FAQList: 
+      type: object
+      description: Frequently asked question list object
+      properties:
         frequentlyAskedQuestions:
           type: array
           items:
