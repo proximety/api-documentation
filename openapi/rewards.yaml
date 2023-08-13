@@ -1298,6 +1298,8 @@ components:
          type: number
         points:
          type: integer
+        description:
+          type: string
         billStatus:
          $ref: '#/components/schemas/CustomerBillStatusEnum'
         rejectingReason:
@@ -1615,5 +1617,3 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ScratchCardResponseDTO'
-
-    
