@@ -582,7 +582,7 @@ paths:
                   imageUrl:
                     type: array
                     items: 
-                      $ref: '#/components/schemas/OfferCategory'
+                      $ref: '#/components/schemas/OfferCategoryDTO'
   /offers/images:
     post: 
       tags:
@@ -2572,7 +2572,13 @@ components:
                     "endDate": "2022-06-15",
                     "termsAndConditions": "This voucher is valid only in exclusive stores of Adidas."
                   }
-                
+    OfferCategoryDTO:
+      type: object
+      properties:
+        category:
+         $ref: '#/components/schemas/OfferCategory'
+        imageUrl: 
+          type: string
     OfferCategory:
       type: string 
       enum: 
