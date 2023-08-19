@@ -725,6 +725,33 @@ paths:
               schema:
                 type: object
                 $ref: '#/components/schemas/StoreSearchResponse'
+  /store/store_categories:
+    get: 
+      tags:
+        - Stores
+      summary: Get active Store categories
+      description: Get  Store categories
+      operationId: getStoreCategories
+      parameters:
+        - name: Authorization
+          in: header
+          description: The authentication bearer token.
+          required: true
+          example: Bearer asd.js2jd9a.gC6paXtNOg0OZL4-adsd-asd
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  imageUrl:
+                    type: array
+                    items: 
+                      $ref: '#/components/schemas/StoreCategoryDTO'
   # /stores/{storeId}/store-image:
   #   put:
   #     tags:
@@ -1044,6 +1071,35 @@ paths:
   #              }
 components:
   schemas:
+    StoreCategoryDTO:
+      type: object 
+      properties:
+        imageUrl:
+          type: string
+        category: 
+          $ref: '#/components/schemas/StoreCategory'
+    StoreCategory:
+      type: string 
+      enum: 
+            - FOOTWEAR
+            - APPAREL
+            - JEWELLERY
+            - LUXURY
+            - ELECTRONICS
+            - COSMETICS
+            - WATCHES
+            - DECOR
+            - FASHION_MEN
+            - FASHION_WOMEN
+            - FASHION_KIDS
+            - TOYS
+            - BOOKS
+            - SALON_AND_SPA
+            - BAGS_AND_LUGGAGE
+            - DEPARTMENT_STORE
+            - HYPERMARKET
+            - FASHION
+            - BEAUTY
     PromotedBanners:
       type: object 
       description: The list of promoted banners. (Max size - 5)
