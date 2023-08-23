@@ -556,7 +556,7 @@ paths:
                   "detail": "The specified access token has expired. Please try again with an active access token.",
                   "tags":[]
                 }
-  /offers/offer_categories:
+  /offers/offer-categories:
     get: 
       tags:
         - Offers
