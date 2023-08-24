@@ -190,7 +190,7 @@ paths:
                         "appFeatures": {
                             "movieBooking": "ENABLED",
                             "parkingNavigation": "DISABLED",
-                            "foodPrder": "ENABLED",
+                            "foodOrder": "ENABLED",
                             "scanAndPay": "ENABLED"
                       }
                     }
