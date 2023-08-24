@@ -157,6 +157,43 @@ paths:
                   type: array
                   items:
                     $ref: '#/components/schemas/ShoppingMallDetails'
+  /shopping-malls/configurations:
+    get: 
+      tags:
+        - "App Settings"
+      summary: Get app configurations 
+      description: Retrieves the app's configurations and status of different features. 
+      operationId: getConfig
+      parameters:
+        - name: Authorization
+          in: header
+          description: The authentication bearer token.
+          required: true
+          example: Bearer asd.js2jd9a.gC6paXtNOg0OZL4-adsd-asd
+          schema:
+            type: string
+        - name: mallId
+          in: query
+          required: true 
+          example: HILITE
+          schema:
+           type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                  type: object
+                  $ref: '#/components/schemas/AppConfig'
+              example: {
+                        "appFeatures": {
+                            "movieBooking": "ENABLED",
+                            "parkingNavigation": "DISABLED",
+                            "foodPrder": "ENABLED",
+                            "scanAndPay": "ENABLED"
+                      }
+                    }
   /parking-lots:
     get: 
       tags:
@@ -185,6 +222,33 @@ paths:
 
 components:
   schemas:
+    AppConfig:
+      type: object
+      properties:
+        appFeatures:
+          type: object
+          description: The status of various features within the app. Indicates whether a feature is turned on or off.
+          properties:
+            movieBooking:
+              type: string
+              enum:
+                - ENABLED
+                - DISABLED
+            parkingNavigation:
+              type: string
+              enum:
+                - ENABLED
+                - DISABLED
+            foodPrder:
+              type: string
+              enum:
+                - ENABLED
+                - DISABLED
+            scanAndPay:
+              type: string
+              enum:
+                - ENABLED
+                - DISABLED
     GlobalData: 
       type: object
       description: The various global data associated with the sopping mall app. 
