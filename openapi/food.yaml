@@ -3202,6 +3202,8 @@ components:
           type: number
           example: 5 
           description: Quantity.
+        vegNonVeg:
+          $ref: '#/components/schemas/VegNonVegEnum'
         items:
           type: array
           items:
