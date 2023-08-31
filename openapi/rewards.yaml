@@ -1400,6 +1400,10 @@ components:
           type: integer
           description: Daily limit for issuing scratch card
           example: 15
+        maxLimit:
+          type: integer
+          description: Max limit for issuing scratch card
+          example: 15
         minPurchaseValue:
           type: number
           description: Minimum purchase amount eligible for scratch card.
@@ -1462,6 +1466,10 @@ components:
         dailyLimit:
           type: integer
           description: Daily limit for issuing scratch card
+          example: 15
+        maxLimit:
+          type: integer
+          description: Max limit for issuing scratch card
           example: 15
         minPurchaseValue:
           type: number
