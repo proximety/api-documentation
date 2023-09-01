@@ -1535,6 +1535,10 @@ components:
           type: string
         status:
           type: string
+        couponIssued:
+          type: boolean
+          description: Indicates if coupon is issued.
+          example: true
         scratchCard:
           $ref: '#/components/schemas/ScratchCardResponseDTO'
     CouponResponseDTO:
