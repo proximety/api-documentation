@@ -124,6 +124,14 @@ paths:
       summary: User logout
       description: Logs out the specified user.
       operationId: logoutFoodCourt
+      parameters:
+        - name: token
+          required: false
+          in: query
+          description: The FCM token id for the user that's logging out.
+          example: "gga55afgas"
+          schema:
+            type: string
       responses:
         "200":
           description: Successful operation
