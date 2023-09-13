@@ -328,242 +328,132 @@ components:
                 "parkingLots": [
                     {
                         "floor": {
-                "id": 1,
-                "name": "First floor"
-            },
+                            "id": -1,
+                            "name": "Basement"
+                        },
                         "zones": [
                             {
-                                "zone": "A0",
-                                "lots": [
-                                    {
-                                        "lotId": "duhh17321783987189",
-                                        "name": "A1-1"
-                                    },
-                                    {
-                                        "lotId": "duhh17321783987189",
-                                        "name": "A1-2"
-                                    },
-                                    {
-                                        "lotId": "duhh17321783987189",
-                                        "name": "A1-3"
-                                    },
-                                    {
-                                        "lotId": "duhh17321783987189",
-                                        "name": "A1-4"
-                                    },
-                                    {
-                                        "lotId": "duhh17321783987189",
-                                        "name": "A1-5"
-                                    },
-                                    {
-                                        "lotId": "duhh17321783987189",
-                                        "name": "A1-6"
-                                    },
-                                    {
-                                        "lotId": "duhh17321783987189",
-                                        "name": "A1-7"
-                                    },
-                                    {
-                                        "lotId": "duhh17321783987189",
-                                        "name": "A1-8"
-                                    },
-                                    {
-                                        "lotId": "duhh17321783987189",
-                                        "name": "A1-9"
-                                    },
-                                    {
-                                        "lotId": "duhh17321783987189",
-                                        "name": "A1-10"
-                                    },
-                                    {
-                                        "lotId": "duhh17321783987189",
-                                        "name": "A1-11"
-                                    },
-                                    {
-                                        "lotId": "duhh17321783987189",
-                                        "name": "A1-12"
-                                    },
-                                    {
-                                        "lotId": "duhh17321783987189",
-                                        "name": "A1-13"
-                                    }
-                                ]
+                                "lotId": "1f428d3f-2f6c-4f6e-a7ce-baebbc98252c",
+                                "name": "1",
+                                "becoPointId": "testId"
                             },
                             {
-                                "zone": "B1",
-                                "lots": [
-                                    {
-                                        "lotId": "duhh17321783987189",
-                                        "name": "B1-1"
-                                    },
-                                    {
-                                        "lotId": "duhh17321783987189",
-                                        "name": "B1-2"
-                                    },
-                                    {
-                                        "lotId": "duhh17321783987189",
-                                        "name": "B1-3"
-                                    },
-                                    {
-                                        "lotId": "duhh17321783987189",
-                                        "name": "B1-4"
-                                    },
-                                    {
-                                        "lotId": "duhh17321783987189",
-                                        "name": "B1-5"
-                                    },
-                                    {
-                                        "lotId": "duhh17321783987189",
-                                        "name": "B1-6"
-                                    },
-                                    {
-                                        "lotId": "duhh17321783987189",
-                                        "name": "A1-7"
-                                    },
-                                    {
-                                        "lotId": "duhh17321783987189",
-                                        "name": "B1-8"
-                                    },
-                                    {
-                                        "lotId": "duhh17321783987189",
-                                        "name": "B1-9"
-                                    },
-                                    {
-                                        "lotId": "duhh17321783987189",
-                                        "name": "B1-10"
-                                    },
-                                    {
-                                        "lotId": "duhh17321783987189",
-                                        "name": "B1-11"
-                                    },
-                                    {
-                                        "lotId": "duhh17321783987189",
-                                        "name": "B1-12"
-                                    },
-                                    {
-                                        "lotId": "duhh17321783987189",
-                                        "name": "B1-13"
-                                    }
-                                ]
+                                "lotId": "d87c5a9a-0c5c-4aee-b40f-3d9e5d5e3c1d",
+                                "name": "2",
+                                "becoPointId": "testId"
+                            },
+                            {
+                                "lotId": "4f429cb1-8a49-49b7-8a72-89a8fd30c7c6",
+                                "name": "3",
+                                "becoPointId": "testId"
+                            },
+                            {
+                                "lotId": "ac9f69b4-8114-464b-bb56-8a6c7e16d978",
+                                "name": "4",
+                                "becoPointId": "testId"
+                            },
+                            {
+                                "lotId": "52dd36bc-c670-4fc6-95f5-6e36d37f4335",
+                                "name": "5",
+                                "becoPointId": "testId"
+                            },
+                            {
+                                "lotId": "21b34314-3b3a-4eb9-9d4c-36afab4e51a2",
+                                "name": "6",
+                                "becoPointId": "testId"
                             }
                         ]
                     },
                     {
-                        "floor": "FIRST_FLOOR",
+                        "floor": {
+                            "id": -2,
+                            "name": "Basement 2"
+                        },
                         "zones": [
                             {
-                                "zone": "A0",
-                                "lots": [
-                                    {
-                                        "lotId": "duhh17321783987189",
-                                        "name": "A1-1"
-                                    },
-                                    {
-                                        "lotId": "duhh17321783987189",
-                                        "name": "A1-2"
-                                    },
-                                    {
-                                        "lotId": "duhh17321783987189",
-                                        "name": "A1-3"
-                                    },
-                                    {
-                                        "lotId": "duhh17321783987189",
-                                        "name": "A1-4"
-                                    },
-                                    {
-                                        "lotId": "duhh17321783987189",
-                                        "name": "A1-5"
-                                    },
-                                    {
-                                        "lotId": "duhh17321783987189",
-                                        "name": "A1-6"
-                                    },
-                                    {
-                                        "lotId": "duhh17321783987189",
-                                        "name": "A1-7"
-                                    },
-                                    {
-                                        "lotId": "duhh17321783987189",
-                                        "name": "A1-8"
-                                    },
-                                    {
-                                        "lotId": "duhh17321783987189",
-                                        "name": "A1-9"
-                                    },
-                                    {
-                                        "lotId": "duhh17321783987189",
-                                        "name": "A1-10"
-                                    },
-                                    {
-                                        "lotId": "duhh17321783987189",
-                                        "name": "A1-11"
-                                    },
-                                    {
-                                        "lotId": "duhh17321783987189",
-                                        "name": "A1-12"
-                                    },
-                                    {
-                                        "lotId": "duhh17321783987189",
-                                        "name": "A1-13"
-                                    }
-                                ]
+                                "lotId": "1f328d3f-2f6c-4f6e-a7ce-baebbc98252c",
+                                "name": "1",
+                                "becoPointId": "testId"
                             },
                             {
-                                "zone": "B1",
-                                "lots": [
-                                    {
-                                        "lotId": "duhh17321783987189",
-                                        "name": "B1-1"
-                                    },
-                                    {
-                                        "lotId": "duhh17321783987189",
-                                        "name": "B1-2"
-                                    },
-                                    {
-                                        "lotId": "duhh17321783987189",
-                                        "name": "B1-3"
-                                    },
-                                    {
-                                        "lotId": "duhh17321783987189",
-                                        "name": "B1-4"
-                                    },
-                                    {
-                                        "lotId": "duhh17321783987189",
-                                        "name": "B1-5"
-                                    },
-                                    {
-                                        "lotId": "duhh17321783987189",
-                                        "name": "B1-6"
-                                    },
-                                    {
-                                        "lotId": "duhh17321783987189",
-                                        "name": "A1-7"
-                                    },
-                                    {
-                                        "lotId": "duhh17321783987189",
-                                        "name": "B1-8"
-                                    },
-                                    {
-                                        "lotId": "duhh17321783987189",
-                                        "name": "B1-9"
-                                    },
-                                    {
-                                        "lotId": "duhh17321783987189",
-                                        "name": "B1-10"
-                                    },
-                                    {
-                                        "lotId": "duhh17321783987189",
-                                        "name": "B1-11"
-                                    },
-                                    {
-                                        "lotId": "duhh17321783987189",
-                                        "name": "B1-12"
-                                    },
-                                    {
-                                        "lotId": "duhh17321783987189",
-                                        "name": "B1-13"
-                                    }
-                                ]
+                                "lotId": "d83c5a9a-0c5c-4aee-b40f-3d9e5d5e3c1d",
+                                "name": "2",
+                                "becoPointId": "testId"
+                            },
+                            {
+                                "lotId": "4f329cb1-8a49-49b7-8a72-89a8fd30c7c6",
+                                "name": "3",
+                                "becoPointId": "testId"
+                            },
+                            {
+                                "lotId": "ac3f69b4-8114-464b-bb56-8a6c7e16d978",
+                                "name": "4",
+                                "becoPointId": "testId"
+                            },
+                            {
+                                "lotId": "523d36bc-c670-4fc6-95f5-6e36d37f4335",
+                                "name": "5",
+                                "becoPointId": "testId"
+                            },
+                            {
+                                "lotId": "21334314-3b3a-4eb9-9d4c-36afab4e51a2",
+                                "name": "6",
+                                "becoPointId": "testId"
+                            }
+                        ]
+                    },
+                    {
+                        "floor": null,
+                        "zones": [
+                            {
+                                "lotId": "1f424d3f-2f6c-4f6e-a7ce-baebbc98252c",
+                                "name": "1",
+                                "becoPointId": "testId"
+                            },
+                            {
+                                "lotId": "d87c4a9a-0c5c-4aee-b40f-3d9e5d5e3c1d",
+                                "name": "2",
+                                "becoPointId": "testId"
+                            },
+                            {
+                                "lotId": "4f424cb1-8a49-49b7-8a72-89a8fd30c7c6",
+                                "name": "3",
+                                "becoPointId": "testId"
+                            },
+                            {
+                                "lotId": "ac9469b4-8114-464b-bb56-8a6c7e16d978",
+                                "name": "4",
+                                "becoPointId": "testId"
+                            },
+                            {
+                                "lotId": "52d436bc-c670-4fc6-95f5-6e36d37f4335",
+                                "name": "5",
+                                "becoPointId": "testId"
+                            },
+                            {
+                                "lotId": "21b34414-323a-4eb9-9d4c-36afab4e51a2",
+                                "name": "6",
+                                "becoPointId": "testId"
+                            },
+                            {
+                                "lotId": "21b34414-333a-4eb9-9d4c-36afab4e51a2",
+                                "name": "7",
+                                "becoPointId": "testId"
+                            },
+                            {
+                                "lotId": "21b34414-343a-4eb9-9d4c-36afab4e51a2",
+                                "name": "8",
+                                "becoPointId": "testId"
+                            },
+                            {
+                                "lotId": "21b34414-353a-4eb9-9d4c-36afab4e51a2",
+                                "name": "9",
+                                "becoPointId": "testId"
+                            },
+                            {
+                                "lotId": "21b34414-363a-4eb9-9d4c-36afab4e51a2",
+                                "name": "10",
+                                "becoPointId": "testId"
                             }
                         ]
                     }
@@ -593,7 +483,7 @@ components:
           type: array
           description: The list of zones in a floor.
           items:
-            $ref: '#/components/schemas/ParkingLotZone'
+            $ref: '#/components/schemas/ParkingLot'
     ParkingLotZone:
       type: object
       description: The details of a parking lot zone.
