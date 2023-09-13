@@ -212,6 +212,12 @@ paths:
       tags:
         - Global data
       summary: Fetch global data
+      parameters:
+        - name: includeHelpTextOnly
+          in: query
+          required: false 
+          schema:
+           type: boolean
       responses:
         200:
           description: OK
