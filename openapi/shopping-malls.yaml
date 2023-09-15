@@ -212,12 +212,6 @@ paths:
       tags:
         - Global data
       summary: Fetch global data
-      parameters:
-        - name: includeHelpTextOnly
-          in: query
-          required: false 
-          schema:
-           type: boolean
       responses:
         200:
           description: OK
@@ -225,9 +219,48 @@ paths:
             application/json:
               schema: 
                 $ref: '#/components/schemas/GlobalData'
-
+  /shopping-malls/help-text:
+    get: 
+      tags:
+        - Help Text
+      summary: Get help text
+      responses:
+        200:
+          description: OK
+          content: 
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/HelpTextDTO'
+    post: 
+      tags:
+        - Help Text
+      summary: Update help text
+      requestBody:
+         required: true
+         content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HelpTextDTO'
+      responses:
+        200:
+          description: OK
+          content: 
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/HelpTextDTO'
 components:
   schemas:
+    HelpTextDTO:
+      type: object
+      properties:
+        appHomeText:
+         type: string
+        rewardsHomeText:
+         type: string
+        scratchcardsHomeText:
+         type: string
+        moviesHomeText:
+         type: string
     AppConfig:
       type: object
       properties:
@@ -323,143 +356,169 @@ components:
         type: array
         description: The list of parking lots available in a shopping mall.
         items: 
-          $ref: '#/components/schemas/ParkingLotFloor'
-     example: {
-                "parkingLots": [
-                    {
-                        "floor": {
-                            "id": -1,
-                            "name": "Basement"
-                        },
-                        "zones": [
-                            {
-                                "lotId": "1f428d3f-2f6c-4f6e-a7ce-baebbc98252c",
-                                "name": "1",
-                                "becoPointId": "testId"
-                            },
-                            {
-                                "lotId": "d87c5a9a-0c5c-4aee-b40f-3d9e5d5e3c1d",
-                                "name": "2",
-                                "becoPointId": "testId"
-                            },
-                            {
-                                "lotId": "4f429cb1-8a49-49b7-8a72-89a8fd30c7c6",
-                                "name": "3",
-                                "becoPointId": "testId"
-                            },
-                            {
-                                "lotId": "ac9f69b4-8114-464b-bb56-8a6c7e16d978",
-                                "name": "4",
-                                "becoPointId": "testId"
-                            },
-                            {
-                                "lotId": "52dd36bc-c670-4fc6-95f5-6e36d37f4335",
-                                "name": "5",
-                                "becoPointId": "testId"
-                            },
-                            {
-                                "lotId": "21b34314-3b3a-4eb9-9d4c-36afab4e51a2",
-                                "name": "6",
-                                "becoPointId": "testId"
-                            }
-                        ]
-                    },
-                    {
-                        "floor": {
-                            "id": -2,
-                            "name": "Basement 2"
-                        },
-                        "zones": [
-                            {
-                                "lotId": "1f328d3f-2f6c-4f6e-a7ce-baebbc98252c",
-                                "name": "1",
-                                "becoPointId": "testId"
-                            },
-                            {
-                                "lotId": "d83c5a9a-0c5c-4aee-b40f-3d9e5d5e3c1d",
-                                "name": "2",
-                                "becoPointId": "testId"
-                            },
-                            {
-                                "lotId": "4f329cb1-8a49-49b7-8a72-89a8fd30c7c6",
-                                "name": "3",
-                                "becoPointId": "testId"
-                            },
-                            {
-                                "lotId": "ac3f69b4-8114-464b-bb56-8a6c7e16d978",
-                                "name": "4",
-                                "becoPointId": "testId"
-                            },
-                            {
-                                "lotId": "523d36bc-c670-4fc6-95f5-6e36d37f4335",
-                                "name": "5",
-                                "becoPointId": "testId"
-                            },
-                            {
-                                "lotId": "21334314-3b3a-4eb9-9d4c-36afab4e51a2",
-                                "name": "6",
-                                "becoPointId": "testId"
-                            }
-                        ]
-                    },
-                    {
-                        "floor": null,
-                        "zones": [
-                            {
-                                "lotId": "1f424d3f-2f6c-4f6e-a7ce-baebbc98252c",
-                                "name": "1",
-                                "becoPointId": "testId"
-                            },
-                            {
-                                "lotId": "d87c4a9a-0c5c-4aee-b40f-3d9e5d5e3c1d",
-                                "name": "2",
-                                "becoPointId": "testId"
-                            },
-                            {
-                                "lotId": "4f424cb1-8a49-49b7-8a72-89a8fd30c7c6",
-                                "name": "3",
-                                "becoPointId": "testId"
-                            },
-                            {
-                                "lotId": "ac9469b4-8114-464b-bb56-8a6c7e16d978",
-                                "name": "4",
-                                "becoPointId": "testId"
-                            },
-                            {
-                                "lotId": "52d436bc-c670-4fc6-95f5-6e36d37f4335",
-                                "name": "5",
-                                "becoPointId": "testId"
-                            },
-                            {
-                                "lotId": "21b34414-323a-4eb9-9d4c-36afab4e51a2",
-                                "name": "6",
-                                "becoPointId": "testId"
-                            },
-                            {
-                                "lotId": "21b34414-333a-4eb9-9d4c-36afab4e51a2",
-                                "name": "7",
-                                "becoPointId": "testId"
-                            },
-                            {
-                                "lotId": "21b34414-343a-4eb9-9d4c-36afab4e51a2",
-                                "name": "8",
-                                "becoPointId": "testId"
-                            },
-                            {
-                                "lotId": "21b34414-353a-4eb9-9d4c-36afab4e51a2",
-                                "name": "9",
-                                "becoPointId": "testId"
-                            },
-                            {
-                                "lotId": "21b34414-363a-4eb9-9d4c-36afab4e51a2",
-                                "name": "10",
-                                "becoPointId": "testId"
-                            }
-                        ]
+          $ref: '#/components/schemas/ParkingLot'
+     example: 
+      {
+    "parkingLots": [
+        {
+            "floor": {
+                "id": -1,
+                "name": "Basement 1"
+            },
+            "zones": [
+                {
+                    "zoneId": "zoneId1",
+                    "displayName": "Basement 1, Zone 1",
+                    "zoneKey": "B1Z1",
+                    "name": "Zone 1",
+                    "becoPointId": "becoPointId1",
+                    "floor": {
+                        "id": -1,
+                        "name": "Basement 1"
                     }
-                ]
-            }
-    ParkingLotFloor:
+                },
+                {
+                    "zoneId": "zoneId2",
+                    "displayName": "Basement 1, Zone 2",
+                    "zoneKey": "B1Z2",
+                    "name": "Zone 2",
+                    "becoPointId": "becoPointId2",
+                    "floor": {
+                        "id": -1,
+                        "name": "Basement 1"
+                    }
+                },
+                {
+                    "zoneId": "zoneId3",
+                    "displayName": "Basement 1, Zone 3",
+                    "zoneKey": "B1Z3",
+                    "name": "Zone 3",
+                    "becoPointId": "becoPointId3",
+                    "floor": {
+                        "id": -1,
+                        "name": "Basement 1"
+                    }
+                },
+                {
+                    "zoneId": "zoneId4",
+                    "displayName": "Basement 1, Zone 4",
+                    "zoneKey": "B1Z4",
+                    "name": "Zone 4",
+                    "becoPointId": "becoPointId4",
+                    "floor": {
+                        "id": -1,
+                        "name": "Basement 1"
+                    }
+                }
+            ]
+        },
+        {
+            "floor": {
+                "id": -2,
+                "name": "Basement 2"
+            },
+            "zones": [
+                {
+                    "zoneId": "zoneId1",
+                    "displayName": "Basement 2, Zone 1",
+                    "zoneKey": "B2Z1",
+                    "name": "Zone 1",
+                    "becoPointId": "becoPointId1",
+                    "floor": {
+                        "id": -2,
+                        "name": "Basement 2"
+                    }
+                },
+                {
+                    "zoneId": "zoneId2",
+                    "displayName": "Basement 2, Zone 2",
+                    "zoneKey": "B2Z2",
+                    "name": "Zone 2",
+                    "becoPointId": "becoPointId2",
+                    "floor": {
+                        "id": -2,
+                        "name": "Basement 2"
+                    }
+                },
+                {
+                    "zoneId": "zoneId3",
+                    "displayName": "Basement 2, Zone 3",
+                    "zoneKey": "B2Z3",
+                    "name": "Zone 3",
+                    "becoPointId": "becoPointId3",
+                    "floor": {
+                        "id": -2,
+                        "name": "Basement 2"
+                    }
+                },
+                {
+                    "zoneId": "zoneId4",
+                    "displayName": "Basement 2, Zone 4",
+                    "zoneKey": "B2Z4",
+                    "name": "Zone 4",
+                    "becoPointId": "becoPointId4",
+                    "floor": {
+                        "id": -2,
+                        "name": "Basement 2"
+                    }
+                }
+            ]
+        },
+        {
+            "floor": {
+                "id": -3,
+                "name": "Basement 3"
+            },
+            "zones": [
+                {
+                    "zoneId": "zoneId1",
+                    "displayName": "Basement 3, Zone 1",
+                    "zoneKey": "B3Z1",
+                    "name": "Zone 1",
+                    "becoPointId": "becoPointId1",
+                    "floor": {
+                        "id": -3,
+                        "name": "Basement 3"
+                    }
+                },
+                {
+                    "zoneId": "zoneId2",
+                    "displayName": "Basement 3, Zone 1",
+                    "zoneKey": "B3Z2",
+                    "name": "Zone 2",
+                    "becoPointId": "becoPointId2",
+                    "floor": {
+                        "id": -3,
+                        "name": "Basement 3"
+                    }
+                },
+                {
+                    "zoneId": "zoneId3",
+                    "displayName": "Basement 3, Zone 1",
+                    "zoneKey": "B3Z3",
+                    "name": "Zone 3",
+                    "becoPointId": "becoPointId3",
+                    "floor": {
+                        "id": -3,
+                        "name": "Basement 3"
+                    }
+                },
+                {
+                    "zoneId": "zoneId4",
+                    "displayName": "Basement 3, Zone 1",
+                    "zoneKey": "B3Z4",
+                    "name": "Zone 4",
+                    "becoPointId": "becoPointId4",
+                    "floor": {
+                        "id": -3,
+                        "name": "Basement 3"
+                    }
+                }
+            ]
+        }
+    ]
+}
+    ParkingLot:
       type: object
       description: The parking lot details grouped by floor.
       properties:
@@ -483,35 +542,43 @@ components:
           type: array
           description: The list of zones in a floor.
           items:
-            $ref: '#/components/schemas/ParkingLot'
-    ParkingLotZone:
-      type: object
-      description: The details of a parking lot zone.
-      properties:
-        zone: 
-          type: string
-          description: The zone in which the parking lot group is situated.
-          example: A0
-          
-        lots: 
-          type: array
-          description: TThe list of parking lots in the specified zone.
-          items:
-            $ref: '#/components/schemas/ParkingLot'
-    ParkingLot: 
+            $ref: '#/components/schemas/ParkingZone'
+    ParkingZone: 
       type: object
       description: The details of a parking lot.
       properties:
-        lotId: 
+        zoneId: 
           type: string
-          description: The internal system identifier for the parking lot.
+          description: The internal system identifier for the parking zoe.
           example: "adasddad.87289791"
-        name: 
+        displayName: 
           type: string
           description: The display name for the parking lot.
-          example: A0-1
+          example: Basement 1, Zone 1
+        name: 
+          type: string
+          description: The name for the parking lot.
+          example: Zone 1
+        zoneKey:
+         type: string
         becoPointId:
           type: string
+        floor: 
+          type: string
+          example: GROUND_FLOOR
+          enum:
+            - GROUND_FLOOR
+            - FIRST_FLOOR
+            - SECOND_FLOOR
+            - THIRD_FLOOR
+            - FOURTH_FLOOR
+            - FIFTH_FLOOR
+            - SIXTH_FLOOR
+            - SEVENTH_FLOOR
+            - EIGHTH_FLOOR
+            - MINUS_ONE
+            - MINUS_TWO
+            - DEFAULT
     ShoppingMallDetails:
       type: object
       description: The details of a shopping mall.
