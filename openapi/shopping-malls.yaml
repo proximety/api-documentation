@@ -523,21 +523,7 @@ components:
       description: The parking lot details grouped by floor.
       properties:
         floor: 
-          type: string
-          example: GROUND_FLOOR
-          enum:
-            - GROUND_FLOOR
-            - FIRST_FLOOR
-            - SECOND_FLOOR
-            - THIRD_FLOOR
-            - FOURTH_FLOOR
-            - FIFTH_FLOOR
-            - SIXTH_FLOOR
-            - SEVENTH_FLOOR
-            - EIGHTH_FLOOR
-            - MINUS_ONE
-            - MINUS_TWO
-            - DEFAULT
+          $ref: '#/components/schemas/FloorDetails'
         zones:
           type: array
           description: The list of zones in a floor.
@@ -564,21 +550,19 @@ components:
         becoPointId:
           type: string
         floor: 
+          $ref: '#/components/schemas/FloorDetails'
+    FloorDetails:
+      type: object
+      description: The details of a floor in a shopping mall.
+      properties:
+        ID: 
+          type: integer
+          description: The internal system identifier for a floor.
+          example: 0
+        name: 
           type: string
-          example: GROUND_FLOOR
-          enum:
-            - GROUND_FLOOR
-            - FIRST_FLOOR
-            - SECOND_FLOOR
-            - THIRD_FLOOR
-            - FOURTH_FLOOR
-            - FIFTH_FLOOR
-            - SIXTH_FLOOR
-            - SEVENTH_FLOOR
-            - EIGHTH_FLOOR
-            - MINUS_ONE
-            - MINUS_TWO
-            - DEFAULT
+          description: The name for the floor.
+          example: Ground floor 
     ShoppingMallDetails:
       type: object
       description: The details of a shopping mall.
