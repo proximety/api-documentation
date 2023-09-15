@@ -1296,32 +1296,34 @@ components:
             - CAR
             - BIKE
         parkingLotDetails:
-          type: object
-          required:
-            - lotId
-          description: The details of the parking lot.
-          properties:
-            lotId:
-              type: string
-              description: The internal system identifier for the parking lot.
-              example: 67hdjd73.389dhd
-            lotName:
-              type: string
-              description: The name for the parking lot.
-              example: A0-1
-            zone:
-              type: string
-              description: The zone name for the parking lot.
-              example: A0
-            becoPointId:
-              type: string
-            floor:
+          $ref: '#/components/schemas/ParkingZone'
+    ParkingZone:
+      type: object
+      description: The details of a parking lot.
+      properties:
+        zoneId: 
+          type: string
+          description: The internal system identifier for the parking zoe.
+          example: "adasddad.87289791"
+        displayName: 
+          type: string
+          description: The display name for the parking lot.
+          example: Basement 1, Zone 1
+        name: 
+          type: string
+          description: The name for the parking lot.
+          example: Zone 1
+        zoneKey:
+         type: string
+        becoPointId:
+          type: string
+        floor: 
               $ref: '#/components/schemas/FloorDetails'
     FloorDetails:
       type: object
       description: The details of a floor in a shopping mall.
       properties:
-        floorId: 
+        ID: 
           type: integer
           description: The internal system identifier for a floor.
           example: 0
