@@ -661,11 +661,11 @@ paths:
             schema:
               $ref: '#/components/schemas/ParkedVehicle'
             example: {
-                      "vehicleType": "CAR",
-                      "parkingLotDetails": {
-                        "lotId": "67hdjd73.389dhd"
-                      }
-                    }
+                  "vehicleType": "CAR",
+                  "parkingLotDetails": {
+                      "zoneKey": "B1Z1"
+                  }
+              }
       responses:
         '200':
           description: OK
