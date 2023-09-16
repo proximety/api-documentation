@@ -1288,6 +1288,9 @@ components:
       type: object
       description: The vehicle and parking lot details for a parked vehicle.
       properties:
+        id: 
+          type: string
+          description: unique identifier 
         vehicleType: 
           type: string
           description: The type of vehicle parked in the parking solutions.
