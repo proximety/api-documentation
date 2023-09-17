@@ -1284,6 +1284,8 @@ components:
       properties:
         customerId:
          type: string
+        displayId:
+         type: string
         customerBillId:
          type: string
         images:
