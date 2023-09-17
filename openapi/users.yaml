@@ -580,9 +580,8 @@ paths:
   /users/{userId}/geo-fence:
     put: 
       tags:
-        - Parking
-      summary: Get parked vehicles
-      description: Retrieves the list of parked vehicles for the user in the shopping mall.
+        - Fence
+      summary: Update fence details.
       parameters:
         - name: userId
           in: path
