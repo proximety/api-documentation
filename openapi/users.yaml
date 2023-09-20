@@ -1295,12 +1295,12 @@ components:
          enum:
             - FENCE_0
             - FENCE_1
-        inTime:
+        transitionType:
          type: string
-         example: 2023-12-13T23:22:53.000000
-        outTime:
-          type: string
-          example: 2023-12-13T23:22:53.000000
+         enum:
+            - ENTRY
+            - EXIT
+            - DWELL
     Alert: 
       type: object
       description: Details of an alert set up in the application. 
