@@ -2508,6 +2508,8 @@ components:
             - UPCOMING
             - PENDING_APPROVAL
             - DECLINED
+        aboutOffer:
+          type: string
         cardContent:
           type: object
           description: The content to be displayed in the offer card. 
