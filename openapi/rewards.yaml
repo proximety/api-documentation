@@ -946,6 +946,10 @@ components:
           type: string
           description: Name of the store.
           example: Nike
+       couponCollectionInfo:
+        type: string
+        description: Info around how to collect the rewards.
+        example: Collect your rewards at the mall help desk on the ground floor near Louis Philippe.
        brandLogoUrl:
           type: string
           description: Image to be shown on the voucher.
@@ -1495,6 +1499,10 @@ components:
           example: 50
         storeLogoUrl:
           type : string
+        couponCollectionInfo:
+          type: string
+          description: Info around how to collect the rewards.
+          example: Collect your rewards at the mall help desk on the ground floor near Louis Philippe.
     CouponRequestSummaryDTO:
       type: object
       properties:
