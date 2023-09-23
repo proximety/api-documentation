@@ -1391,8 +1391,15 @@ components:
          type: string
         becoPointId:
           type: string
+        parkingType: 
+              $ref: '#/components/schemas/ParkingType'
         floor: 
               $ref: '#/components/schemas/FloorDetails'
+    ParkingType:
+      type: string
+      enum:
+            - FOUR_WHEELER 
+            - TWO_WHEELER 
     FloorDetails:
       type: object
       description: The details of a floor in a shopping mall.
