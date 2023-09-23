@@ -981,6 +981,8 @@ components:
           type: string
           description: provides general overview of the voucher.
           example: The voucher is valid for 6 months from the date of its issuance.
+       aboutOffer:
+          type: string
        coinsNeeded:
           type: integer
           description: The coins needed in total to redeem the voucher.
@@ -1245,6 +1247,8 @@ components:
           type: integer
           description: Total number of redemptions for the voucher.
           example: 50
+        aboutOffer:
+          type: string
     CustomerBillLite:
       type: object
       properties:
@@ -1373,6 +1377,8 @@ components:
           type: string
           description: Unique id of the store.
           example: 0xD557BD156A424268B1450266609C29B2
+        aboutOffer:
+          type: string
         targetOrder:
           type: string
           description: Enum for target order type.
@@ -1440,6 +1446,8 @@ components:
            - STORE
            - MOVIE
            - RESTAURANT
+        aboutOffer:
+          type: string
         applicableStoreIds:
           type: array
           items:
