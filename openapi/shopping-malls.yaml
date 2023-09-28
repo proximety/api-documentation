@@ -157,6 +157,35 @@ paths:
                   type: array
                   items:
                     $ref: '#/components/schemas/ShoppingMallDetails'
+  /shopping-malls/navigation:
+    get: 
+      tags:
+        - QR Navigation
+      summary: Get QR navigation details 
+      operationId: getMalls
+      parameters:
+        - name: Authorization
+          in: header
+          description: The authentication bearer token.
+          required: true
+          example: Bearer asd.js2jd9a.gC6paXtNOg0OZL4-adsd-asd
+          schema:
+            type: string
+        - name: key
+          in: query
+          required: true 
+          example: QR1
+          schema:
+           type: string
+      responses:
+        203:
+          description: OK
+          content:
+            application/json:
+              schema:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/NavigationQR'
   /shopping-malls/configurations:
     get: 
       tags:
@@ -250,6 +279,17 @@ paths:
                 $ref: '#/components/schemas/HelpTextDTO'
 components:
   schemas:
+    NavigationQR:
+      type: object
+      properties:
+        id:
+          type: string
+        key:
+          type: string
+        sourceBecoPointId:
+          type: string
+        destBecoPointId:
+          type: string
     HelpTextDTO:
       type: object
       properties:
