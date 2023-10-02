@@ -66,11 +66,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Notification'
-            example:
-            {
-                "id":"123-345-45767sdfsd",
-                "isRead": true
-            }
         required: true
       responses:
         "200":
@@ -296,5 +291,3 @@ components:
         icon:
           type: string
           description: name of the icon file
-
-    
