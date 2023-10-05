@@ -1319,6 +1319,14 @@ components:
           type: string
           description: The internal system identifier for the store.
           example: i9s392jdkahiu
+        restaurant:
+          type: object
+          description: The restaurant( if any) tied to the store.
+          properties:
+            id:
+              type: string
+            name:
+              type: string
         name: 
           type: string
           description: The name of the store.
@@ -1446,6 +1454,14 @@ components:
         #   type: string
         #   description: The id of the shopping mall to which the store belongs.
         #   example: ajdhus72194a
+        restaurant:
+          type: object
+          description: The restaurant( if any) tied to the store.
+          properties:
+            id:
+              type: string
+            name:
+              type: string
         location:
           type: object
           description: The location of the store within a shopping mall.
