@@ -31,13 +31,58 @@ paths:
           description: Successful operation
         "400":
           description: Bad request
+  /notification/notifications:
+    post: 
+      tags:
+        - Notification
+      summary: Get list if  notifications for single user/restuarant
+      operationId: getNotification
+      requestBody:
+        description: Request criteria for get notifications
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NotificationRequest'
+        required: true
+      responses:
+        "200":
+         description: Successful operation
+         content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Notification'
+        "400":
+          description: Bad request
+  /notification:
+    patch: 
+      tags:
+        - Notification
+      summary: Mark a notification as read
+      operationId: updateNotification
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Notification'
+        required: true
+      responses:
+        "200":
+         description: Successful operation
+         content:
+            application/json:
+              schema:
+                  $ref: '#/components/schemas/Notification'
+        "400":
+          description: Bad request
   /notification/topic:
     post: 
       tags:
         - Notification
       summary: Send notification to multiple users
       description: Send notification to all users subscribed to given
-      operationId: sendTokenNotification 
+      operationId: sendTopicNotification 
       requestBody:
         description: Details of the notification
         content:
@@ -71,6 +116,48 @@ paths:
           
 components:
   schemas:
+    NotificationRequest:
+      type: object
+      properties:
+        customerId:
+          type: string
+        restaurantId:
+          type: string
+        page:
+          type: integer
+        size:
+          type: integer
+    Notification:
+      type: object
+      properties:
+        id:
+          type: string
+        customerId:
+          type: string
+        restaurantId:
+          type: string
+        appName:
+          type: string
+        title:
+          type: string
+        message:
+          type: string
+        imageUrl:
+          type: string
+        notificationGroup:
+          type: string
+        notificationType:
+          type: string
+        landingObjectType:
+          type: string
+        landingObjectId:
+          type: string
+        status:
+          type: string
+        isRead:
+          type: boolean
+        time:
+          type: string
     tokenNotification:
       type: object
       required:
