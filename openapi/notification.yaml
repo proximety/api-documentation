@@ -123,6 +123,16 @@ components:
           type: string
         restaurantId:
           type: string
+        page:
+          type: integer
+          description: The search offset for doing paginated search.
+          example: 20
+          default: 0
+        size: 
+          type: integer
+          description: The page size for doing paginated search
+          example: 10
+          default: 10
     Notification:
       type: object
       properties:
