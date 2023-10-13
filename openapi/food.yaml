@@ -3242,11 +3242,32 @@ components:
         userId:
          type: string
         name:
-         type: string
-        phoneNumber:
-         $ref: '#/components/schemas/PhoneNumber'
+         $ref: '#/components/schemas/NameDTO'
+        phoneNumbers:
+          type: array
+          items:
+            $ref: '#/components/schemas/PhoneNumber'
         userType:
           $ref: '#/components/schemas/OfferUserTypeEnum'
+        designation:
+         type: string
+        email:
+         type: string
+        team:
+         type: string
+    NameDTO:
+      type: object
+      properties:
+        name:
+          type: string
+        salutation:
+          $ref: '#/components/schemas/SalutationEnum'
+    SalutationEnum:
+      type: string
+      enum:
+            - MR
+            - MS
+            - MRS
     CartRequest:
       type: object
       properties:
