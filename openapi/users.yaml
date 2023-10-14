@@ -311,6 +311,88 @@ paths:
     #       description: Bad request
     #     "401":
     #       description: Unauthorized access
+  /users/offer-users:
+   get: 
+      tags:
+        - OfferUser
+      operationId: getOfferUsers
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OfferUser'
+        "500":
+          description: Error
+   post: 
+      tags:
+        - OfferUser
+      operationId: createOfferUsers
+      requestBody:  
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OfferUser'
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/schemas/OfferUser'
+        "500":
+          description: Error
+  /users/offer-users/{userId}:
+   delete: 
+      tags:
+        - OfferUser
+      operationId: deleteOfferUser
+      parameters:
+        - name: userId
+          required: true
+          in: path
+          example: "123"
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OfferUser'
+        "500":
+          description: Error
+   put: 
+      tags:
+        - OfferUser
+      operationId: updateOfferUser
+      parameters:
+        - name: userId
+          required: true
+          in: path
+          example: "123"
+          schema:
+            type: string
+      requestBody:  
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OfferUser'
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/schemas/OfferUser'
+        "500":
+          description: Error
   /users/{userId}:
     get:
       tags:
@@ -1191,6 +1273,46 @@ paths:
       #     description: Unauthorized access   
 components:
   schemas:
+    OfferUser:
+      type: object
+      properties:
+        userId:
+         type: string
+        name:
+         $ref: '#/components/schemas/NameDTO'
+        phoneNumbers:
+          type: array
+          items:
+            $ref: '#/components/schemas/PhoneNumber'
+        userType:
+          $ref: '#/components/schemas/OfferUserTypeEnum'
+        designation:
+         type: string
+        email:
+         type: string
+        team:
+         type: string
+    OfferUserTypeEnum:
+      type: string
+      enum:
+          - ALL_USERS
+          - NEW_USERS
+          - TIER1_USERS
+          - TIER2_USERS
+          - TIER3_USERS
+    NameDTO:
+      type: object
+      properties:
+        name:
+          type: string
+        salutation:
+          $ref: '#/components/schemas/SalutationEnum'
+    SalutationEnum:
+      type: string
+      enum:
+            - MR
+            - MS
+            - MRS
     RewardSummary: 
       type: object
       description: Reward summary
