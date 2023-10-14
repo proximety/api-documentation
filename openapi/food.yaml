@@ -1160,88 +1160,6 @@ paths:
                 $ref: '#/components/schemas/Combo'
         "500":
           description: Error
-  /foodcourt/offers/users:
-   get: 
-      tags:
-        - OfferUser
-      operationId: getOfferUsers
-      responses:
-        "200":
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/OfferUser'
-        "500":
-          description: Error
-   post: 
-      tags:
-        - OfferUser
-      operationId: createOfferUsers
-      requestBody:  
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/OfferUser'
-      responses:
-        "200":
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                  $ref: '#/components/schemas/OfferUser'
-        "500":
-          description: Error
-  /foodcourt/offers/users/{userId}:
-   delete: 
-      tags:
-        - OfferUser
-      operationId: deleteOfferUser
-      parameters:
-        - name: userId
-          required: true
-          in: path
-          example: "123"
-          schema:
-            type: string
-      responses:
-        "200":
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/OfferUser'
-        "500":
-          description: Error
-   put: 
-      tags:
-        - OfferUser
-      operationId: updateOfferUser
-      parameters:
-        - name: userId
-          required: true
-          in: path
-          example: "123"
-          schema:
-            type: string
-      requestBody:  
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/OfferUser'
-      responses:
-        "200":
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                  $ref: '#/components/schemas/OfferUser'
-        "500":
-          description: Error
   /foodcourt/order/coupons/_query:
     get: 
       tags:
@@ -3236,38 +3154,6 @@ components:
           type: string
           example: https://aws.proximety.io/s3/image1.jpg
           description: Image URL.
-    OfferUser:
-      type: object
-      properties:
-        userId:
-         type: string
-        name:
-         $ref: '#/components/schemas/NameDTO'
-        phoneNumbers:
-          type: array
-          items:
-            $ref: '#/components/schemas/PhoneNumber'
-        userType:
-          $ref: '#/components/schemas/OfferUserTypeEnum'
-        designation:
-         type: string
-        email:
-         type: string
-        team:
-         type: string
-    NameDTO:
-      type: object
-      properties:
-        name:
-          type: string
-        salutation:
-          $ref: '#/components/schemas/SalutationEnum'
-    SalutationEnum:
-      type: string
-      enum:
-            - MR
-            - MS
-            - MRS
     CartRequest:
       type: object
       properties:
