@@ -140,18 +140,20 @@ components:
     NotificationList:
       type: object
       properties:
-        totalCount: 
+        totalUnReadNotificationsCount: 
           type: integer
-        items:
+        notificationsGroups:
           type: array
           items: 
-           $ref: '#/components/schemas/NotificationItem'
-    NotificationItem:
+           $ref: '#/components/schemas/NotificationGroupItem'
+    NotificationGroupItem:
       type: object
       properties:
-        count: 
+        unreadNotificationsCount: 
           type: integer
-        items:
+        notificationGroup:
+         type: string
+        notifications:
           type: array
           items: 
            $ref: '#/components/schemas/Notification'
