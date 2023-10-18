@@ -184,6 +184,8 @@ components:
           type: string
         isRead:
           type: boolean
+        time:
+          type: string
     tokenNotification:
       type: object
       required:
