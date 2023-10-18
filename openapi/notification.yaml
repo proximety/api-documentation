@@ -29,6 +29,10 @@ paths:
       responses:
         "200":
           description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Notification'
         "400":
           description: Bad request
   /notification/notifications:
@@ -52,7 +56,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Notification'
+                  $ref: '#/components/schemas/NotificationList'
         "400":
           description: Bad request
   /notification:
@@ -133,6 +137,24 @@ components:
           description: The page size for doing paginated search
           example: 10
           default: 10
+    NotificationList:
+      type: object
+      properties:
+        totalCount: 
+          type: integer
+        items:
+          type: array
+          items: 
+           $ref: '#/components/schemas/NotificationItem'
+    NotificationItem:
+      type: object
+      properties:
+        count: 
+          type: integer
+        items:
+          type: array
+          items: 
+           $ref: '#/components/schemas/Notification'
     Notification:
       type: object
       properties:
