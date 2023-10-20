@@ -1310,9 +1310,9 @@ components:
     SalutationEnum:
       type: string
       enum:
-            - MR
-            - MS
-            - MRS
+            - Mr
+            - Ms
+            - Mrs
     RewardSummary: 
       type: object
       description: Reward summary
