@@ -3016,6 +3016,8 @@ components:
           description: Maximum amount of discount
         userType:
           $ref: '#/components/schemas/OfferUserTypeEnum'
+        employeeType:
+          $ref: '#/components/schemas/EmployeeTypeEnum'
         campaignStartDate:
           description: Start date.
           example: '2022-11-07'
@@ -3088,14 +3090,17 @@ components:
           - ACTIVE
           - INACTIVE
           - SCHEDULED
+    EmployeeTypeEnum:
+      type: string
+      enum:
+          - TIER1_USERS
+          - TIER2_USERS
+          - TIER3_USERS
     OfferUserTypeEnum:
       type: string
       enum:
           - ALL_USERS
           - NEW_USERS
-          - TIER1_USERS
-          - TIER2_USERS
-          - TIER3_USERS
     OfferTimeEnum:
       type: string
       enum:
