@@ -311,11 +311,11 @@ paths:
     #       description: Bad request
     #     "401":
     #       description: Unauthorized access
-  /users/offer-users:
+  /users/mall-employees:
    get: 
       tags:
-        - OfferUser
-      operationId: getOfferUsers
+        - MallEmployee
+      operationId: getMallEmployees
       responses:
         "200":
           description: Successful operation
@@ -324,34 +324,34 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/OfferUser'
+                  $ref: '#/components/schemas/MallEmployee'
         "500":
           description: Error
    post: 
       tags:
-        - OfferUser
-      operationId: createOfferUsers
+        - MallEmployee
+      operationId: createMallEmployee
       requestBody:  
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/OfferUser'
+              $ref: '#/components/schemas/MallEmployee'
       responses:
         "200":
           description: Successful operation
           content:
             application/json:
               schema:
-                  $ref: '#/components/schemas/OfferUser'
+                  $ref: '#/components/schemas/MallEmployee'
         "500":
           description: Error
-  /users/offer-users/{userId}:
+  /users/mall-employees/{employeeId}:
    delete: 
       tags:
-        - OfferUser
-      operationId: deleteOfferUser
+        - MallEmployee
+      operationId: deleteMallEmployee
       parameters:
-        - name: userId
+        - name: employeeId
           required: true
           in: path
           example: "123"
@@ -365,15 +365,15 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/OfferUser'
+                  $ref: '#/components/schemas/MallEmployee'
         "500":
           description: Error
    put: 
       tags:
-        - OfferUser
-      operationId: updateOfferUser
+        - MallEmployee
+      operationId: updateMallEmployee
       parameters:
-        - name: userId
+        - name: employeeId
           required: true
           in: path
           example: "123"
@@ -383,14 +383,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/OfferUser'
+              $ref: '#/components/schemas/MallEmployee'
       responses:
         "200":
           description: Successful operation
           content:
             application/json:
               schema:
-                  $ref: '#/components/schemas/OfferUser'
+                  $ref: '#/components/schemas/MallEmployee'
         "500":
           description: Error
   /users/{userId}:
@@ -1273,7 +1273,7 @@ paths:
       #     description: Unauthorized access   
 components:
   schemas:
-    OfferUser:
+    MallEmployee:
       type: object
       properties:
         userId:
@@ -1285,18 +1285,16 @@ components:
           items:
             $ref: '#/components/schemas/PhoneNumber'
         userType:
-          $ref: '#/components/schemas/OfferUserTypeEnum'
+          $ref: '#/components/schemas/EmployeeTypeEnum'
         designation:
          type: string
         email:
          type: string
         team:
          type: string
-    OfferUserTypeEnum:
+    EmployeeTypeEnum:
       type: string
       enum:
-          - ALL_USERS
-          - NEW_USERS
           - TIER1_USERS
           - TIER2_USERS
           - TIER3_USERS
