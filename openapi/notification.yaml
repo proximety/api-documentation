@@ -59,7 +59,6 @@ paths:
                   $ref: '#/components/schemas/NotificationList'
         "400":
           description: Bad request
-  /notification:
     patch: 
       tags:
         - Notification
