@@ -393,6 +393,102 @@ paths:
                   $ref: '#/components/schemas/MallEmployee'
         "500":
           description: Error
+  /users/referral-codes:
+   get: 
+      tags:
+        - ReferralCodes
+      operationId: getReferralCodes
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ReferralCode'
+        "500":
+          description: Error
+   post: 
+      tags:
+        - ReferralCodes
+      operationId: createReferralCode
+      requestBody:  
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReferralCode'
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/schemas/ReferralCode'
+        "500":
+          description: Error
+  /users/referral-codes/{code}:
+   get:
+      tags:
+        - ReferralCodes
+      operationId: getReferralCodeDetails
+      parameters:
+        - name: code
+          required: true
+          in: path
+          example: "ABC"
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/schemas/ReferralCodeDetail'
+        "500":
+          description: Error
+   delete: 
+      tags:
+        - ReferralCodes
+      operationId: deleteReferralCode
+      parameters:
+        - name: code
+          required: true
+          in: path
+          example: "ABC"
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful operation
+        "500":
+          description: Error
+   put: 
+      tags:
+        - ReferralCodes
+      operationId: updateReferralCode
+      parameters:
+        - name: code
+          required: true
+          in: path
+          example: "ABC"
+          schema:
+            type: string
+      requestBody:  
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReferralCode'
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/schemas/ReferralCode'
+        "500":
+          description: Error
   /users/{userId}:
     get:
       tags:
@@ -1273,6 +1369,36 @@ paths:
       #     description: Unauthorized access   
 components:
   schemas:
+    ReferralCodeDetail:
+      type: object
+      properties:
+        code:
+         type: string
+        startDate:
+          type: string
+        endDate:
+         type: string
+        status:
+          $ref: '#/components/schemas/ReferralCodeStatusEnum'
+        numOfSignUps:
+         type: integer
+        users:
+         type: array
+         items:
+           $ref: '#/components/schemas/SignUpUser'
+    ReferralCode:
+      type: object
+      properties:
+        code:
+         type: string
+        startDate:
+          type: string
+        endDate:
+         type: string
+        status:
+          $ref: '#/components/schemas/ReferralCodeStatusEnum'
+        numOfSignUps:
+         type: integer
     MallEmployee:
       type: object
       properties:
@@ -1292,6 +1418,12 @@ components:
          type: string
         team:
          type: string
+    ReferralCodeStatusEnum:
+      type: string
+      enum:
+          - ACTIVE
+          - INACTIVE
+          - SCHEDULED
     EmployeeTypeEnum:
       type: string
       enum:
@@ -1722,6 +1854,15 @@ components:
           type: array
           items: 
             $ref: '#/components/schemas/Link'
+    SignUpUser:
+       type: object
+       properties:
+        name:
+          $ref: '#/components/schemas/Name'
+        time:
+         type: string
+        phoneNumber:
+           $ref: '#/components/schemas/PhoneNumber'
     Name:
       type: object
       required:
