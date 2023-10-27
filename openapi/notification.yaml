@@ -69,6 +69,12 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Notification'
+            example:
+              '{
+                "id": "ee6fc183-3dcb-44ba-81a0-db8d6c45ba0d",
+                "customerId": "af7d2156-15f0-4ab1-8449-a4843bd66f5b",
+                "read": true
+              }'
         required: true
       responses:
         "200":
