@@ -1503,6 +1503,9 @@ components:
           type: string
           description: Info around how to collect the rewards.
           example: Collect your rewards at the mall help desk on the ground floor near Louis Philippe.
+        terminated:
+          type: boolean
+          description: Once the scratch card is terminated, no longer in use.Only readonly purpose there after.
     CouponRequestSummaryDTO:
       type: object
       properties:
