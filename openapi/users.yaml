@@ -1382,6 +1382,19 @@ components:
           $ref: '#/components/schemas/ReferralCodeStatusEnum'
         numOfSignUps:
          type: integer
+        bonusPointsOnSignUp:
+         type: integer
+        referralPointsOnEachSignUp:
+         type: integer
+        referralContactInfo:
+          type: object
+          properties: 
+            name:
+             $ref: '#/components/schemas/NameDTO'
+            phoneNumber:
+              $ref: '#/components/schemas/PhoneNumber'
+            email:
+             type: string
         users:
          type: array
          items:
@@ -1399,6 +1412,19 @@ components:
           $ref: '#/components/schemas/ReferralCodeStatusEnum'
         numOfSignUps:
          type: integer
+        bonusPointsOnSignUp:
+         type: integer
+        referralPointsOnEachSignUp:
+         type: integer
+        referralContactInfo:
+          type: object
+          properties: 
+            name:
+             $ref: '#/components/schemas/NameDTO'
+            phoneNumber:
+              $ref: '#/components/schemas/PhoneNumber'
+            email:
+             type: string
     MallEmployee:
       type: object
       properties:
