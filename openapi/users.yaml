@@ -1480,6 +1480,7 @@ components:
           - ACTIVE
           - INACTIVE
           - SCHEDULED
+          - DISABLED
     EmployeeTypeEnum:
       type: string
       enum:
