@@ -464,6 +464,36 @@ paths:
           description: Successful operation
         "500":
           description: Error
+   patch: 
+      tags:
+        - ReferralCodes
+      operationId: updateReferralCodeStatus
+      parameters:
+        - name: code
+          required: true
+          in: path
+          example: "ABC"
+          schema:
+            type: string
+      requestBody:  
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReferralCode'
+            example:
+              {
+                "code":"ABC",
+                "status": "DISABLED"
+              }
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/schemas/ReferralCode'
+        "500":
+          description: Error
    put: 
       tags:
         - ReferralCodes
