@@ -3010,6 +3010,9 @@ components:
           type: number
           example: 15
           description: Percentage of discount
+        message:
+          type: string
+          description: Brief description about the customer perspective status of coupon.
         maxCap:
           type: number
           example: 150
@@ -3080,6 +3083,7 @@ components:
           type: number
           example: 15
           description: Totaldiscount given
+          
         effectiveDiscount:
           type: number
           example: 15
