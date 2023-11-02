@@ -1449,6 +1449,8 @@ components:
           type: array
           items: 
             type: string
+        winningProbability:
+          type : integer
     ScratchCardTyepEnum:
       type: string
       enum:
@@ -1541,6 +1543,14 @@ components:
         terminated:
           type: boolean
           description: Once the scratch card is terminated, no longer in use.Only readonly purpose there after.
+        type: 
+          $ref: '#/components/schemas/ScratchCardTyepEnum'
+        referralCodes:
+          type: array
+          items: 
+            type: string
+        winningProbability:
+          type : integer
     CouponRequestSummaryDTO:
       type: object
       properties:
