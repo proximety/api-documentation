@@ -612,6 +612,29 @@ paths:
           description: Bad request
         "403":
           description: Unauthorized access
+    patch: 
+      tags:
+        - ScratchCardResource
+      summary: Terminate Scratch card at Admin Side.
+      operationId: terminateScratchCard
+      parameters:
+        - name: cardId
+          in: path
+          description: Unique identifier of the scratch card
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Returns the response of scratch card created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScratchCardResponseDTO'
+        "400":
+          description: Bad request
+        "403":
+          description: Unauthorized access
     delete: 
       tags:
         - ScratchCardResource
@@ -1420,6 +1443,18 @@ components:
           type: number
           description: Minimum purchase amount eligible for scratch card.
           example: 500.0
+        type: 
+          $ref: '#/components/schemas/ScratchCardTyepEnum'
+        referralCodes:
+          type: array
+          items: 
+            type: string
+    ScratchCardTyepEnum:
+      type: string
+      enum:
+          - PURCHASE_REWARDS
+          - MALL_PROMOTION
+          - INVITE_PROGRAM
     ScratchCardResponseDTO:
       type: object
       properties:
