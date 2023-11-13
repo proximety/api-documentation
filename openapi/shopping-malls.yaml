@@ -162,7 +162,7 @@ paths:
       tags:
         - QR Navigation
       summary: Get QR navigation details 
-      operationId: getMalls
+      operationId: getNavigation
       parameters:
         - name: Authorization
           in: header
@@ -186,6 +186,34 @@ paths:
                   type: array
                   items:
                     $ref: '#/components/schemas/NavigationQR'
+  /shopping-malls/analytics-overview:
+    get: 
+      tags:
+        - "Analytics"
+      summary: Get analytics  
+      operationId: getAnalytics
+      parameters:
+        - name: filter
+          in: query
+          required: true 
+          schema:
+           type: object
+           enum:
+                - TODAY
+                - YESTERDAY
+                - LAST_7_DAYS
+                - LAST_28_DAYS
+                - LAST_90_DAYS
+                - LAST_365_DAYS
+                - LIFE_TIME
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                  type: object
+                  $ref: '#/components/schemas/AnalyticsOverviewDTO'
   /shopping-malls/configurations:
     get: 
       tags:
@@ -680,6 +708,65 @@ components:
           enum:
             - MANAGER
             - ADMIN
+    AnalyticsOverviewDTO:
+      type: object
+      properties:
+        userSignUps:
+          type: integer
+        foodOrders:
+         type: integer
+        grossValueOfFoodOrders:
+          type: integer
+        billsUploaded:
+         type: integer
+        scanAndPayPayments:
+         type: integer
+        scratchCardsAwarded:
+         type: integer
+        vouchersRedeemed:
+         type: integer
+        movieTicketsBooked:
+          type: integer
+        vehiclesBookmarked:
+          type: integer
+        fenceCounts:
+          $ref: '#/components/schemas/FenceAnalyticsDTO'
+        navigationsMade:
+          type: integer
+        searchHits:
+          $ref: '#/components/schemas/SearchHitsDTO'
+    SearchHitsDTO:
+      type: object
+      properties:
+        shoppingSearch:
+         type: integer
+        foodSearch:
+         type: integer
+        offerSearch:
+         type: integer
+    FenceAnalyticsDTO:
+      type: object
+      properties:
+        fence:
+         type: string
+         enum:
+            - FENCE_0
+            - FENCE_1
+        transitionTypeCountDTO:
+          type: array
+          items:
+           $ref: '#/components/schemas/TransitionTypeCountDTO'
+    TransitionTypeCountDTO:
+      type: object
+      properties:
+        count: 
+         type: integer
+        transitionType:
+         type: string
+         enum:
+            - ENTRY
+            - EXIT
+            - DWELL
     GlobalException:
       type: object
       description: An exception thrown by the system.
