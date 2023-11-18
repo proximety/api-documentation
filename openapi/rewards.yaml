@@ -1288,6 +1288,8 @@ components:
          type: string
         billStatus:
          $ref: '#/components/schemas/CustomerBillStatusEnum'
+        customerInfo:
+           $ref: '#/components/schemas/CustomerDTO'
     SimilarTransactionsForBill:
       type: object
       properties:
@@ -1345,6 +1347,56 @@ components:
         billUploadedDate:
           example: '2020-10-22'
           type: string
+        customerInfo:
+           $ref: '#/components/schemas/CustomerDTO'
+    CustomerDTO:
+      type: object
+      properties:
+       name:
+          $ref: '#/components/schemas/Name'
+       contactInfo:
+          $ref: '#/components/schemas/ContactInfo'
+    Name:
+      type: object
+      properties:
+        fullName:
+          type: string
+          description: The full name.
+          example: Jake M Sully
+        firstName:
+          type: string
+          description: The first name.
+          example: Jake
+        middleName:
+          type: string
+          description: The middle name.
+          example: M
+        lastName: 
+          type: string
+          description: The last name.
+          example: Sully
+    PhoneNumber: 
+      type: object
+      properties:
+        countryCode:
+          type: string
+          description: The country code prefix for the phone number.
+          example: "+91"
+        phoneNumber: 
+          type: integer 
+          description: The 10-digit mobile number
+    ContactInfo: 
+      type: object
+      description: The contact details.
+      properties:
+        phoneNumber:
+          type: object
+          description: The primary phone number.
+          $ref: '#/components/schemas/PhoneNumber'
+        primaryEmail:
+          type: string
+          description: The primary email id.
+          example: abc@xyz.com
     CustomerBillStatusEnum:
       type: string
       enum:
