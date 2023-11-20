@@ -191,7 +191,7 @@ paths:
       tags:
         - "Analytics"
       summary: Get analytics  
-      operationId: getAnalytics
+      operationId: getAnalyticsOverview
       parameters:
         - name: filter
           in: query
@@ -212,8 +212,26 @@ paths:
           content:
             application/json:
               schema:
-                  type: object
-                  $ref: '#/components/schemas/AnalyticsOverviewDTO'
+                  $ref: '#/components/schemas/AnalyticsOverviewResponseDTO'
+  /shopping-malls/analytics-details:
+    post: 
+      tags:
+        - "Analytics"
+      summary: Get analytics  details
+      operationId: getAnalyticsDetails
+      requestBody:
+         required: true
+         content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AnalyticsDetailRequest'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/schemas/AnalyticsDetailsResponseDTO'
   /shopping-malls/configurations:
     get: 
       tags:
@@ -708,33 +726,81 @@ components:
           enum:
             - MANAGER
             - ADMIN
-    AnalyticsOverviewDTO:
+    AnalyticsDetailsResponseDTO:
       type: object
       properties:
-        userSignUps:
-          type: integer
-        foodOrders:
-         type: integer
-        grossValueOfFoodOrders:
-          type: integer
-        billsUploaded:
-         type: integer
-        scanAndPayPayments:
-         type: integer
-        scratchCardsAwarded:
-         type: integer
-        vouchersRedeemed:
-         type: integer
-        movieTicketsBooked:
-          type: integer
-        vehiclesBookmarked:
-          type: integer
-        fenceCounts:
-          $ref: '#/components/schemas/FenceAnalyticsDTO'
-        navigationsMade:
-          type: integer
-        searchHits:
-          $ref: '#/components/schemas/SearchHitsDTO'
+       responses:
+         type: array
+         items: 
+          $ref: '#/components/schemas/AnalyticsDetailCountDTO'
+    AnalyticsDetailCountDTO:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/AnalyticsRequestType'
+        counts:
+         type: array
+         items: 
+           $ref: '#/components/schemas/AnlyticsCountDTO'
+    AnlyticsCountDTO:
+     type: object
+     properties:
+       dateRange:
+        type: string
+        example: '2022-11-01 to 2022-12-01'
+       entryCount:
+        type: number
+    AnalyticsDetailRequest:
+      type: object
+      properties:
+        groupBy:
+          type: string
+          enum:
+            - DAILY
+            - WEEKLY
+            - MONTHLY
+            - QUARTERELY
+            - YEARLY
+        fromDate:
+          example: '2022-11-07'
+        toDate:
+         example: '2022-11-07'
+    AnalyticsOverviewResponseDTO:
+      type: object
+      properties:
+       responses:
+         type: array
+         items: 
+          $ref: '#/components/schemas/AnalyticsOverviewCountDTO'
+    AnalyticsOverviewCountDTO:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/AnalyticsRequestType'
+        counts:
+         type: number
+    AnalyticsRequestType: 
+      type: string
+      enum:
+        - USER_SIGN_UPS
+        - VEHICLES_BOOKMARKED 
+        - FENCE, NAVIGATIONS
+        - OUCHERS_REDEEMED
+        - SCRATCH_CARDS_AWARDED 
+        - BILLS_UPLOADED
+        - FOOD_ORDERS
+        - FOOD_ORDER_VALUE
+        - FOOD_SEARCH_HISTORY
+        - SHOPPING_SEARCH_HISTORY
+        - OFFERS_SEARCH_HISTORY
+        - FENCE_0_ENTRY
+        - FENCE_0_EXIT
+        - FENCE_0_DWELL
+        - FENCE_1_ENTRY
+        - FENCE_1_EXIT
+        - FENCE_1_DWELL
+        - MOVIE_ORDERS
+        - UPI_PAYMENTS
     SearchHitsDTO:
       type: object
       properties:
