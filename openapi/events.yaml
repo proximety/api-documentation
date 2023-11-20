@@ -234,6 +234,52 @@ components:
               - ALL_DAY
               - MULTI_DAY
               - SCHEDULED
+       ticketingEnabled:
+          type: boolean
+          description: Indicates whether ticketing is enabled for the event
+          example: true
+       ticketingStartTime:
+        type: string
+        example: 2023-12-13T23:22:53.000000
+       ticketingEndTime:
+        type: string
+        example: 2023-12-13T23:22:53.000000
+       ticketingActive: 
+          type: boolean
+       ticketingDetails:
+        type: object
+        properties: 
+          availableTickets:
+            type: array
+            items:
+                $ref: '#/components/schemas/TicketDetailsResponse'
+    TicketDetailsResponse:
+      type: object
+      properties:
+        ticketTypeId: 
+          type: string
+        name:
+          type: string
+          example: VIP Pass
+        price:
+          type: number
+          example: 100
+        ticketsAvailable:
+          type: number
+          example: 50
+        ticketsSold:
+          type: number
+          example: 50
+        status: 
+          type: string
+          enum: 
+            - AVAILABLE
+            - FILLING_FAST
+            - SOLD_OUT
+        additionalDetails:
+          type: array
+          items:
+            type: string
     EventRequestDTO:
       type: object
       properties:
@@ -260,6 +306,39 @@ components:
               - ALL_DAY
               - MULTI_DAY
               - SCHEDULED
+       ticketingEnabled:
+          type: boolean
+          description: Indicates whether ticketing is enabled for the event
+          example: true
+       ticketingStartTime:
+        type: string
+        example: 2023-12-13T23:22:53.000000
+       ticketingEndTime:
+        type: string
+        example: 2023-12-13T23:22:53.000000
+       ticketingDetails:
+        type: object
+        properties: 
+          availableTickets:
+            type: array
+            items:
+                $ref: '#/components/schemas/TicketDetails'
+    TicketDetails:
+      type: object
+      properties:
+        name:
+          type: string
+          example: VIP Pass
+        price:
+          type: number
+          example: 100
+        ticketsAvailable:
+          type: number
+          example: 50
+        additionalDetails:
+          type: array
+          items:
+            type: string
     EventSearchRequest:  
       type: object
       properties:   
