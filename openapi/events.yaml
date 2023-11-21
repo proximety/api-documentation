@@ -75,6 +75,65 @@ paths:
           description: Bad request
         "403":
           description: Unauthorized access
+  /events/{eventId}/orders:
+    post: 
+      tags: 
+        - Event Tickets
+      summary: Create a ticket order which will block the seats for 5 minutes
+      operationId: CreateEventTicketOrder
+      parameters:
+        - name: eventId
+          in: path
+          description: The internal system identifier for the event for which the order is to be created.
+          required: true
+          schema:
+            type: string
+      requestBody:
+       description: The Order Details 
+       content:
+            application/form-data:
+             schema:
+                type: object
+                properties:
+                 event:
+                  type: object
+                  $ref: '#/components/schemas/EventOrderRequest'
+       required: true
+      responses:
+        "201":
+            description: Details of the created order
+            content: 
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/EventOrderResponse'
+        "400":
+          description: Bad request
+        "403":
+          description: Forbidden
+  /event-orders/{orderId}/payment:
+    post: 
+      tags: 
+        - Event Tickets
+      summary: Initate payment for the ticket order
+      operationId: InitiateTicketPayment
+      parameters:
+        - name: orderId
+          in: path
+          description: The internal system identifier for the order for which payment is to be initiated.
+          required: true
+          schema:
+            type: string
+      responses:
+        "201":
+            description: Details of the created order
+            content: 
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/InitiatePaymentResponse'
+        "400":
+          description: Bad request
+        "403":
+          description: Forbidden
   /events/{eventId}:
     get: 
       tags:
@@ -162,7 +221,87 @@ paths:
           description: Forbidden
 components:
   schemas:
-
+    InitiatePaymentResponse: 
+      type: object
+      properties:
+        transactionId: 
+          type: string
+          description: The internal system identifier for the transaction 
+        encryptedData: 
+          type: string
+          description: The encrypted request to be used for initiating transaction with CCAvenue 
+        accessCode: 
+          type: string
+          description: The CCAvenue Access Code 
+        merchantId: 
+          type: string
+          description: The CCAvenue Merchant Code
+        successCallbackUrl: 
+          type: string
+        failureCallbackUrl: 
+          type: string
+    EventOrderRequest: 
+      type: object
+      properties:
+        tickets: 
+          type: array
+          items:
+            $ref: '#/components/schemas/TicketOrderRequest'
+    EventOrderResponse: 
+      type: object
+      properties:
+        orderId: 
+          type: string
+          description: The nternal system identifier for the order created.
+          example: 831001
+        ticketingDetails:
+          type: array
+          description: The details of the tickets being booked.
+          items: 
+            $ref: '#/components/schemas/TicketOrderDetail'
+        event: 
+          $ref: '#/components/schemas/EventSummary'
+        billingDetails: 
+          type: object
+          description: The billing details for the order being placed.
+          properties:
+            totalAmount: 
+              type: number
+              example: 1100
+            breakup: 
+              type: array
+              description: The brakup of total amount. 
+              items:
+                type: object
+                properties:
+                  feeType:
+                    type: string
+                    description: The name of the brakup type.\
+                    example: Convenience fee
+                  amount: 
+                    type: number
+                    example: 700
+    TicketOrderDetail: 
+      type: object
+      properties:
+        ticketTypeId:
+          type: string
+        ticketTypeName: 
+          type: string
+          description: The ticket type name.
+        quantity: 
+          type: number
+          example: 10
+    TicketOrderRequest:
+      type: object
+      properties:
+        ticketTypeId:
+          type: string
+          description: The internal identifier for the type of ticket selected.
+        quantity: 
+          type: number
+          description: The number of tickets to be booked for the selected type.
+          example: 5    
     EventsListResponse:
       type: object
       description: The event search response that contains the list of events matching the search criteria.
@@ -180,6 +319,60 @@ components:
           description: The embedded search results
           items:
                 $ref: '#/components/schemas/EventResponseDTO'
+    EventSummary: 
+      type: object
+      properties:
+       eventId:
+          type: string
+          description: The internal system identifier for the Event.
+          example: 00E7A620-4E8A-4F40-85DC-A1A62DF6D4EA
+       mallId:
+          type: string
+          description: The internal system identifier for the Mall.
+          example: 00E7A620-4E8A-4F40-85DC-A1A62DF6D4EA
+       name:
+          type: string
+          description: Name of the Event.
+          example: Womens' day celebration
+       status:
+          type: string
+          description: Represents the status of the Event whether its running,gone past or its upcoming.
+          example: UPCOMING
+          enum:
+            - UPCOMING
+            - NOW_RUNNING
+            - PAST
+       startDate:
+          type: string
+          description: Filter Events based on its Start Date
+          example: 2023-12-13T23:22:53.000000
+       endDate:
+          type: string
+          description: Filter Events based on its End Date
+          example: 2023-12-13T23:22:53.000000
+       poster:
+          type: string
+          format: uri
+          example: https://dev.proximety.io/images/21423.jpg
+       banner:
+          type: string
+          format: uri
+          example: https://dev.proximety.io/images/21423.jpg
+       wideBanner:
+          type: string
+          format: uri
+          example: https://dev.proximety.io/images/21423.jpg
+       description:
+          type: string
+          description: Gives general Info about the Event.
+          example: Womens' day is celebrated 8th March every year.
+       eventType:
+          type: string
+          example: ALL_DAY
+          enum:
+              - ALL_DAY
+              - MULTI_DAY
+              - SCHEDULED
     EventResponseDTO:
       type: object
       properties:
