@@ -474,7 +474,7 @@ components:
        faqs:
         type: array
         items: 
-          type: string
+          $ref: '#/components/schemas/FAQ'
        termsAndConditions:
         type: array
         items: 
@@ -502,6 +502,13 @@ components:
             type: array
             items:
                 $ref: '#/components/schemas/TicketDetailsResponse'
+    FAQ: 
+      type: object
+      properties:
+        question:
+          type: string
+        answer: 
+          type: string
     TicketDetailsResponse:
       type: object
       properties:
@@ -562,7 +569,7 @@ components:
        faqs:
         type: array
         items: 
-          type: string
+          $ref: '#/components/schemas/FAQ'
        termsAndConditions:
         type: array
         items: 
