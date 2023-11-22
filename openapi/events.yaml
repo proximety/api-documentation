@@ -91,13 +91,10 @@ paths:
       requestBody:
        description: The Order Details 
        content:
-            application/form-data:
+            application/json:
              schema:
                 type: object
-                properties:
-                 event:
-                  type: object
-                  $ref: '#/components/schemas/EventOrderRequest'
+                $ref: '#/components/schemas/EventOrderRequest'
        required: true
       responses:
         "201":
