@@ -134,6 +134,46 @@ paths:
           description: Bad request
         "403":
           description: Forbidden
+  /events/images:
+    post: 
+      tags:
+        - Events
+      summary: Add an image 
+      description: Adds images related to the events.
+      operationId: addImage
+      parameters:
+        - name: Authorization
+          in: header
+          description: The authentication bearer token.
+          required: true
+          example: Bearer asd.js2jd9a.gC6paXtNOg0OZL4-adsd-asd
+          schema:
+            type: string
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+                - file
+              properties: # Request parts
+                file:
+                  type: string
+                  format: binary
+            encoding: # The same level as schema
+              profileImage: # Property name (see above)
+                contentType: image/png, image/jpeg
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  imageUrl:
+                    type: string
+                    example: https://picsum.photos/id/237/200/300.jpg
   /events/{eventId}:
     get: 
       tags:
