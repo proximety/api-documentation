@@ -427,6 +427,18 @@ components:
               - ALL_DAY
               - MULTI_DAY
               - SCHEDULED
+       artists: 
+        type: array
+        items:
+          $ref: "#/components/schemas/EventArtist"
+       faqs:
+        type: array
+        items: 
+          type: string
+       termsAndConditions:
+        type: array
+        items: 
+          type: string
        ticketingEnabled:
           type: boolean
           description: Indicates whether ticketing is enabled for the event
@@ -442,6 +454,10 @@ components:
        ticketingDetails:
         type: object
         properties: 
+          ticketStartPrice: 
+            type: number
+            example: 90
+            description: The starting price of tickets for the event.
           availableTickets:
             type: array
             items:
@@ -499,6 +515,18 @@ components:
               - ALL_DAY
               - MULTI_DAY
               - SCHEDULED
+       artists: 
+        type: array
+        items:
+          $ref: "#/components/schemas/EventArtist"
+       faqs:
+        type: array
+        items: 
+          type: string
+       termsAndConditions:
+        type: array
+        items: 
+          type: string
        ticketingEnabled:
           type: boolean
           description: Indicates whether ticketing is enabled for the event
@@ -516,6 +544,13 @@ components:
             type: array
             items:
                 $ref: '#/components/schemas/TicketDetails'
+    EventArtist: 
+      type: object
+      properties:
+        artistName: 
+          type: string
+        imageUrl: 
+          type: string
     TicketDetails:
       type: object
       properties:
