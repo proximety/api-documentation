@@ -134,6 +134,23 @@ paths:
           description: Bad request
         "403":
           description: Forbidden
+  /events/booked-tickets:
+    get:
+      tags: 
+        - Event Tickets
+      summary: Retrieve booked tickets for the logged in user
+      operationId: FetchTickets
+      responses:
+        "201":
+            description: Details of the created order
+            content: 
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/BookedTicketsResponse'
+        "400":
+          description: Bad request
+        "403":
+          description: Forbidden
   /events/images:
     post: 
       tags:
@@ -261,6 +278,52 @@ paths:
           description: Forbidden
 components:
   schemas:
+    BookedTicketsResponse:
+      type: object
+      properties:
+        tickets:  
+          type: array
+          items:
+            $ref: '#/components/schemas/BookedTicket'
+    BookedTicket:
+      type: object
+      description: Details of a booked ticket.
+      properties:
+        orderId: 
+          type: string
+          example: 7310283
+        bookingDate:
+          type: string
+          format: datetime
+        pointsEarned:
+          type: number
+          example: 100
+        event: 
+          $ref: '#/components/schemas/EventSummary'
+        ticketingDetails:
+          type: array
+          items:
+            $ref: '#/components/schemas/TicketOrderDetail' 
+        billingDetails:
+          type: object
+          description: The billing details for the order being placed.
+          properties:
+            totalAmount: 
+              type: number
+              example: 1100
+            breakup: 
+              type: array
+              description: The brakup of total amount. 
+              items:
+                type: object
+                properties:
+                  feeType:
+                    type: string
+                    description: The name of the breakup type.\
+                    example: Convenience fee
+                  amount: 
+                    type: number
+                    example: 700
     InitiatePaymentResponse: 
       type: object
       properties:
@@ -310,7 +373,7 @@ components:
               example: 1100
             breakup: 
               type: array
-              description: The brakup of total amount. 
+              description: The breakup of total amount. 
               items:
                 type: object
                 properties:
