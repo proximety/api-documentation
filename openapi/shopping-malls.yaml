@@ -197,7 +197,7 @@ paths:
           in: query
           required: true 
           schema:
-           type: object
+           type: string
            enum:
                 - TODAY
                 - YESTERDAY
