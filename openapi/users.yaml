@@ -519,6 +519,87 @@ paths:
                   $ref: '#/components/schemas/ReferralCode'
         "500":
           description: Error
+  /users/{userId}/vehicles:
+    get: 
+      summary: Get user vehicles
+      tags:
+        - Vehicles
+      operationId: getVehicles
+      parameters:
+        - name: userId
+          in: path
+          description: The internal system identifier for the user.
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/schemas/UserVehicles'
+        "500":
+          description: Error
+    post:
+      tags:
+        - Vehicles
+      operationId: addVehicle
+      summary: Add user vehicle
+      parameters:
+        - name: userId
+          in: path
+          description: The internal system identifier for the user.
+          required: true
+          schema:
+            type: string
+      requestBody:  
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Vehicle'
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/schemas/Vehicle'
+        "500":
+          description: Error
+  /users/{userId}/vehicles/{vehicleId}:
+    put: 
+      tags:
+        - Vehicles
+      summary: Update user's existing vehicle entry
+      operationId: updateVehicle
+      parameters:
+        - name: userId
+          in: path
+          description: The internal system identifier for the user.
+          required: true
+          schema:
+            type: string
+        - name: vehicleId
+          in: path
+          description: The internal system identifier for the user's vehicle.
+          required: true
+          schema:
+            type: string
+      requestBody:  
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Vehicle'
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/schemas/Vehicle'
+        "500":
+          description: Error
   /users/{userId}:
     get:
       tags:
@@ -1837,6 +1918,30 @@ components:
           type: string
           description: The refresh token that can be used to regenerate the access token once it has expired.
           example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJ1bV9hY2N
+    Vehicle:
+      type: object
+      description: Details of a user's vehicle.
+      properties:
+        id:
+          type: string
+          format: uuid
+        vehicleType: 
+          type: string
+          enum:
+            - TWO_WHEELER
+            - FOUR_WHEELER
+        manufacturerName:
+          type: string
+        vehicleNumber: 
+          type: string
+    UserVehicles:
+      type: object
+      description: A list of user's vehicles
+      properties:
+        vehicles:
+          type: array
+          items:
+            $ref: '#/components/schemas/Vehicle'
     PhoneNumber: 
       type: object
       properties:
