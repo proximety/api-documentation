@@ -600,6 +600,26 @@ paths:
                   $ref: '#/components/schemas/Vehicle'
         "500":
           description: Error
+    delete: 
+      tags:
+        - Vehicles
+      summary: Remove a user's vehicle
+      parameters:
+        - name: userId
+          in: path
+          description: The internal system identifier for the user.
+          required: true
+          schema:
+            type: string
+        - name: vehicleId
+          in: path
+          description: The internal system identifier for the user's vehicle.
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful operation
   /users/{userId}:
     get:
       tags:
