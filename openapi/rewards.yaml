@@ -845,12 +845,160 @@ paths:
           description:  Invalid request
         "403":
           description: Unauthorized access
-
-
-
   
+  /customer-parking-vouchers:
+    post:
+      tags:
+        - Parking Vouchers
+      summary: Purchase voucher
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ParkingVoucherPurchaseRequest'
+      responses:
+        "200":
+          description: Voucher details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ParkingVoucher'
+        "400":
+          description: Invalid request
+        "403":
+          description: Unauthorized access
+    get:
+      tags: 
+        - Parking Vouchers
+      summary: List a customers parking vouchers
+      responses:
+        "200":
+          description: Voucher details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerParkingVouchers'
+        "400":
+          description: Invalid request
+        "403":
+          description: Unauthorized access 
+  /customer-parking-vouchers/{id}/redeem:
+    post:
+      tags: 
+        - Parking Vouchers
+      summary: Redeem/Use a voucher
+      parameters:
+        - name: id
+          in: path
+          description: The internal system identifier for the voucher
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Voucher details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerParkingVoucher'
+        "400":
+          description: Invalid request
+        "403":
+          description: Unauthorized access 
+  /parking-vouchers/{voucherId}:
+    put:
+      tags: 
+        - Parking Vouchers
+      summary: Update parking voucher
+      parameters:
+        - name: voucherId
+          in: path
+          description: Unique identifier of a parking voucher
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ParkingVoucher'
+      responses:
+        "200":
+          description: Voucher details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ParkingVoucher'
+        "400":
+          description: Invalid request
+        "403":
+          description: Unauthorized access
+  /parking-vouchers/_query:
+    post:
+      tags: 
+        - Parking Vouchers
+      summary: Search admin parking vouchers
+      operationId: searchParkingVouchers
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ParkingVoucherSearchRequest'
+      responses:
+        "200":
+          description: Voucher details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ParkingVoucherSearchResponse'
+        "400":
+          description: Invalid request
+        "403":
+          description: Unauthorized access
 components:
   schemas:
+    CustomerParkingVouchers:
+      type: object
+      properties:
+        vouchers:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomerParkingVoucher'
+    ParkingVoucherSearchResponse:
+      type: object
+      properties:
+        page:
+          type: number
+          example: 2
+        count:
+          type: number
+          example: 89
+        totalCount:
+          type: number
+          example: 189
+        vouchers:
+          type: array
+          items:
+            $ref: '#/components/schemas/ParkingVoucher'
+    ParkingVoucherSearchRequest:
+      type: object
+      properties:
+        page:
+          type: number
+          example: 1
+        size: 
+          type: number
+          example: 100
+        startDate:
+          type: string
+        endDate: 
+          type: string
+        status:
+          type: string
+          enum:
+            - ISSUED
+            - ACTIVE
+            - EXPIRED
     VoucherListResponse:
       type: array
       items:
@@ -1199,6 +1347,13 @@ components:
           - STORE
           - RESTAURANT
           - MOVIE
+    ParkingVoucherPurchaseRequest:
+      type: object
+      properties:
+        voucherId:
+          type: string
+          description: The internal system identifier for the parking voucher. This is the id of the parent voucher and not the customer voucher.
+          example: 882gd2
     CustomerRewardPointsMetadataDTO:
       type: object
       properties:
@@ -1603,6 +1758,79 @@ components:
             type: string
         winningProbability:
           type : integer
+    CustomerParkingVoucher:
+      type: object
+      properties:
+        id:
+          type: string
+        voucherDetails:
+          $ref: '#/components/schemas/ParkingVoucherSummary'
+        dateRedeemed:
+          type: string
+        validTill:
+          type: string
+        dateCreated:
+          type: string
+        status:
+          type: string
+          enum:
+            - ISSUED
+            - REDEEMED
+        additionalInfo:
+          type: array
+          items:
+            type: string
+        code:
+          type: string
+          description: The voucher code. Will be null if the voucher has not yet been redeemed.
+      
+    ParkingVouchers:
+      type: object
+      properties:
+        vouchers:
+          type: array
+          items: 
+            $ref: '#/components/schemas/ParkingVoucher'
+    ParkingVoucherSummary:
+      type: object
+      description: Details of a parking voucher
+      properties:
+        name:
+          type: string
+          example: Free parking voucher
+        startDate:
+          type: string
+        expiryDate:
+          type: string
+    ParkingVoucher:
+      type: object
+      description: Details of a parking voucher
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+          example: Free parking voucher
+        voucherCode:
+          type: string
+        startDate:
+          type: string
+          format: datetime
+        endDate:
+          type: string
+          format: datetime
+        canRedeemUsingCoins:
+          type: boolean
+          example: false
+        coinsRequired: 
+          type: number
+          example: 100
+        status:
+          type: string
+          enum:
+            - ACTIVE
+            - EXPIRED
+            - ISSUED
     CouponRequestSummaryDTO:
       type: object
       properties:
