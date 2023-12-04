@@ -75,6 +75,59 @@ paths:
           description: Bad request
         "403":
           description: Unauthorized access
+  /events/{eventId}/tickets/user-statistics/_query:
+    post: 
+      tags:
+        - Event Tickets
+      summary: Get user based statistics regarding an event's ticketing.
+      parameters:
+        - name: eventId
+          in: path
+          description: The internal system identifier for the event.
+          required: true
+          schema:
+            type: string
+      requestBody:
+       description: The Order Details 
+       content:
+            application/json:
+             schema:
+                type: object
+                $ref: '#/components/schemas/EventUserTicketStatisticsSearch'
+      responses:
+        "200":
+            description: Successful response
+            content: 
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/EventUserTicketStatistics'
+        "400":
+          description: Bad request
+        "403":
+          description: Forbidden
+  /events/{eventId}/tickets/statistics:
+    get:
+      tags:
+        - Event Tickets
+      summary: Get statistics regarding an event's ticketing.
+      parameters:
+        - name: eventId
+          in: path
+          description: The internal system identifier for the event.
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+            description: Successful response
+            content: 
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/EventTicketStatistics'
+        "400":
+          description: Bad request
+        "403":
+          description: Forbidden
   /events/{eventId}/orders:
     post: 
       tags: 
@@ -321,6 +374,48 @@ components:
                   amount: 
                     type: number
                     example: 700
+    
+    EventUserTicketStatistics:
+      type: object
+      properties:
+        page: 
+          type: number
+          example: 0
+        count: 
+          type: number
+          example: 100
+        totalCount: 
+          type: number
+          example: 100
+        customers:
+          type: array
+          $ref: "#/components/schemas/EventUserTicketStatistic"
+    EventUserTicketStatistic: 
+      type: object
+      properties:
+        date: 
+         type: string
+         example: 2023-12-03T15:35:43.99
+        customerName: 
+          type: string
+          example: John Doe 
+        phoneNumber: 
+          type: string
+          example: 7907099102
+        tickets: 
+          type: array
+          $ref: '#/components/schemas/TicketOrderDetail' 
+        orderId: 
+          type: string
+        quantity: 
+          type: number
+          example: 10
+        totalAmount: 
+          type: number
+          example: 1900
+          
+    EventUserTicketStatisticsSearch:
+      type: object
     InitiatePaymentResponse: 
       type: object
       properties:
@@ -596,6 +691,32 @@ components:
           type: array
           items:
             type: string
+    EventTicketStatistics:
+      type: object
+      properties:
+        totalTicketsSold:
+          type: number
+          example: 100
+        totalIncome:
+          type: number
+          example: 8311.00
+        totalPoints: 
+          type: number
+          example: 200
+        ticketWiseSplit:
+          type: array
+          items: 
+            type: object
+            properties:
+              ticketsSold: 
+                type: number
+                example: 10
+              ticketType: 
+                type: string
+                example: VIP Pass
+              income: 
+                type: number
+                example: 900.00
     EventRequestDTO:
       type: object
       properties:
