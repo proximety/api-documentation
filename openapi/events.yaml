@@ -634,6 +634,9 @@ components:
         type: array
         items: 
           type: string
+       ticketingCampaign:
+        type: boolean
+        example: false 
        ticketingEnabled:
           type: boolean
           description: Indicates whether ticketing is enabled for the event
@@ -672,6 +675,9 @@ components:
         name:
           type: string
           example: VIP Pass
+        displayPrice:
+          type: number
+          example: 100
         price:
           type: number
           example: 100
@@ -755,6 +761,9 @@ components:
         type: array
         items: 
           type: string
+       ticketingCampaign:
+        type: boolean
+        example: false 
        ticketingEnabled:
           type: boolean
           description: Indicates whether ticketing is enabled for the event
@@ -785,6 +794,9 @@ components:
         name:
           type: string
           example: VIP Pass
+        displayPrice:
+          type: number
+          example: 100
         price:
           type: number
           example: 100
