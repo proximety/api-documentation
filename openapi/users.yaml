@@ -311,6 +311,22 @@ paths:
     #       description: Bad request
     #     "401":
     #       description: Unauthorized access
+  
+  /users/configurations:
+    get:
+      tags:
+        - Configurations 
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserConfigurations'
+        "500":
+          description: Error
   /users/mall-employees:
    get: 
       tags:
@@ -1556,6 +1572,15 @@ components:
               $ref: '#/components/schemas/PhoneNumber'
             email:
              type: string
+    UserConfigurations: 
+      type: object
+      properties:
+        canPurchaseParkingVouchers: 
+          type: boolean
+          description: Indicates if the user can purchase parking vouchers 
+        parkingVouchersAvailableForPurchase: 
+          type: boolean 
+          description: Indicates if parking vouchers can be purchased. Whether or not the user can actually purchase the voucher depends on the points that the user has available.
     MallEmployee:
       type: object
       properties:
