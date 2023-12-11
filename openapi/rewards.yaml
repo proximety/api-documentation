@@ -468,13 +468,6 @@ paths:
                 type: array
                 items: 
                   $ref: '#/components/schemas/CustomerBillLite'
-                example:
-                  {
-                     "customerBillId": "123",
-                     "billUploadedDate":"",
-                     "billStatus": "APPROVED",
-  	                 "storeName":"test"
-                  }
         "400":
           description: Bad request
         "403":
@@ -905,6 +898,23 @@ paths:
           description: Invalid request
         "403":
           description: Unauthorized access 
+  
+  /parking-vouchers/upload-groups:
+    get: 
+      tags: 
+        - Parking Vouchers
+      summary: Get voucher uplaod summary
+      responses:
+        "200":
+          description: Voucher details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ParkingVoucherUploadGroups'
+        "400":
+          description: Invalid request
+        "403":
+          description: Unauthorized access
   /parking-vouchers/{voucherId}:
     put:
       tags: 
@@ -929,6 +939,38 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ParkingVoucher'
+        "400":
+          description: Invalid request
+        "403":
+          description: Unauthorized access
+  
+  /parking-vouchers: 
+    post: 
+      tags: 
+        - Parking Vouchers
+      summary: Upload parking vouchers as csv
+      description: The csv should be in the template code, start_date(2023-12-10T00:00:00), end_date(2023-12-10T00:00:00), action
+      requestBody:
+        content: 
+          multipart/form-data: # Media type
+            schema:            # Request payload
+              type: object
+              required:
+                - file
+              properties:      # Request par
+                file:  
+                  type: string
+                  format: binary
+                uploadGroupId:  
+                  type: string
+                  description: If updating the entries of an existing voucher upload, pass the upload group id here. Don't pass anything if doing a fresh upload.
+      responses:
+        "200":
+          description: Voucher upload successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ParkingVoucherUploadResponse'
         "400":
           description: Invalid request
         "403":
@@ -980,6 +1022,11 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ParkingVoucher'
+    ParkingVoucherUploadResponse: 
+      type: object
+      properties:
+        uploadGroupId: 
+          type: string
     ParkingVoucherSearchRequest:
       type: object
       properties:
@@ -993,6 +1040,8 @@ components:
           type: string
         endDate: 
           type: string
+        uploadGroupId: 
+          type: string 
         status:
           type: string
           enum:
@@ -1802,6 +1851,35 @@ components:
           type: string
         expiryDate:
           type: string
+    ParkingVoucherUploadGroups: 
+      type: object
+      properties:
+        uploadGroups: 
+          type: array
+          items: 
+            $ref: '#/components/schemas/ParkingVoucherUploadGroup'
+    ParkingVoucherUploadGroup: 
+      type: object
+      properties:
+        id: 
+          type: string
+        fileName: 
+          type: string
+          example: Upload 2023_10_10.csv
+        dateUploaded: 
+          type: string
+        totalCoupons: 
+          type: number
+          example: 300
+        activeCoupons: 
+          type: number 
+          example: 300
+        issuedCoupons: 
+          type: number 
+          example: 200 
+        redeemedCoupons: 
+          type: number 
+          example: 100
     ParkingVoucher:
       type: object
       description: Details of a parking voucher
