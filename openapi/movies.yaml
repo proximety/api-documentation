@@ -208,6 +208,35 @@ paths:
           description: Bad request
         "403":
           description: Unauthorized access
+  
+  /movie-orders/{orderId}/unblock:
+    put: 
+      tags:
+        - Movie Orders
+      summary: Unblock seats
+      operationId: unblockSeats
+      parameters:
+        - name: orderId
+          in: path
+          description: The internal system identifier of an order.
+          required: true
+          schema:
+            type: string
+            example: 12ed432
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MovieOrderCancelResponseDTO'
+        "400":
+          description: Bad request
+        "403":
+          description: Unauthorized access
+
   /movie-orders/{orderId}/payment:
     post: 
       tags:
@@ -522,6 +551,15 @@ components:
           type: integer
           description: Maximum number of tickets that can be booked.
           example: 7
+    MovieOrderCancelResponseDTO: 
+      type: object
+      properties:
+        orderId:
+          type: string
+        released: 
+          type: boolean
+          description: Indicates whether the blocked seats has been successfully released.
+          example: true
     OrderDetails:
       type: object
       properties:
