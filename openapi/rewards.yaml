@@ -447,18 +447,19 @@ paths:
         "403":
           description: Unauthorized access
   /rewards/customer/bills:
-   get:
+   post:
       tags:
         - CustomerBill
       summary: get customer bills.
       operationId: getBills
-      parameters:
-        - name: customerId
-          in: query
-          description: Unique identifier of the customer 
-          required: true
-          schema:
-            type: string
+      requestBody:
+        description: The search criteria and filters based on which a list of stored are to be retrieved.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              $ref: '#/components/schemas/CustomerBillRequest'
       responses:
         "200":
           description: Reward point summary successfully retrieved.
@@ -467,7 +468,7 @@ paths:
               schema:
                 type: array
                 items: 
-                  $ref: '#/components/schemas/CustomerBillLite'
+                  $ref: '#/components/schemas/CustomerBillLiteResponse'
         "400":
           description: Bad request
         "403":
@@ -1480,6 +1481,35 @@ components:
           example: 50
         aboutOffer:
           type: string
+    CustomerBillRequest:
+      type: object
+      properties:
+        customerId:
+         type: string
+        page:
+          type: integer
+          description: The search offset for doing paginated search.
+          example: 20
+          default: 0
+        size: 
+          type: integer
+          description: The page size for doing paginated search
+          example: 10
+          default: 10
+    CustomerBillLiteResponse:
+      type: object
+      properties:
+        count: 
+          type: integer
+          description: The count of stores returned in the search response.
+          example: 10
+        total: 
+          type: integer
+          description: The total number of stores that match the specified search criteria.
+        bills: 
+          type : array
+          items:
+           $ref: '#/components/schemas/CustomerBillLite'
     CustomerBillLite:
       type: object
       properties:
