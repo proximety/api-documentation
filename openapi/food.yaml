@@ -3403,6 +3403,9 @@ components:
           description: Preparation time (in minutes) updated by restaurant. Default 10 min. Present only after order is moved to CONFIRMED_AND_PREPARING_ORDER step.
         orderStatus:
           $ref: '#/components/schemas/OrderStatusEnum'
+        utr: 
+          type: string
+          description: The UTR ID for tracking refund.
         restaurantId:
           type: string
           example: "123"
