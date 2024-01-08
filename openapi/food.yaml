@@ -3406,6 +3406,9 @@ components:
         utr: 
           type: string
           description: The UTR ID for tracking refund.
+        timeRefunded: 
+          type: string
+          description: The date time at which the refund was completed.
         restaurantId:
           type: string
           example: "123"
