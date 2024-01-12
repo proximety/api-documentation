@@ -1575,6 +1575,10 @@ components:
     UserConfigurations: 
       type: object
       properties:
+        parkingVoucherPrice: 
+          type: number
+          description: Coins required to purchase the parking voucher.
+          example: 1000
         canPurchaseParkingVouchers: 
           type: boolean
           description: Indicates if the user can purchase parking vouchers 
