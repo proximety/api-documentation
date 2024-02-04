@@ -347,6 +347,16 @@ components:
          type: string
         moviesHomeText:
          type: string
+        movie_promotion_home_main_text:
+          type: string
+        movie_promotion_home_info_text:
+          type: string
+        movie_promotion_checkout_main_text:
+          type: string
+        movie_promotion_checkout_info_text:
+          type: string
+        highlight_movie_booking_scratch_card_text:
+          type: string
     AppConfig:
       type: object
       properties:
@@ -370,6 +380,21 @@ components:
                 - ENABLED
                 - DISABLED
             scanAndPay:
+              type: string
+              enum:
+                - ENABLED
+                - DISABLED
+            highlightMovieBookingScratchCard:
+              type: string
+              enum:
+                - ENABLED
+                - DISABLED
+            showMoviewPromotionSectionCheckout:
+              type: string
+              enum:
+                - ENABLED
+                - DISABLED
+            showMoviewPromotionSectionHome:
               type: string
               enum:
                 - ENABLED
