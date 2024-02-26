@@ -415,6 +415,339 @@ paths:
                   "detail": "The specified access token has expired. Please try again with an active access token.",
                   "tags":[]
                 }
+  /promotions:
+    post: 
+      tags: 
+        - Promotion 
+      summary: Create promotion
+      description: Creates a promotion that can be scheduled to run at a specific time
+      parameters:
+        - name: Authorization
+          in: header
+          description: The authentication bearer token.
+          required: true
+          example: Bearer asd.js2jd9a.gC6paXtNOg0OZL4-adsd-asd
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+                $ref: '#/components/schemas/Promotion'
+            example: 
+                    {
+                        "title":"Mega Valentines Day Offer",
+                        "subtitle":"The greatest valentine's day sale is here",
+                        "description":"Shop at HiLite mall today and get the best offers just for you",
+                        "landingPage":"STORE_HOME",
+                        "schedule": "2023-12-22T09:42:08.417",
+                        "poster":"<poster-url>",
+                        "banenr":"<banner-url>",
+                        "ownerDetails": {
+                            "ownerType":"STORE",
+                            "ownerId":"83dd10-3djd91-484002-csf1239210293"
+                        }
+                    }
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Promotion'
+        "400":
+          description: Bad request          
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GlobalException"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GlobalException"
+              example: 
+                {
+                  "status": 403,
+                  "type": "FORBIDDEN",
+                  "title": "Token expired.",
+                  "detail": "The specified access token has expired. Please try again with an active access token.",
+                  "tags":[]
+               }
+  /promotions/{promotionId}:
+    get: 
+      tags: 
+        - Promotion 
+      summary: Get promotion
+      description: Retrieves te promotion details for the given promotion id.
+      parameters:
+        - name: Authorization
+          in: header
+          description: The authentication bearer token.
+          required: true
+          example: Bearer asd.js2jd9a.gC6paXtNOg0OZL4-adsd-asd
+          schema:
+            type: string
+        - name: promotionId
+          in: path
+          required: true
+          description: The internal system identifier for the promotion 
+          schema: 
+            type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Promotion'
+        "400":
+          description: Bad request          
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GlobalException"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GlobalException"
+              example: 
+                {
+                  "status": 403,
+                  "type": "FORBIDDEN",
+                  "title": "Token expired.",
+                  "detail": "The specified access token has expired. Please try again with an active access token.",
+                  "tags":[]
+               }
+    put: 
+      tags: 
+        - Promotion 
+      summary: Update promotion
+      description: Updates a promotion that can be scheduled to run at a specific time
+      parameters:
+        - name: Authorization
+          in: header
+          description: The authentication bearer token.
+          required: true
+          example: Bearer asd.js2jd9a.gC6paXtNOg0OZL4-adsd-asd
+          schema:
+            type: string
+        - name: promotionId
+          in: path
+          required: true
+          description: The internal system identifier for the promotion 
+          schema: 
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+                $ref: '#/components/schemas/Promotion'
+            example: 
+                    {
+                          "title":"Mega Valentines Day Offer",
+                          "subtitle":"The greatest valentine's day sale is here",
+                          "description":"Shop at HiLite mall today and get the best offers just for you",
+                          "landingPage":"STORE_HOME",
+                          "schedule": "2023-12-22T09:42:08.417",
+                          "poster":"<poster-url>",
+                          "banenr":"<banner-url>",
+                          "ownerDetails": {
+                              "ownerType":"STORE",
+                              "ownerId":"83dd10-3djd91-484002-csf1239210293"
+                          }
+                      }
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Promotion'
+        "400":
+          description: Bad request          
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GlobalException"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GlobalException"
+              example: 
+                {
+                  "status": 403,
+                  "type": "FORBIDDEN",
+                  "title": "Token expired.",
+                  "detail": "The specified access token has expired. Please try again with an active access token.",
+                  "tags":[]
+               }
+    patch: 
+      tags: 
+        - Promotion 
+      summary: Update promotion
+      description: Updates a promotion that can be scheduled to run at a specific time
+      parameters:
+        - name: Authorization
+          in: header
+          description: The authentication bearer token.
+          required: true
+          example: Bearer asd.js2jd9a.gC6paXtNOg0OZL4-adsd-asd
+          schema:
+            type: string
+        - name: promotionId
+          in: path
+          required: true
+          description: The internal system identifier for the promotion 
+          schema: 
+            type: string
+      requestBody:
+        description: Update banner with properties to be changed
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/Promotion'
+                - type: object
+                  properties:
+                    status:
+                      nullable: true
+            example: {"status":"ACTIVE"}
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Promotion'
+        "400":
+          description: Bad request          
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GlobalException"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GlobalException"
+              example: 
+                {
+                  "status": 403,
+                  "type": "FORBIDDEN",
+                  "title": "Token expired.",
+                  "detail": "The specified access token has expired. Please try again with an active access token.",
+                  "tags":[]
+               }
+  /promotions/_query:
+    post: 
+      tags: 
+        - Promotion 
+      summary: Search promotions
+      description: Retrieves a list of promotions based on the search criteria
+      parameters:
+        - name: Authorization
+          in: header
+          description: The authentication bearer token.
+          required: true
+          example: Bearer asd.js2jd9a.gC6paXtNOg0OZL4-adsd-asd
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+                $ref: '#/components/schemas/PromotionSearchRequest'
+            example: 
+                    {
+                      "page":1,
+                      "size":100
+                  }
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PromotionSearchResponse'
+        "400":
+          description: Bad request          
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GlobalException"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GlobalException"
+              example: 
+                {
+                  "status": 403,
+                  "type": "FORBIDDEN",
+                  "title": "Token expired.",
+                  "detail": "The specified access token has expired. Please try again with an active access token.",
+                  "tags":[]
+                }
+  /promotions/config-metadata/_query:
+    post: 
+      tags: 
+        - Promotion 
+      summary: Fetch promotion config metadata
+      description: Retrieves the promotions config metadata based on the search criteria
+      parameters:
+        - name: Authorization
+          in: header
+          description: The authentication bearer token.
+          required: true
+          example: Bearer asd.js2jd9a.gC6paXtNOg0OZL4-adsd-asd
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+                $ref: '#/components/schemas/PromotionMetaConfigRequest'
+            example: 
+                    {
+                        "landingPage": "STORE_HOME",
+                        "includeOwnerList": true
+                    }
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PromotionMetaConfigResponse'
+        "400":
+          description: Bad request          
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GlobalException"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GlobalException"
+              example: 
+                {
+                  "status": 403,
+                  "type": "FORBIDDEN",
+                  "title": "Token expired.",
+                  "detail": "The specified access token has expired. Please try again with an active access token.",
+                  "tags":[]
+                }
+
   /banners/{bannerId}/image:
     put: 
       tags:
@@ -2427,6 +2760,147 @@ components:
             type: object
             description: The promoted offer.
             $ref: '#/components/schemas/OfferDetails'
+    PromotionSearchRequest: 
+      type: object
+      properties:
+        page: 
+          type: number
+        size: 
+          type: number
+    PromotionMetaConfigRequest: 
+      type: object
+      description: Request to fetch the metadata for creating a promotion
+      properties:
+        landingPage:
+          type: string
+          example: STORE_HOME 
+        includeOwnerList: 
+          type: boolean
+    PromotionMetaConfigResponse: 
+      type: object
+      description: The metadata for creating a promotion
+      properties:
+        targetAudienceList:
+          type: array
+          items: 
+            type: object
+            properties:
+              id:
+                type: string
+                example: ALL_USERS
+              name: 
+                type: string
+                example: All Users
+        landingPages:
+          type: array
+          items:
+            type: object
+            properties:
+              id: 
+                type: string
+                example: STORE_HOME
+              name: 
+                type: string
+                example: store
+              owners: 
+                type: array
+                items: 
+                  type: object
+                  properties:
+                    ownerType: 
+                      type: string
+                      example: STORE
+                    ownerId: 
+                      type: string
+                    ownerName: 
+                      type: string
+                      example: Nike Store
+        includeOwnerList: 
+          type: boolean
+    PromotionSearchResponse:
+      type: object
+      properties:
+        page: 
+          type: integer
+          example: 1
+        count: 
+          type: integer
+          description: The count of promotions returned in the search response.
+          example: 10
+        total: 
+          type: integer
+          description: The total number of promotions that match the specified search criteria.
+          example: 100
+        promotions: 
+          type: array
+          items:
+            $ref: '#/components/schemas/Promotion'
+    Promotion: 
+      type: object 
+      properties:
+        id: 
+          type: string
+          description: Internal system identifier for the promotion.
+        title: 
+          type: string
+          description: The title for the promotion.
+          example: Valentine's day offer.
+        description: 
+          type: string
+          description: The description for the promotion.
+          example: Shop today and get exclusive discounts that will make your Valentine's day special.
+        subtitle: 
+          type: string
+          description: The subtitle for the promotion.
+          example: Valentine's day offer just for you.
+        status: 
+          type: string
+          description: The status of promotion.
+          example: ACTIVE 
+          enum:
+            - PENDING_APPROVAL
+            - ACTIVE 
+            - EXPIRED 
+            - REJECTED 
+        schedule: 
+          type: string
+          format: datetme
+          example: 2023-12-22T09:42:08.417
+        poster: 
+          type: string
+          description: URL for the poster
+        banner: 
+          type: string
+          description: URL for the banner
+        targetAudience: 
+          type: array
+          items: 
+            type: string
+            example: ALL_USERS
+        landingPage: 
+          type: string
+          description: The proposed landing page for the promotion 
+          enum: 
+            - DETAILS_PAGE
+            - STORE_HOME
+            - RESTAURANT_HOME
+            - MOVIE_DETAILS
+            - EVENT 
+            - MOVIE_MAIN
+            - STORE_MAIN
+            - FOOD_MAIN
+            - PARKING_MAIN 
+            - BANNER_DETAILS
+        ownerDetails: 
+          $ref:  '#/components/schemas/OwnerDetails'
+        dateCreated: 
+          type: string
+          format: datetme
+          example: 2023-12-22T09:42:08.417
+        dateUpdated: 
+          type: string
+          format: datetme
+          example: 2023-12-22T09:42:08.417
     PromotedOffersRequest:
       type: object 
       description: The list of promoted offers. (Max size - 10)
