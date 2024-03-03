@@ -1450,6 +1450,25 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PaymentInitiationResponseV2'
+  /foodcourt/cart/paymentV3:
+    post: 
+      tags:
+        - Payment
+      summary: Initiate cart payment/checkout (Razorpay)
+      description: Initiates a cart checkout by triggering a payment request with Razorpay,
+      requestBody:
+        description: Order Status. 
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentInitiationRequestV2'
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentInitiationResponseV3'
   /foodcourt/orders/{orderId}/payment-details:
     get: 
       tags:
@@ -2804,6 +2823,12 @@ components:
         userId: 
           type: string
           description: The user id of the user who is initiating payment for a cart.
+    PaymentInitiationResponseV3:
+      type: object
+      description: The request body for initiating a payment request
+      properties:
+        paymentGatewayOrderId: 
+          type: string
     PaymentInitiationResponseV2: 
       type: object
       description: The response from initiating the payment for a food order.
